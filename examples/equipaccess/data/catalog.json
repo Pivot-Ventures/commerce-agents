@@ -595,7 +595,7 @@
       "labels": [
         "For sale"
       ],
-      "in_stock": true,
+      "in_stock": false,
       "product_id": "AE-SAL-110",
       "title": "ACME Iron 20-ton Excavator (used)",
       "brand": "ACME Iron",
@@ -616,9 +616,10 @@
         "machine_class": "excavator",
         "location": "Kampala",
         "region": "Central",
-        "stock": "1",
+        "stock": "0",
         "min_quantity": "1",
         "capacity_tons": "20",
+        "published": "true",
         "yard": "ACME Yard Kampala"
       }
     },
@@ -629,7 +630,7 @@
       "labels": [
         "For sale"
       ],
-      "in_stock": true,
+      "in_stock": false,
       "product_id": "AE-SAL-210",
       "title": "ACME Lift Wheel Loader (used)",
       "brand": "ACME Lift",
@@ -650,8 +651,9 @@
         "machine_class": "loader",
         "location": "Entebbe",
         "region": "Central",
-        "stock": "1",
+        "stock": "0",
         "min_quantity": "1",
+        "published": "true",
         "yard": "ACME Shore Entebbe"
       }
     },
@@ -716,6 +718,38 @@
         "region": "Central",
         "stock": "8",
         "min_quantity": "1",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.2,
+      "review_count": 3,
+      "labels": [
+        "For sale"
+      ],
+      "in_stock": false,
+      "product_id": "AE-MAT-010",
+      "title": "ACME Mix cement bags (42.5N)",
+      "brand": "ACME Mix",
+      "price": 38000,
+      "category": "construction-materials",
+      "short_description": "Construction-materials vertical. Sale stock starts at zero until a store inventories a lot.",
+      "long_description": "A sellable row, not a family SKU. Published. Quantity is zero until inventory CRUD restocks it.",
+      "specs": {
+        "grade": "42.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "business_unit": "construction-materials",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "0",
+        "min_quantity": "1",
+        "published": "true",
         "yard": "ACME Yard Kampala"
       }
     }

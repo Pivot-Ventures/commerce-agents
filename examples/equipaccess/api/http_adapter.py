@@ -11,18 +11,20 @@ Laravel route → StorefrontBackend method (as documented on the private app):
 
 | Laravel | Method |
 |---|---|
-| GET equipments, GET scoped-products | ``search_products`` (rentals; hire is the default intent) |
-| GET spare-parts | ``search_products`` when the query is a parts/buy intent |
+| GET equipments, GET scoped-products | ``search_products`` browse (no Algolia; filter locally) |
+| GET spare-parts | ``search_products`` on a parts/buy query |
+| GET construction-materials | ``search_products`` on a materials query |
 | resource products | ``get_product_details`` |
 | resource cart | ``get_cart``, ``add_to_cart``, ``update_cart_item``, ``remove_from_cart`` |
-| GET rentals/rate | period quote inside search/cart (daily / weekly / monthly) |
+| GET rentals/rate | live: weekly/monthly list → daily × days; fixtures use period math |
 | GET shipping/options | ``get_fulfillment_options`` (POST /api/haulage is a stub — not called) |
 | resource orders | ``get_orders``, ``get_order`` |
 | customer login | host session; the token stays on this adapter |
 | POST make-order-payment | not called; ``checkout_handoff`` returns a Flutterwave hosted-pay URL |
 
-Search must not assume live Algolia (the Scout trait was commented out). Cart quantity
-must not exceed ``Product.stock``. Orders that include distance stay in Haulage Review.
+Laravel has no text search endpoint (Scout is commented out). This adapter browses a
+business-unit list and filters locally. It never POSTs ``/api/haulage`` or
+``make-order-payment``. Unauthenticated product writes are not called.
 """
 
 from __future__ import annotations
@@ -96,18 +98,17 @@ class EquipAccessHttpBackend(StorefrontBackend):
         filters: SearchFilters | None = None,
         limit: int = 8,
     ) -> list[Product]:
-        del session
-        params: dict[str, Any] = {"q": query, "limit": limit}
-        if filters is not None:
-            if filters.category:
-                params["category"] = filters.category
-            params.update(filters.attributes)
-        payload = await self._get("equipments", params)
+        del session, filters
+        payload = await self._get(_browse_path(query))
         rows = payload.get("data") or payload.get("products") or payload
-        products = [Product.model_validate(_product_row(row)) for row in rows][:limit]
-        for product in products:
+        if not isinstance(rows, list):
+            rows = []
+        products = [Product.model_validate(_product_row(row)) for row in rows]
+        matched = [product for product in products if _local_match(product, query)]
+        page = (matched or products)[:limit]
+        for product in page:
             self.products[product.product_id] = ProductDetails.model_validate(product.model_dump())
-        return products
+        return page
 
     async def get_product_details(
         self, session: ShoppingSessionContext, product_id: str
@@ -168,6 +169,36 @@ class EquipAccessHttpBackend(StorefrontBackend):
         payload = await self._get("shipping/options", params={"products": ",".join(product_ids)})
         rows = payload.get("data") or payload.get("options") or []
         return [FulfillmentOption.model_validate(row) for row in rows]
+
+
+_MATERIAL_HINTS = frozenset({"cement", "rebar", "timber", "material", "materials", "aggregate"})
+_PARTS_HINTS = frozenset({"spare", "part", "parts", "hose", "hoses", "teeth"})
+
+
+def _browse_path(query: str) -> str:
+    """Laravel lists one business unit. There is no text search endpoint."""
+    tokens = {token.strip(".,!?") for token in query.lower().split()}
+    if tokens & _MATERIAL_HINTS:
+        return "construction-materials"
+    if tokens & _PARTS_HINTS:
+        return "spare-parts"
+    return "equipments"
+
+
+def _local_match(product: Product, query: str) -> bool:
+    tokens = [token.strip(".,!?") for token in query.lower().split() if len(token) > 1]
+    if not tokens:
+        return True
+    blob = " ".join(
+        part
+        for part in (
+            product.title,
+            product.short_description or "",
+            product.category or "",
+            product.brand or "",
+        )
+    ).lower()
+    return any(token in blob for token in tokens)
 
 
 def _product_row(row: dict[str, Any]) -> dict[str, Any]:

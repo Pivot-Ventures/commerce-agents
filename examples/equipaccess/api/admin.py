@@ -1,8 +1,9 @@
 # Copyright 2026 Anthropic PBC
 # SPDX-License-Identifier: Apache-2.0
 
-"""A thin admin host over fixtures: listing approve/reject, stores, commission
-agents, customers, payouts (visible, never paid from here), shipping, and roles.
+"""A thin admin host over fixtures: listing approve/reject (New → published),
+stores, haulage agents, customers, payouts (visible, never paid from here),
+a haulage desk (attach agent, assigned orders), shipping, and roles.
 Every write that would move money is refused."""
 
 from typing import Any
@@ -11,7 +12,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from demo_common.storefront_fixtures import load_json
-from shopping_agent import ProductDetails
+from shopping_agent import ProductDetails, Unavailable
 
 from .mock_equipaccess import DATA_DIR, MockEquipAccess
 
@@ -20,6 +21,10 @@ ADMIN_USER = "admin-user"
 
 class ListingDecision(BaseModel):
     note: str | None = Field(default=None, max_length=400)
+
+
+class AttachAgent(BaseModel):
+    agent_id: str = Field(min_length=1, max_length=40)
 
 
 def load_admin() -> dict[str, Any]:
@@ -82,9 +87,16 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
         if row.get("status") != "pending":
             raise HTTPException(status_code=409, detail="Listing is not pending")
         row["status"] = "approved"
+        row["published"] = True
+        row["store_status"] = "Approved"
         product = ProductDetails.model_validate(row["product"])
+        product.attributes = {
+            **product.attributes,
+            "listing_status": "approved",
+            "published": "true",
+        }
         storefront.products[product.product_id] = product
-        return {"ok": True, "listing_id": listing_id, "status": "approved"}
+        return {"ok": True, "listing_id": listing_id, "status": "approved", "published": True}
 
     @router.post("/listings/{listing_id}/reject")
     async def reject(
@@ -97,7 +109,9 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
         if row.get("status") != "pending":
             raise HTTPException(status_code=409, detail="Listing is not pending")
         row["status"] = "rejected"
-        return {"ok": True, "listing_id": listing_id, "status": "rejected"}
+        row["published"] = False
+        row["store_status"] = "Rejected"
+        return {"ok": True, "listing_id": listing_id, "status": "rejected", "published": False}
 
     @router.get("/stores")
     async def stores(record: host.CurrentSession) -> dict:
@@ -128,6 +142,42 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
         raise HTTPException(
             status_code=403,
             detail=f"{payout_id}: payouts cannot be executed from this host or the model.",
+        )
+
+    @router.get("/haulage-desk")
+    async def haulage_desk(record: host.CurrentSession, agent_id: str | None = None) -> dict:
+        del record
+        queue = storefront.haulage_queue()
+        assigned = storefront.assigned_hires(agent_id)
+        return {
+            "queue": queue,
+            "assigned": assigned,
+            "agents": state.get("agents") or [],
+            "note": (
+                "Admin attaches a haulage agent (packing yard, transport). "
+                "Paying shipping is refused here — the model cannot move money."
+            ),
+        }
+
+    @router.post("/hires/{hire_id}/attach-agent")
+    async def attach_agent(hire_id: str, request: AttachAgent, record: host.CurrentSession) -> dict:
+        if record.user_id != ADMIN_USER:
+            raise HTTPException(status_code=403, detail="Admin session required")
+        agents = {row["agent_id"] for row in state.get("agents") or []}
+        if request.agent_id not in agents:
+            raise HTTPException(status_code=404, detail="Agent not found")
+        try:
+            hire = storefront.attach_agent(hire_id, request.agent_id)
+        except Unavailable as error:
+            raise HTTPException(status_code=404, detail=str(error)) from error
+        return {"ok": True, "hire_id": hire.hire_id, "agent_id": hire.agent_id}
+
+    @router.post("/hires/{hire_id}/pay-shipping")
+    async def pay_shipping(hire_id: str, record: host.CurrentSession) -> dict:
+        del record
+        raise HTTPException(
+            status_code=403,
+            detail=f"{hire_id}: shipping cannot be paid from this host or the model.",
         )
 
     @router.get("/shipping")

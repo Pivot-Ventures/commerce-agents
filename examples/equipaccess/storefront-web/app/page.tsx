@@ -146,7 +146,9 @@ export default function StorefrontPage() {
       {view === "buy" ? (
         <StorePage>
           <h1 className="eq-hero">Buy</h1>
-          <p className="text-(--ink-soft)">Used machines. The assistant only shows these when you ask to buy.</p>
+          <p className="text-(--ink-soft)">
+            Used machines and construction materials. Sale stock starts at zero until a store inventories it. Buy, not hire.
+          </p>
           <CatalogGrid products={sales} />
         </StorePage>
       ) : null}

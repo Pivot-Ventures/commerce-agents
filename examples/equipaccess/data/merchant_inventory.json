@@ -114,14 +114,14 @@
     },
     {
       "product_id": "AE-SAL-110",
-      "stock": 1,
+      "stock": 0,
       "threshold": 1,
       "hires_last_30d": 3,
       "content_quality": "good"
     },
     {
       "product_id": "AE-SAL-210",
-      "stock": 1,
+      "stock": 0,
       "threshold": 1,
       "hires_last_30d": 3,
       "content_quality": "good"
@@ -138,6 +138,13 @@
       "stock": 8,
       "threshold": 2,
       "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-MAT-010",
+      "stock": 0,
+      "threshold": 1,
+      "hires_last_30d": 0,
       "content_quality": "good"
     }
   ]

@@ -66,7 +66,7 @@ export const SHOWCASE = {
           price: 1260000,
           quantity: 1,
           line_total: 1260000,
-          option_values: { start_date: "2026-09-14", end_date: "2026-09-23", number_of_days: "10", rate_type: "Weekly" },
+          option_values: { type: "Rent", start_date: "2026-09-14", end_date: "2026-09-23", number_of_days: "10", rate_type: "Weekly" },
         },
       ],
       item_count: 1,

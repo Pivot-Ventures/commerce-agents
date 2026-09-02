@@ -80,15 +80,41 @@ Admin (BTIC super admin):
 - `storefront-web/`, `merchant-web/`, `admin-web/`: navy `#0B1F3A`, amber `#F5A623`,
   cream `#F7F4EE`, UGX, Uganda yards.
 
+## Laravel facts the fixtures honour
+
+Live EquipAccess (private Laravel) is admin/store/agent Blade only. These web apps are the
+customer, store, and admin UIs. The demo runs offline on fixtures. `equipaccess.com` is not
+used.
+
+- Payments: Flutterwave v3 hosted checkout in UGX (card + mobile money). Bank transfer is a
+  manual receipt. Stripe is unused. The model never places the order or charges.
+- Haulage: one-way = method price × distance; deposit = one-way; to+from = 2×. Distance on
+  the hire puts it in Haulage Review. `POST /api/haulage` is a stub and is not called.
+  Fixtures implement haulage as `get_fulfillment_options` plus cart meta.
+- Agents are haulage/logistics (`packing_yard`, `transport_means`), not sales. Admin
+  attaches an agent on the haulage desk. Pay shipping and pay payouts are 403.
+- Business units: equipments, spare-parts, construction-materials. Each product is one
+  sellable row (no parent-family SKU matrix). `listing_type` is Sale or Rent.
+- Laravel rent stock is always qty 1. This demo still does date-aware multi-unit holds so
+  morning overlap tests work.
+- Sale stock starts at 0 until inventory CRUD. Spare parts here have been inventoried.
+- Publish pipeline: store creates status New → admin approve/reject → `published`.
+- Laravel has no text search (Scout is commented out). Fixture search is local: machine
+  class, location, dates, listing_type.
+- Live `GET /api/rentals/rate` converts a weekly/monthly list price to daily × days.
+  Fixture quotes use whole weeks/months (`api/rates.py` `quote_hire`).
+- Four desks: customer, store (merchant portal), haulage agent (admin haulage desk — not
+  a fourth AI agent), admin. Customer JWT / store-agent-admin session on the live app;
+  this demo uses host session headers.
+
 ## Laravel → StorefrontBackend (left for the HTTP adapter)
 
 | Laravel | Method | Adapter status |
 |---|---|---|
-| GET equipments, GET scoped-products | `search_products` (hire default) | read mapped |
-| GET spare-parts | `search_products` on a buy/parts query | read mapped |
+| GET equipments / spare-parts / construction-materials | `search_products` (browse, local filter; no Algolia) | read mapped |
 | resource products | `get_product_details` | read mapped |
 | resource cart | `get_cart` | read mapped; writes raise |
-| GET rentals/rate | period quote inside search/cart | fixture math; live rate left |
+| GET rentals/rate | live: list price as daily × days | fixtures keep period math |
 | GET shipping/options | `get_fulfillment_options` | read mapped; POST `/api/haulage` is a stub and is not called |
 | resource orders | `get_orders`, `get_order` | read mapped |
 | customer login | host session | token header only |

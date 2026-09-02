@@ -44,6 +44,15 @@ export type AdminPayout = {
 };
 export type AdminLane = { lane_id: string; from: string; to: string; km: number; typical_quote_ugx: number };
 export type AdminRole = { role: string; description: string };
+export type HaulageDeskOrder = {
+  hire_id: string;
+  title?: string;
+  site?: string;
+  quote?: number;
+  shipping_amount?: number;
+  status?: string;
+  agent_id?: string | null;
+};
 export type AdminOverview = {
   pending_listings: number;
   haulage_reviews: number;
@@ -84,11 +93,38 @@ export function fetchRoles() {
   return api.get<{ roles: AdminRole[] }>("/roles");
 }
 
+export function fetchHaulageDesk() {
+  return api.get<{
+    queue: HaulageDeskOrder[];
+    assigned: HaulageDeskOrder[];
+    agents: AdminAgent[];
+    note: string;
+  }>("/haulage-desk");
+}
+
+export function attachHireAgent(hireId: string, agentId: string) {
+  return api.post<{ ok: boolean; hire_id: string; agent_id: string }>(
+    `/hires/${encodeURIComponent(hireId)}/attach-agent`,
+    { agent_id: agentId },
+  );
+}
+
 export function decideListing(listingId: string, action: "approve" | "reject") {
   return api.post<{ ok: boolean; listing_id: string; status: string }>(
     `/listings/${encodeURIComponent(listingId)}/${action}`,
     {},
   );
+}
+
+export async function tryPayShipping(hireId: string): Promise<string> {
+  const response = await fetch(`${api.base}/hires/${encodeURIComponent(hireId)}/pay-shipping`, {
+    method: "POST",
+    headers: api.headers(true),
+    body: JSON.stringify({}),
+  });
+  const body = (await response.json().catch(() => ({}))) as { detail?: string };
+  if (response.ok) return "Unexpected: shipping paid.";
+  return String(body.detail ?? `${response.status}: shipping cannot be paid from this host.`);
 }
 
 export async function tryPayPayout(payoutId: string): Promise<string> {

@@ -25,6 +25,17 @@ def test_admin_approves_and_rejects_and_refuses_payouts(client):
     assert payouts["payouts"]
     pay = client.post("/api/admin/payouts/PO-88/pay", json={}, headers=headers)
     assert pay.status_code == 403
+    desk = client.get("/api/admin/haulage-desk", headers=headers).json()
+    assert desk["queue"] and desk["agents"]
+    attached = client.post(
+        "/api/admin/hires/HIRE-7821/attach-agent",
+        json={"agent_id": "AG-11"},
+        headers=headers,
+    )
+    assert attached.status_code == 200
+    assert attached.json()["agent_id"] == "AG-11"
+    shipping = client.post("/api/admin/hires/HIRE-7821/pay-shipping", json={}, headers=headers)
+    assert shipping.status_code == 403
     health = client.get("/api/admin/health").json()
     assert health["role"] == "admin"
 

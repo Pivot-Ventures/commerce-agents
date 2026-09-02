@@ -118,7 +118,25 @@ _QUOTE_FILTERS = _DATE_FILTERS | {
     "include_haulage",
 }
 _SALE_HINTS = frozenset(
-    {"buy", "sale", "sold", "purchase", "used", "spare", "part", "parts", "hose", "hoses", "teeth"}
+    {
+        "buy",
+        "sale",
+        "sold",
+        "purchase",
+        "used",
+        "spare",
+        "part",
+        "parts",
+        "hose",
+        "hoses",
+        "teeth",
+        "cement",
+        "rebar",
+        "timber",
+        "material",
+        "materials",
+        "aggregate",
+    }
 )
 _RENT_HINTS = frozenset({"hire", "rent", "rental", "lease"})
 
@@ -190,6 +208,7 @@ class HireRequest:
     currency: str
     created_at: datetime
     note: str = "No charge. Haulage review is outstanding."
+    agent_id: str | None = None
 
 
 class MockEquipAccess(StorefrontBackend):
@@ -358,7 +377,9 @@ class MockEquipAccess(StorefrontBackend):
     ) -> bool:
         if not within_price_and_rating(product, filters):
             return False
-        if product.attributes.get("listing_status") == "pending":
+        if product.attributes.get("listing_status") in {"pending", "New", "new"}:
+            return False
+        if str(product.attributes.get("published") or "true").lower() in {"false", "0", "no"}:
             return False
         return sale_ok or _is_rental(product)
 
@@ -460,6 +481,7 @@ class MockEquipAccess(StorefrontBackend):
             image_url=product.image_url,
             option_values={
                 **product.option_values,
+                "type": _listing_type(product),
                 "start_date": window.start.isoformat(),
                 "end_date": window.end.isoformat(),
                 "number_of_days": str(window.days),
@@ -801,6 +823,33 @@ class MockEquipAccess(StorefrontBackend):
                     "total": hire.total,
                     "currency": hire.currency,
                     "user_id": hire.user_id,
+                    "agent_id": hire.agent_id,
+                }
+            )
+        return rows
+
+    def attach_agent(self, hire_id: str, agent_id: str) -> HireRequest:
+        hire = self._hire_by_id(hire_id)
+        hire.agent_id = agent_id
+        return hire
+
+    def assigned_hires(self, agent_id: str | None = None) -> list[dict[str, Any]]:
+        rows = []
+        for hire in reversed(self._hires):
+            if hire.agent_id is None:
+                continue
+            if agent_id and hire.agent_id != agent_id:
+                continue
+            first = hire.items[0] if hire.items else {}
+            rows.append(
+                {
+                    "hire_id": hire.hire_id,
+                    "agent_id": hire.agent_id,
+                    "status": hire.status,
+                    "title": first.get("title"),
+                    "site": (hire.haulage or {}).get("to"),
+                    "shipping_amount": hire.haulage_fee,
+                    "currency": hire.currency,
                 }
             )
         return rows
@@ -847,6 +896,7 @@ class MockEquipAccess(StorefrontBackend):
                 currency=row.get("currency", "UGX"),
                 created_at=created,
                 note=row.get("note", "No charge. Haulage review is outstanding."),
+                agent_id=row.get("agent_id"),
             )
             self._hires.append(hire)
             digits = "".join(ch for ch in hire.hire_id if ch.isdigit())

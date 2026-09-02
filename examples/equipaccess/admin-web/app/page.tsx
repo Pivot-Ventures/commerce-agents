@@ -8,8 +8,10 @@ import { Notice, useResource, useSession } from "web-shared";
 import {
   api,
   decideListing,
+  attachHireAgent,
   fetchAgents,
   fetchCustomers,
+  fetchHaulageDesk,
   fetchListings,
   fetchOverview,
   fetchPayouts,
@@ -17,16 +19,27 @@ import {
   fetchShipping,
   fetchStores,
   tryPayPayout,
+  tryPayShipping,
   type AdminListing,
 } from "@/lib/api";
 
-type View = "dashboard" | "listings" | "stores" | "agents" | "customers" | "payouts" | "shipping" | "roles";
+type View =
+  | "dashboard"
+  | "listings"
+  | "stores"
+  | "agents"
+  | "desk"
+  | "customers"
+  | "payouts"
+  | "shipping"
+  | "roles";
 
 const NAV: { id: View; label: string }[] = [
   { id: "dashboard", label: "Dashboard" },
   { id: "listings", label: "Listing approvals" },
   { id: "stores", label: "Stores" },
   { id: "agents", label: "Agents" },
+  { id: "desk", label: "Haulage desk" },
   { id: "customers", label: "Customers" },
   { id: "payouts", label: "Payouts" },
   { id: "shipping", label: "Shipping" },
@@ -79,6 +92,7 @@ export default function AdminPage() {
           {ready && view === "listings" ? <Approvals refresh={refresh} onRefresh={() => setRefresh((n) => n + 1)} /> : null}
           {ready && view === "stores" ? <Stores refresh={refresh} /> : null}
           {ready && view === "agents" ? <Agents refresh={refresh} /> : null}
+          {ready && view === "desk" ? <HaulageDesk refresh={refresh} onRefresh={() => setRefresh((n) => n + 1)} /> : null}
           {ready && view === "customers" ? <Customers refresh={refresh} /> : null}
           {ready && view === "payouts" ? <Payouts refresh={refresh} /> : null}
           {ready && view === "shipping" ? <Shipping refresh={refresh} /> : null}
@@ -104,7 +118,9 @@ function Approvals({ refresh, onRefresh }: { refresh: number; onRefresh: () => v
   return (
     <section>
       <h1 className="eq-display text-3xl font-bold text-(--navy)">Listing approvals</h1>
-      <p className="mt-1 text-[14px] text-(--ink-soft)">Review and moderate pending equipment listings from stores.</p>
+      <p className="mt-1 text-[14px] text-(--ink-soft)">
+        Store creates status New. Approve publishes the listing; reject leaves it unpublished.
+      </p>
       <div className="mt-4 flex gap-4 border-b border-(--line) text-[14px]">
         {["pending", "approved", "rejected"].map((id) => (
           <button
@@ -258,6 +274,67 @@ function Agents({ refresh }: { refresh: number }) {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+function HaulageDesk({ refresh, onRefresh }: { refresh: number; onRefresh: () => void }) {
+  const { data, failed } = useResource(fetchHaulageDesk, [refresh]);
+  const [note, setNote] = useState<string | null>(null);
+  const agents = data?.agents ?? [];
+  const firstAgent = agents[0]?.agent_id ?? "AG-11";
+
+  async function attach(hireId: string) {
+    const result = await attachHireAgent(hireId, firstAgent);
+    setNote(result ? `${hireId} attached to ${result.agent_id}.` : `Could not attach an agent to ${hireId}.`);
+    onRefresh();
+  }
+
+  return (
+    <section>
+      <h1 className="eq-display text-3xl font-bold">Haulage desk</h1>
+      <p className="mt-1 text-[13px] text-(--ink-soft)">
+        {data?.note ?? "Assigned orders for haulage agents. Paying shipping is refused here."}
+      </p>
+      {failed ? <Notice>Could not load the haulage desk.</Notice> : null}
+      <h2 className="mt-4 text-[14px] font-semibold">In review</h2>
+      <ul className="mt-2 space-y-2">
+        {(data?.queue ?? []).map((row) => (
+          <li key={row.hire_id} className="flex items-center justify-between gap-3 rounded-xl border border-(--line) bg-white p-4">
+            <div>
+              <div className="font-semibold">{row.hire_id}</div>
+              <div className="text-[13px] text-(--ink-soft)">
+                {row.title ?? "Hire"} · {row.site ?? "site"} · {row.agent_id ?? "unassigned"}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button type="button" className="btn-primary rounded-lg px-3 py-1.5 text-[13px]" onClick={() => void attach(row.hire_id)}>
+                Attach agent
+              </button>
+              <button
+                type="button"
+                className="rounded-lg border border-(--line) px-3 py-1.5 text-[13px]"
+                onClick={() => void tryPayShipping(row.hire_id).then(setNote)}
+              >
+                Pay shipping
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <h2 className="mt-6 text-[14px] font-semibold">Assigned</h2>
+      <ul className="mt-2 space-y-2">
+        {(data?.assigned ?? []).map((row) => (
+          <li key={row.hire_id} className="rounded-xl border border-(--line) bg-white p-4">
+            <div className="font-semibold">{row.hire_id} · {row.agent_id}</div>
+            <div className="text-[13px] text-(--ink-soft)">{row.title} · shipping {row.shipping_amount ?? row.quote} UGX</div>
+          </li>
+        ))}
+        {(data?.assigned ?? []).length === 0 ? (
+          <li className="text-[13px] text-(--ink-soft)">No agent attached yet.</li>
+        ) : null}
+      </ul>
+      {note ? <Notice>{note}</Notice> : null}
     </section>
   );
 }

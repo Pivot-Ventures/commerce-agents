@@ -95,6 +95,13 @@ def unit_rate(product: ProductDetails, rate_type: str) -> float:
     return float(attrs.get("daily_rate") or product.price)
 
 
+def laravel_daily_times_days(list_price: float, days: int) -> float:
+    """What live ``GET /api/rentals/rate`` does: treat a weekly or monthly list
+    price as a daily figure and multiply by days. Fixture quotes use ``quote_hire``
+    (whole weeks or months) so a 10-day weekly hire stays 1,260,000 UGX."""
+    return round(float(list_price) * max(1, days), 2)
+
+
 def quote_hire(product: ProductDetails, days: int, rate_type: str | None = None) -> dict[str, Any]:
     """Period price for one machine. ``rate_type`` defaults to the listing's own rate,
     then to the duration recommendation."""

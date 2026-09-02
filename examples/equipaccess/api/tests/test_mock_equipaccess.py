@@ -42,6 +42,12 @@ async def test_sale_and_parts_stay_out_of_hire_search(backend, session):
     assert parts and parts[0].product_id == "AE-PRT-010"
     sale = await backend.search_products(session, "buy used generator")
     assert any(item.product_id == "AE-SAL-210" for item in sale)
+    materials = await backend.search_products(session, "cement bags for the site")
+    assert materials and materials[0].product_id == "AE-MAT-010"
+    hire_ids = {
+        item.product_id for item in await backend.search_products(session, "excavator Mukono")
+    }
+    assert "AE-MAT-010" not in hire_ids
 
 
 async def test_on_hire_dump_truck_is_unavailable_and_substitute_ranks(backend, session):
@@ -114,6 +120,7 @@ async def test_cart_line_is_the_period_quote(backend, session):
     line = cart.items[0]
     assert line.line_total == 1_260_000
     assert line.option_values["rate_type"] == RATE_WEEKLY
+    assert line.option_values["type"] == "Rent"
     extras = backend.cart_extras(session.session_id)
     assert extras["haulage"]["fee"] == 240_000
     assert extras["haulage"]["round_trip_fee"] == 480_000

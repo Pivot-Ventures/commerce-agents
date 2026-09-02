@@ -127,6 +127,8 @@
       "type": "Rent",
       "submitted": "2026-09-01T10:42:00Z",
       "status": "pending",
+      "store_status": "New",
+      "published": false,
       "category": "Construction equipment",
       "product": {
         "product_id": "AE-PND-301",
@@ -166,6 +168,8 @@
       "type": "Sale",
       "submitted": "2026-09-01T11:05:00Z",
       "status": "pending",
+      "store_status": "New",
+      "published": false,
       "category": "Power",
       "product": {
         "product_id": "AE-PND-302",
@@ -201,6 +205,8 @@
       "type": "Rent",
       "submitted": "2026-08-30T16:12:00Z",
       "status": "pending",
+      "store_status": "New",
+      "published": false,
       "category": "Access & safety",
       "product": {
         "product_id": "AE-PND-303",
@@ -220,6 +226,37 @@
           "monthly_rate": "216000",
           "stock": "4",
           "listing_status": "pending"
+        }
+      }
+    },
+    {
+      "listing_id": "AE-PND-304",
+      "store": "ACME Yard Kampala",
+      "location": "Kampala, Uganda",
+      "type": "Sale",
+      "submitted": "2026-09-01T14:20:00Z",
+      "status": "pending",
+      "store_status": "New",
+      "published": false,
+      "category": "Construction materials",
+      "product": {
+        "product_id": "AE-PND-304",
+        "title": "ACME Mix timber shuttering set",
+        "brand": "ACME Mix",
+        "price": 95000,
+        "currency": "UGX",
+        "category": "construction-materials",
+        "in_stock": false,
+        "short_description": "A construction-materials listing waiting on admin publish.",
+        "attributes": {
+          "listing_type": "Sale",
+          "business_unit": "construction-materials",
+          "machine_class": "timber",
+          "location": "Kampala",
+          "stock": "0",
+          "listing_status": "pending",
+          "published": "false",
+          "yard": "ACME Yard Kampala"
         }
       }
     }
