@@ -7,6 +7,7 @@
     python scripts/run_demo.py travel              # API :8001 + storefront :3001
     python scripts/run_demo.py telecom             # API :8002 + storefront :3002
     python scripts/run_demo.py entertainment       # API :8003 + storefront :3003
+    python scripts/run_demo.py equipaccess --all   # API :8004 + storefront :3004 + portal :3104 + admin :3204
     python scripts/run_demo.py retail --merchant   # API :8000 + merchant portal :3100
     python scripts/run_demo.py retail --all        # API :8000 + storefront :3000 + portal :3100
 
@@ -51,6 +52,7 @@ VERTICALS: dict[str, dict[str, object]] = {
     "travel": {"api_port": 8001, "store": "ACME Travel"},
     "telecom": {"api_port": 8002, "store": "ACME Mobile"},
     "entertainment": {"api_port": 8003, "store": "ACME Tickets"},
+    "equipaccess": {"api_port": 8004, "store": "ACME Equip", "admin": True},
 }
 
 PYTHON_MODULES = (
@@ -223,7 +225,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--merchant", action="store_true", help="the merchant portal instead of the storefront"
     )
     surface.add_argument(
-        "--all", action="store_true", help="the storefront and the merchant portal"
+        "--all", action="store_true", help="the storefront and the merchant portal (and admin when the vertical has one)"
+    )
+    surface.add_argument(
+        "--admin", action="store_true", help="the admin host instead of the storefront"
     )
     parser.add_argument(
         "--api-port",
@@ -269,12 +274,14 @@ def main() -> int:
             print(reset_persisted_memory(args.vertical))
 
     webs: list[tuple[str, Path, int]] = []
-    if run_web and not args.merchant:
+    if run_web and not args.merchant and not args.admin:
         webs.append(("storefront", EXAMPLES_DIR / args.vertical / "storefront-web", web_port))
     if run_web and (args.merchant or args.all):
         webs.append(
             ("merchant portal", EXAMPLES_DIR / args.vertical / "merchant-web", web_port + 100)
         )
+    if run_web and config.get("admin") and (args.admin or args.all):
+        webs.append(("admin", EXAMPLES_DIR / args.vertical / "admin-web", web_port + 200))
 
     reuse_api = False
     if run_api:

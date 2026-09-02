@@ -1,0 +1,71 @@
+/*
+ * Copyright 2026 Anthropic PBC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@import "tailwindcss";
+@source "../../../web-shared";
+@import "../../../web-shared/portal/portal.css";
+
+:root {
+  --navy: #0b1f3a;
+  --amber: #f5a623;
+  --cream: #f7f4ee;
+  --ground: #f7f4ee;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --chrome: #ffffff;
+  --well: #efe8dc;
+  --ink: #0b1f3a;
+  --ink-2: #24364f;
+  --ink-soft: #5c6b7a;
+  --ink-faint: #8d98a4;
+  --line: rgba(11, 31, 58, 0.12);
+  --line-strong: rgba(11, 31, 58, 0.22);
+  --accent: #f5a623;
+  --accent-strong: #d98912;
+  --accent-soft: #fbe7c2;
+  --accent-ink: #7a4e08;
+  --on-accent: #0b1f3a;
+  --ok: #1f7a4a;
+  --ok-soft: #dcefe4;
+  --warn: #b06a00;
+  --warn-soft: #fdf1da;
+  --danger: #b3402a;
+  --danger-soft: #f6dcd4;
+  --info: #2c6a86;
+  --info-soft: #dbe8ec;
+  --violet: #6650b0;
+  --violet-soft: #e7e0f1;
+  --shadow-sm: 0 1px 2px rgba(11, 31, 58, 0.06);
+  --shadow: 0 2px 18px rgba(11, 31, 58, 0.08);
+  --radius: 12px;
+}
+
+body {
+  font-family: var(--font-body), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.eq-display {
+  font-family: var(--font-display), "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
+}
+
+.equip-portal > .flex.h-dvh > aside {
+  --ink: #f7f4ee;
+  --ink-2: #d5dce4;
+  --ink-soft: #9aa8b8;
+  --well: #1c3558;
+  --ground: #122844;
+  --line: rgba(247, 244, 238, 0.12);
+  --chrome: #0b1f3a;
+  background: #0b1f3a;
+  color: #f7f4ee;
+}
+
+.btn-primary {
+  background: var(--amber);
+  color: var(--navy);
+}

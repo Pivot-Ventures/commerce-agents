@@ -150,6 +150,24 @@ VERTICALS: dict[str, dict] = {
             ),
         ],
     },
+    "equipaccess": {
+        "base_url": "http://localhost:3004",
+        "view": ("hires", "Hires"),
+        "turns": [
+            (
+                "hire-search",
+                "Need a 20-ton excavator in Mukono for 10 days, include transport to site.",
+            ),
+            (
+                "weekly-quote",
+                "The ACME Iron 20-ton looks right. Quote it on a weekly rate and add it to my hire cart.",
+            ),
+            (
+                "on-hire-sub",
+                "The Entebbe dump truck — is it free this week? If not, what can I hire instead?",
+            ),
+        ],
+    },
 }
 
 
@@ -276,6 +294,23 @@ MERCHANT_TOURS: dict[str, dict] = {
                 "the week before? Put it on a card.",
             ),
         ],
+    },
+    "equipaccess": {
+        "base_url": "http://localhost:3104",
+        "assistant_box_label": "Message the yard assistant",
+        "views": [("haulage", "Haulage queue"), ("calendar", "Hire calendar"), ("rates", "Rates")],
+        "turns": [
+            (
+                "haulage-queue",
+                "What is waiting in the haulage queue this morning?",
+            ),
+            (
+                "rate-preview",
+                "Stage a 5 percent cut on the daily rate of the Mukono 20-ton excavator. "
+                "Show the impact and do not apply it.",
+            ),
+        ],
+        "after": [],
     },
 }
 

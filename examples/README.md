@@ -1,7 +1,8 @@
 # examples
 
-Four vertical demos, each running both agents over one catalog: `retail/` (ACME),
-`travel/` (ACME Travel), `telecom/` (ACME Mobile), and `entertainment/` (ACME Tickets).
+Five vertical demos, each running both agents over one catalog: `retail/` (ACME),
+`travel/` (ACME Travel), `telecom/` (ACME Mobile), `entertainment/` (ACME Tickets), and
+`equipaccess/` (ACME Equip — storefront, merchant portal, and admin).
 `python scripts/run_demo.py <vertical>` starts one; each vertical's README lists its ports,
 prompts to try on both surfaces, and what it adds to the libraries.
 
@@ -9,12 +10,12 @@ prompts to try on both surfaces, and what it adds to the libraries.
 
 | Path | Contents |
 |---|---|
-| `demo_common/` | Host code the four APIs share: app and middleware (`host.py`), session store (`sessions.py`), storefront routes (`storefront.py`), merchant router (`merchant.py`), memory routes and fixture seeder (`memory.py`), mock-backend helpers (`*_fixtures.py`) |
-| `web-shared/` | The npm package the eight web apps import: the API client, the session and turn hooks, the event types (`protocol.ts` mirrors `commerce_common/streaming.py`), the transcript and inspector components, shared primitives and icons, and the two app frames (`storefront/`, `portal/`) |
-| `package.json` | The npm workspace: `web-shared` plus every `*/storefront-web` and `*/merchant-web` (`npm ci` installs all of them) |
+| `demo_common/` | Host code the five APIs share: app and middleware (`host.py`), session store (`sessions.py`), storefront routes (`storefront.py`), merchant router (`merchant.py`), memory routes and fixture seeder (`memory.py`), mock-backend helpers (`*_fixtures.py`) |
+| `web-shared/` | The npm package the web apps import: the API client, the session and turn hooks, the event types (`protocol.ts` mirrors `commerce_common/streaming.py`), the transcript and inspector components, shared primitives and icons, and the two app frames (`storefront/`, `portal/`) |
+| `package.json` | The npm workspace: `web-shared` plus every `*/storefront-web`, `*/merchant-web`, and `*/admin-web` (`npm ci` installs all of them) |
 | `<vertical>/api/` | One FastAPI process: the two mock backends, the two agent configs (`agent_config.py`), the vertical's own routes and presentation extensions, and the merchant router mounted under `/api/merchant` |
 | `<vertical>/data/` | The fixtures both backends load, listed in the vertical's README |
-| `<vertical>/storefront-web/`, `<vertical>/merchant-web/` | The Next.js apps: this vertical's cards, views, and tokens over `web-shared` |
+| `<vertical>/storefront-web/`, `<vertical>/merchant-web/` | The Next.js apps: this vertical's cards, views, and tokens over `web-shared`. `equipaccess/` also has `admin-web/` |
 
 Sessions, carts, and staged changes live in one process's memory in `demo_common`, so the
 examples run one worker.
@@ -23,7 +24,7 @@ examples run one worker.
 own components: `components/generative/` has one entry per presentation tool, typed by the
 app's `lib/types.ts`, so the four frontends are four builds of the same payload schemas
 (`shopping_agent/tools/presentation.py`, `merchant_agent/tools/presentation.py`); a
-deployment's frontend is a fifth.
+deployment's frontend is another build of the same schemas.
 
 ## Showcase pages
 
@@ -49,6 +50,8 @@ only the session id, in `X-Session-Id`, and the routes read the principal from i
 | `MERCHANT_ANALYSIS_CODE_EXECUTION` | `1` mounts the hosted code execution tool in the retail analysis delegate | `retail/api/agent_config.py` | `0` |
 | `MERCHANT_ANALYSIS_MODEL` | The retail analysis delegate's model | `retail/api/agent_config.py` | unset (main model) |
 | `NEXT_PUBLIC_API_URL` | Where a web app sends its requests; `run_demo.py` sets it to the port the API came up on | `<app>/lib/api.ts` | `http://localhost:<API_PORT>` |
+| `EQUIPACCESS_API_BASE` | When set, ACME Equip uses the HTTP adapter instead of fixtures | `equipaccess/api/http_adapter.py` | unset (fixtures) |
+| `EQUIPACCESS_API_TOKEN` | Bearer token for the Laravel adapter | `equipaccess/api/http_adapter.py` | unset |
 
 The API reads its variables at startup; a web app takes the `NEXT_PUBLIC_` values when it
 is built or its dev server starts.

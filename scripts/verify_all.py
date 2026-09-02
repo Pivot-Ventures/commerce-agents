@@ -26,7 +26,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PYTHON = sys.executable
 EXAMPLES = REPO_ROOT / "examples"
 NEXT = EXAMPLES / "node_modules" / ".bin" / "next"
-VERTICALS = ("retail", "travel", "telecom", "entertainment")
+VERTICALS = ("retail", "travel", "telecom", "entertainment", "equipaccess")
 
 
 class Step:
@@ -96,7 +96,10 @@ def main() -> int:
                     )
                 )
             for vertical in VERTICALS:
-                for app in ("storefront-web", "merchant-web"):
+                apps = ["storefront-web", "merchant-web"]
+                if (EXAMPLES / vertical / "admin-web").is_dir():
+                    apps.append("admin-web")
+                for app in apps:
                     steps.append(
                         Step(
                             f"{vertical} {app} (next build)",

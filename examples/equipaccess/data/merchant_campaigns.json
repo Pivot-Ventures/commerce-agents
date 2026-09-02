@@ -1,0 +1,58 @@
+{
+  "_comment": "Windows shift with dates_anchored_to.",
+  "dates_anchored_to": "2026-09-02",
+  "campaigns": [
+    {
+      "campaign_id": "C-501",
+      "name": "Mukono foundation season",
+      "status": "active",
+      "objective": "Fill 20-ton excavator midweek gaps at the Mukono yard",
+      "channel": "site-manager SMS",
+      "budget": 2400000.0,
+      "spend": 980000.0,
+      "revenue": 12600000.0,
+      "currency": "UGX",
+      "starts": "2026-08-10",
+      "ends": "2026-09-20"
+    },
+    {
+      "campaign_id": "C-502",
+      "name": "Generator night-pour push",
+      "status": "active",
+      "objective": "Move 150kVA sets on weekend pours",
+      "channel": "yard poster",
+      "budget": 800000.0,
+      "spend": 210000.0,
+      "revenue": 1950000.0,
+      "currency": "UGX",
+      "starts": "2026-08-20",
+      "ends": "2026-09-15"
+    },
+    {
+      "campaign_id": "C-490",
+      "name": "Jinja haulage intro",
+      "status": "ended",
+      "objective": "Introduce the Jinja 10-wheeler as a Central Region stand-in",
+      "channel": "email to past hirers",
+      "budget": 600000.0,
+      "spend": 600000.0,
+      "revenue": 2400000.0,
+      "currency": "UGX",
+      "starts": "2026-07-01",
+      "ends": "2026-08-15"
+    },
+    {
+      "campaign_id": "C-480",
+      "name": "Spare-parts hose kit",
+      "status": "draft",
+      "objective": "Draft only \u2014 not sent",
+      "channel": "storefront",
+      "budget": 200000.0,
+      "spend": 0.0,
+      "revenue": null,
+      "currency": "UGX",
+      "starts": "2026-09-10",
+      "ends": "2026-09-30"
+    }
+  ]
+}

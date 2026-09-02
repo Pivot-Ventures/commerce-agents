@@ -125,6 +125,28 @@ VERTICAL_TURNS: dict[str, list[dict[str, Any]]] = {
             "expect_events": {"cart_update", "turn_complete"},
         },
     ],
+    "equipaccess": [
+        {
+            "message": (
+                "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
+            ),
+            "expect_tools": {"search_products"},
+            "expect_events": {"ui", "turn_complete"},
+        },
+        {
+            "message": (
+                "The ACME Iron 20-ton looks right. Put it on a weekly rate and add it to "
+                "my hire cart."
+            ),
+            "expect_tools": {"add_to_cart"},
+            "expect_events": {"cart_update", "turn_complete"},
+        },
+        {
+            "message": "The Entebbe dump truck — is it free this week? If not, what can I hire instead?",
+            "expect_tools": {"search_products"},
+            "expect_events": {"ui", "turn_complete"},
+        },
+    ],
 }
 
 VERTICAL_APPS = {
@@ -132,6 +154,7 @@ VERTICAL_APPS = {
     "travel": "travel.api.main",
     "telecom": "telecom.api.main",
     "entertainment": "entertainment.api.main",
+    "equipaccess": "equipaccess.api.main",
 }
 
 # Merchant arcs, one or more per vertical. A ``portal_approve_kind`` step approves the
@@ -386,6 +409,32 @@ MERCHANT_TURNS: dict[str, dict[str, list[dict[str, Any]]]] = {
                 "expect_tools": {"query_metrics", "present_metrics"},
                 "expect_events": {"ui", "turn_complete"},
                 "forbid_tools": {"apply_change"},
+            },
+        ],
+    },
+    "equipaccess": {
+        # Haulage queue briefing, then a staged rate move that chat approval cannot apply.
+        "yard": [
+            {
+                "message": "What is waiting in the haulage queue this morning?",
+                "expect_tools": {"get_business_snapshot"},
+                "expect_events": {"ui", "turn_complete"},
+                "forbid_tools": {"apply_change"},
+            },
+            {
+                "message": (
+                    "Stage a 5 percent cut on the daily rate of the Mukono 20-ton excavator. "
+                    "Show the impact and do not apply it."
+                ),
+                "expect_tools": {"stage_price_update"},
+                "expect_events": {"ui", "change_update", "turn_complete"},
+                "forbid_tools": {"apply_change"},
+            },
+            {
+                "message": "Approve that rate change.",
+                "expect_tools": {"apply_change"},
+                "expect_events": {"turn_complete"},
+                "forbid_applied_change": True,
             },
         ],
     },

@@ -29,7 +29,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "examples"))
 
 PROBLEMS: list[str] = []
-VERTICALS = ("retail", "travel", "telecom", "entertainment")
+VERTICALS = ("retail", "travel", "telecom", "entertainment", "equipaccess")
 
 
 def problem(message: str) -> None:
@@ -356,6 +356,21 @@ def telecom_extra(data: Path, catalog_ids: set[str]) -> str:
     )
 
 
+def equipaccess_extra(data: Path, catalog_ids: set[str]) -> str:
+    inventory = load_json(data / "merchant_inventory.json")["inventory"]
+    check_stock_rows(inventory, catalog_ids, "merchant_inventory.json")
+    calendar = load_json(data / "merchant_calendar.json")["listings"]
+    check_weekly_series(
+        calendar,
+        id_key="listing_id",
+        week_keys=("week_start", "units_on_hire", "units_free", "occupancy_pct"),
+        pct_key="occupancy_pct",
+        catalog_ids=catalog_ids,
+        where="merchant_calendar.json",
+    )
+    return f"{len(inventory)} inventory rows, {len(calendar)} calendar listings"
+
+
 def entertainment_extra(data: Path, catalog_ids: set[str]) -> str:
     where = "merchant_pacing.json"
     sold_by_id = {
@@ -441,6 +456,12 @@ MERCHANT_FIXTURES = (
         "box-office",
         ("date", "sales", "orders", "tickets", "traffic", "amphitheater_sales"),
         entertainment_extra,
+    ),
+    MerchantFixtures(
+        "equipaccess",
+        "yard",
+        ("date", "sales", "orders", "traffic", "excavator_hires"),
+        equipaccess_extra,
     ),
 )
 

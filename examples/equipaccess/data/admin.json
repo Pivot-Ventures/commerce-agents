@@ -1,0 +1,221 @@
+{
+  "stores": [
+    {
+      "store_id": "ST-MUK",
+      "name": "ACME Plant Hire Mukono",
+      "location": "Mukono, Uganda",
+      "status": "active"
+    },
+    {
+      "store_id": "ST-KLA",
+      "name": "ACME Yard Kampala",
+      "location": "Kampala, Uganda",
+      "status": "active"
+    },
+    {
+      "store_id": "ST-EBB",
+      "name": "ACME Shore Entebbe",
+      "location": "Entebbe, Uganda",
+      "status": "active"
+    },
+    {
+      "store_id": "ST-JIN",
+      "name": "ACME East Jinja",
+      "location": "Jinja, Uganda",
+      "status": "active"
+    }
+  ],
+  "agents": [
+    {
+      "agent_id": "AG-11",
+      "name": "Aisha Namara",
+      "region": "Central",
+      "stores": [
+        "ST-MUK",
+        "ST-KLA"
+      ],
+      "status": "active"
+    },
+    {
+      "agent_id": "AG-12",
+      "name": "Peter Kato",
+      "region": "Eastern",
+      "stores": [
+        "ST-JIN"
+      ],
+      "status": "active"
+    }
+  ],
+  "customers": [
+    {
+      "user_id": "demo-user",
+      "name": "Amina",
+      "company": "ACME Site Works Mukono",
+      "location": "Mukono"
+    }
+  ],
+  "payouts": [
+    {
+      "payout_id": "PO-88",
+      "store_id": "ST-MUK",
+      "amount": 4200000,
+      "currency": "UGX",
+      "status": "held",
+      "note": "Visible only \u2014 this host does not pay."
+    },
+    {
+      "payout_id": "PO-89",
+      "store_id": "ST-JIN",
+      "amount": 980000,
+      "currency": "UGX",
+      "status": "held",
+      "note": "Commission hold."
+    }
+  ],
+  "shipping": [
+    {
+      "lane_id": "LN-1",
+      "from": "Mukono",
+      "to": "Kampala",
+      "km": 22,
+      "typical_quote_ugx": 280000
+    },
+    {
+      "lane_id": "LN-2",
+      "from": "Mukono",
+      "to": "Mukono",
+      "km": 18,
+      "typical_quote_ugx": 240000
+    },
+    {
+      "lane_id": "LN-3",
+      "from": "Kampala",
+      "to": "Entebbe",
+      "km": 40,
+      "typical_quote_ugx": 460000
+    }
+  ],
+  "roles": [
+    {
+      "role": "customer",
+      "description": "Hires and buys; no listing writes."
+    },
+    {
+      "role": "store",
+      "description": "Yard operator; haulage approve/counter and staged rates."
+    },
+    {
+      "role": "commission_agent",
+      "description": "Visible in admin; payouts are not executed here."
+    },
+    {
+      "role": "admin",
+      "description": "Approve or reject listings; view stores, agents, payouts."
+    }
+  ],
+  "pending_listings": [
+    {
+      "listing_id": "AE-PND-301",
+      "store": "ACME East Jinja",
+      "location": "Jinja, Uganda",
+      "type": "Rent",
+      "submitted": "2026-09-01T10:42:00Z",
+      "status": "pending",
+      "category": "Construction equipment",
+      "product": {
+        "product_id": "AE-PND-301",
+        "title": "ACME Pack Plate Compactor",
+        "brand": "ACME Pack",
+        "price": 40000,
+        "currency": "UGX",
+        "rating": 4.2,
+        "review_count": 0,
+        "category": "compactors",
+        "labels": [],
+        "in_stock": true,
+        "short_description": "A walk-behind plate from a Jinja store, waiting on listing approval.",
+        "long_description": "Pending admin approval. Not in the live hire catalog until approved.",
+        "specs": {
+          "weight": "120 kg"
+        },
+        "review_highlights": [],
+        "attributes": {
+          "listing_type": "Rent",
+          "rate_type": "Daily",
+          "machine_class": "compactor",
+          "location": "Jinja",
+          "daily_rate": "40000",
+          "weekly_rate": "140000",
+          "monthly_rate": "480000",
+          "stock": "2",
+          "listing_status": "pending",
+          "yard": "ACME East Jinja"
+        }
+      }
+    },
+    {
+      "listing_id": "AE-PND-302",
+      "store": "ACME Yard Kampala",
+      "location": "Kampala, Uganda",
+      "type": "Sale",
+      "submitted": "2026-09-01T11:05:00Z",
+      "status": "pending",
+      "category": "Power",
+      "product": {
+        "product_id": "AE-PND-302",
+        "title": "ACME Power 250kVA Generator (used)",
+        "brand": "ACME Power",
+        "price": 48000000,
+        "currency": "UGX",
+        "category": "generators",
+        "labels": [
+          "For sale"
+        ],
+        "in_stock": true,
+        "short_description": "A used 250kVA listed by a Kampala store, pending approval.",
+        "long_description": "Sale listing awaiting admin review.",
+        "specs": {
+          "output": "250 kVA"
+        },
+        "review_highlights": [],
+        "attributes": {
+          "listing_type": "Sale",
+          "machine_class": "generator",
+          "location": "Kampala",
+          "stock": "1",
+          "listing_status": "pending",
+          "yard": "ACME Yard Kampala"
+        }
+      }
+    },
+    {
+      "listing_id": "AE-PND-303",
+      "store": "ACME East Jinja",
+      "location": "Jinja, Uganda",
+      "type": "Rent",
+      "submitted": "2026-08-30T16:12:00Z",
+      "status": "pending",
+      "category": "Access & safety",
+      "product": {
+        "product_id": "AE-PND-303",
+        "title": "ACME Access Scaffolding Set \u2014 extra bays",
+        "brand": "ACME Access",
+        "price": 18000,
+        "currency": "UGX",
+        "category": "access",
+        "in_stock": true,
+        "short_description": "Extra scaffolding bays pending approval.",
+        "attributes": {
+          "listing_type": "Rent",
+          "machine_class": "scaffolding",
+          "location": "Jinja",
+          "daily_rate": "18000",
+          "weekly_rate": "63000",
+          "monthly_rate": "216000",
+          "stock": "4",
+          "listing_status": "pending"
+        }
+      }
+    }
+  ]
+}

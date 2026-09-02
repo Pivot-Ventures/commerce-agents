@@ -1,0 +1,23 @@
+{
+  "dates_anchored_to": "2026-09-02",
+  "issues": [
+    {
+      "issue_id": "ISS-501",
+      "order_id": "AE-41012",
+      "kind": "delayed",
+      "listing_id": "AE-EXC-101",
+      "summary": "Haulage truck for the Mukono 20-ton is waiting on a review",
+      "buyer_message_excerpt": "When does the low-bed leave the yard?",
+      "opened_at": "2026-08-31T09:10:00Z"
+    },
+    {
+      "issue_id": "ISS-502",
+      "order_id": "AE-40901",
+      "kind": "buyer_message",
+      "listing_id": "AE-GEN-502",
+      "summary": "Customer asks whether the 50kVA can run tower lights overnight",
+      "buyer_message_excerpt": "We pour at 2am \u2014 is the 50kVA enough for two towers?",
+      "opened_at": "2026-09-01T14:40:00Z"
+    }
+  ]
+}

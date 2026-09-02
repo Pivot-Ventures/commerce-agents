@@ -1,0 +1,39 @@
+{
+  "hires": [
+    {
+      "hire_id": "HIRE-7821",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_review",
+      "created_at": "2026-09-02T07:24:00Z",
+      "items": [
+        {
+          "product_id": "AE-EXC-101",
+          "title": "ACME Iron 20-ton Excavator",
+          "quantity": 1,
+          "price": 1260000.0,
+          "option_values": {
+            "start_date": "2026-09-14",
+            "end_date": "2026-09-23",
+            "number_of_days": "10",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Mukono",
+        "distance_km": 18,
+        "fee": 240000.0,
+        "status": "needs_review",
+        "label": "Needs haulage review"
+      },
+      "subtotal": 1260000.0,
+      "haulage_fee": 240000.0,
+      "deposit": 315000.0,
+      "total": 1815000.0,
+      "currency": "UGX",
+      "note": "No charge. Haulage review is outstanding."
+    }
+  ]
+}
