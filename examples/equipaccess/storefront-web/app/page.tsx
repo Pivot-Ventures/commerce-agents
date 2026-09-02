@@ -135,6 +135,10 @@ export default function StorefrontPage() {
                 setPanelOpen(true);
                 void chat.send(text);
               }}
+              onPick={(product) => {
+                setPicked(product);
+                setPanelOpen(true);
+              }}
             />
           }
         />

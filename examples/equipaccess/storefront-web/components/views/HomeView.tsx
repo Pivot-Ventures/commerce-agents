@@ -3,7 +3,7 @@
 
 "use client";
 
-import { Greeting, type Starter, Starters, useStoreFrame } from "web-shared";
+import { Greeting, type Starter, Starters } from "web-shared";
 import { formatUgx, rateSuffix } from "@/lib/format";
 import type { Product } from "@/lib/types";
 import MachineCard from "../MachineCard";
@@ -18,12 +18,13 @@ export default function HomeView({
   name,
   machines,
   onAsk,
+  onPick,
 }: {
   name: string;
   machines: Product[];
   onAsk: (text: string) => void;
+  onPick?: (product: Product) => void;
 }) {
-  const { ask } = useStoreFrame();
   return (
     <div className="flex flex-col gap-5">
       <Greeting
@@ -60,11 +61,7 @@ export default function HomeView({
           <MachineCard
             key={product.product_id}
             product={product}
-            onSelect={() =>
-              ask(
-                `Tell me about ${product.title} in ${product.attributes?.location ?? "Uganda"} and quote 10 days with haulage.`,
-              )
-            }
+            onSelect={() => onPick?.(product)}
           />
         ))}
       </div>

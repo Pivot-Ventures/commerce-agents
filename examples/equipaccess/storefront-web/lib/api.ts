@@ -18,7 +18,9 @@ export async function fetchProducts(): Promise<Product[] | null> {
 }
 
 export async function addToCart(productId: string, quantity = 1): Promise<CartPayload | null> {
-  return api.post<CartPayload>("/cart/add", { product_id: productId, quantity });
+  const data = await api.post<{ ok?: boolean }>("/cart/add", { product_id: productId, quantity });
+  if (!data) return null;
+  return api.fetchCart<CartPayload>();
 }
 
 export async function setHireWindow(body: {
@@ -28,7 +30,9 @@ export async function setHireWindow(body: {
   site_location?: string;
   include_haulage?: boolean;
 }): Promise<CartPayload | null> {
-  return api.post<CartPayload>("/hire/window", body);
+  const data = await api.post<{ ok?: boolean }>("/hire/window", body);
+  if (!data) return null;
+  return api.fetchCart<CartPayload>();
 }
 
 export async function requestHire(): Promise<{ charged: boolean; hire?: { hire_id: string; status: string; note: string } } | null> {

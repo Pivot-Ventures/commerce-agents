@@ -500,6 +500,8 @@ class MockEquipAccess(StorefrontBackend):
                 if product and _is_rental(product):
                     yard = product.attributes.get("location")
                     break
+            if yard is None:
+                yard = window.site_location
             kilometres = haulage_km(yard, window.site_location, window.distance_km)
             fee = haulage_fee(kilometres)
             if fee is not None:

@@ -6,6 +6,8 @@
 uvicorn equipaccess.api.main:app --app-dir examples --reload --port 8004
 """
 
+from datetime import date
+
 from fastapi import HTTPException
 from pydantic import BaseModel
 
@@ -25,7 +27,7 @@ from .agent_config import build_shopping_config
 from .http_adapter import build_storefront
 from .merchant import create_merchant_router
 from .mock_equipaccess import DATA_DIR, HireWindow
-from .rates import normalize_rate_type, parse_iso_date
+from .rates import default_hire_window, normalize_rate_type, parse_iso_date
 
 load_demo_env(DATA_DIR.parent)
 
@@ -62,6 +64,10 @@ class HireWindowRequest(BaseModel):
 
 @app.post("/api/cart/add")
 async def cart_add(request: CartAddRequest, record: host.CurrentSession) -> dict:
+    product = backend.product(request.product_id)
+    if product is not None:
+        record.state.remember_products([product])
+        host.sessions.save(record)
     return await host.direct_add(
         record,
         request,
@@ -77,9 +83,10 @@ async def set_hire_window(request: HireWindowRequest, record: host.CurrentSessio
     end = parse_iso_date(request.end_date)
     existing = backend.hire_window(record.session_id)
     if start is None or end is None:
-        if existing is None:
-            raise HTTPException(status_code=400, detail="start_date and end_date are required")
-        start, end = existing.start, existing.end
+        if existing is not None:
+            start, end = existing.start, existing.end
+        else:
+            start, end = default_hire_window(getattr(backend, "today", None) or date.today())
     backend.note_hire_window(
         record.session_id,
         HireWindow(

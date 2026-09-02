@@ -83,6 +83,22 @@ async def test_date_overlap_holds_stock(backend, session, other_session):
         pass
 
 
+async def test_haulage_quotes_before_a_cart_line(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 14),
+            end=date(2026, 9, 23),
+            rate_type=RATE_WEEKLY,
+            site_location="Mukono",
+            include_haulage=True,
+        ),
+    )
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"]["fee"] == 240_000
+    assert extras["deposit"] == 240_000
+
+
 async def test_cart_line_is_the_period_quote(backend, session):
     backend.note_hire_window(
         session.session_id,
