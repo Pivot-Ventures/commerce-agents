@@ -225,7 +225,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--merchant", action="store_true", help="the merchant portal instead of the storefront"
     )
     surface.add_argument(
-        "--all", action="store_true", help="the storefront and the merchant portal (and admin when the vertical has one)"
+        "--all",
+        action="store_true",
+        help="the storefront and the merchant portal (and admin when the vertical has one)",
     )
     surface.add_argument(
         "--admin", action="store_true", help="the admin host instead of the storefront"
