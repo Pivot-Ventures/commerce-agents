@@ -9,7 +9,7 @@ ledger write."""
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -227,9 +227,7 @@ class MockEquipMerchant(MerchantBackend):
                 shopper, query, SearchFilters(), limit=len(self.storefront.products)
             )
             listings = [
-                listing
-                for product in products
-                if (listing := self._listing(product.product_id))
+                listing for product in products if (listing := self._listing(product.product_id))
             ]
         return filter_listings(
             listings,
@@ -258,7 +256,7 @@ class MockEquipMerchant(MerchantBackend):
 
     def _compute_alerts(self) -> list[InventoryAlert]:
         alerts: list[InventoryAlert] = []
-        for product_id, row in self._inventory.items():
+        for product_id, _row in self._inventory.items():
             product = self.storefront.products.get(product_id)
             if product is None:
                 continue
@@ -408,7 +406,9 @@ class MockEquipMerchant(MerchantBackend):
                 field = "status"
                 listing = self._listing(resolved)
                 current = listing.status if listing else None
-            change_items.append(ChangeItem(target=resolved, field=field, before=current, after=after))
+            change_items.append(
+                ChangeItem(target=resolved, field=field, before=current, after=after)
+            )
         return self.ledger.stage(
             kind=ChangeKind.INVENTORY_ACTION,
             summary=note or f"Availability action for {len(items)} listing(s)",

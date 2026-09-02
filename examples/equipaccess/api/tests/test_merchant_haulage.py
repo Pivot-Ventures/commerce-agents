@@ -1,7 +1,7 @@
 # Copyright 2026 Anthropic PBC
 # SPDX-License-Identifier: Apache-2.0
 
-from demo_common.tests.fixtures import start_operator, start_shopper
+from demo_common.tests.fixtures import start_operator
 
 
 def test_seed_hire_is_on_the_haulage_queue(client):
@@ -10,11 +10,13 @@ def test_seed_hire_is_on_the_haulage_queue(client):
     assert any(row["hire_id"] == "HIRE-7821" for row in queue)
     calendar = client.get("/api/merchant/calendar", headers=headers).json()
     assert calendar["days"] and calendar["listings"]
-    assert calendar["days"][0]["on_hire"] + calendar["days"][0]["free"] == calendar["days"][0]["fleet"]
+    assert (
+        calendar["days"][0]["on_hire"] + calendar["days"][0]["free"] == calendar["days"][0]["fleet"]
+    )
 
 
-def test_customer_hire_lands_in_merchant_queue_and_operator_can_counter(client):
-    shopper = start_shopper(client)
+def test_customer_hire_lands_in_merchant_queue_and_operator_can_counter(client, shopper):
+    headers = shopper("AE-EXC-101")
     window = client.post(
         "/api/hire/window",
         json={
@@ -24,12 +26,14 @@ def test_customer_hire_lands_in_merchant_queue_and_operator_can_counter(client):
             "site_location": "Mukono",
             "include_haulage": True,
         },
-        headers=shopper,
+        headers=headers,
     )
     assert window.status_code == 200
-    added = client.post("/api/cart/add", json={"product_id": "AE-EXC-101", "quantity": 1}, headers=shopper)
+    added = client.post(
+        "/api/cart/add", json={"product_id": "AE-EXC-101", "quantity": 1}, headers=headers
+    )
     assert added.status_code == 200
-    requested = client.post("/api/hire/request", json={}, headers=shopper)
+    requested = client.post("/api/hire/request", json={}, headers=headers)
     assert requested.status_code == 200
     body = requested.json()
     assert body["charged"] is False

@@ -5,8 +5,6 @@
 agents, customers, payouts (visible, never paid from here), shipping, and roles.
 Every write that would move money is refused."""
 
-from __future__ import annotations
-
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
@@ -22,10 +20,6 @@ ADMIN_USER = "admin-user"
 
 class ListingDecision(BaseModel):
     note: str | None = Field(default=None, max_length=400)
-
-
-class PayoutAction(BaseModel):
-    payout_id: str = Field(min_length=1, max_length=80)
 
 
 def load_admin() -> dict[str, Any]:

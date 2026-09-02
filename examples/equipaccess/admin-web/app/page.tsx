@@ -20,9 +20,10 @@ import {
   type AdminListing,
 } from "@/lib/api";
 
-type View = "listings" | "stores" | "agents" | "customers" | "payouts" | "shipping" | "roles";
+type View = "dashboard" | "listings" | "stores" | "agents" | "customers" | "payouts" | "shipping" | "roles";
 
 const NAV: { id: View; label: string }[] = [
+  { id: "dashboard", label: "Dashboard" },
   { id: "listings", label: "Listing approvals" },
   { id: "stores", label: "Stores" },
   { id: "agents", label: "Agents" },
@@ -74,6 +75,7 @@ export default function AdminPage() {
           </span>
         </header>
         <main className="grid flex-1 grid-cols-1 gap-6 p-6 xl:grid-cols-[1fr_240px]">
+          {ready && view === "dashboard" ? <Dashboard refresh={refresh} onOpenListings={() => setView("listings")} /> : null}
           {ready && view === "listings" ? <Approvals refresh={refresh} onRefresh={() => setRefresh((n) => n + 1)} /> : null}
           {ready && view === "stores" ? <Stores refresh={refresh} /> : null}
           {ready && view === "agents" ? <Agents refresh={refresh} /> : null}
@@ -171,6 +173,35 @@ function Approvals({ refresh, onRefresh }: { refresh: number; onRefresh: () => v
   );
 }
 
+function Dashboard({ refresh, onOpenListings }: { refresh: number; onOpenListings: () => void }) {
+  const { data } = useResource(fetchOverview, [refresh]);
+  return (
+    <section>
+      <h1 className="eq-display text-3xl font-bold text-(--navy)">Dashboard</h1>
+      <p className="mt-1 text-[14px] text-(--ink-soft)">
+        BTIC super admin. Approve listings, view stores and haulage agents. Do not pay them from here.
+      </p>
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <button type="button" onClick={onOpenListings} className="rounded-2xl border border-(--line) bg-white p-4 text-left">
+          <div className="text-[12px] text-(--ink-soft)">Pending listings</div>
+          <div className="eq-display text-4xl font-bold text-(--navy)">{data?.pending_listings ?? "—"}</div>
+          <div className="text-[12px] text-(--amber)">Open approvals</div>
+        </button>
+        <div className="rounded-2xl border border-(--line) bg-white p-4">
+          <div className="text-[12px] text-(--ink-soft)">Haulage reviews</div>
+          <div className="eq-display text-4xl font-bold text-(--navy)">{data?.haulage_reviews ?? "—"}</div>
+          <div className="text-[12px] text-(--ink-soft)">Yard queue</div>
+        </div>
+        <div className="rounded-2xl border border-(--line) bg-white p-4">
+          <div className="text-[12px] text-(--ink-soft)">Agent payouts held</div>
+          <div className="eq-display text-4xl font-bold text-(--navy)">{data?.payouts_held ?? "—"}</div>
+          <div className="text-[12px] text-(--ink-soft)">Visible only — not paid here</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Overview({ refresh }: { refresh: number }) {
   const { data } = useResource(fetchOverview, [refresh]);
   const cards = [
@@ -213,12 +244,17 @@ function Agents({ refresh }: { refresh: number }) {
   return (
     <section>
       <h1 className="eq-display text-3xl font-bold">Agents</h1>
-      <p className="mt-1 text-[13px] text-(--ink-soft)">Commission agents are visible here. The admin host does not pay them.</p>
+      <p className="mt-1 text-[13px] text-(--ink-soft)">
+        Haulage agents (packing yard, transport). The admin host attaches them to a hire. It does not pay them.
+      </p>
       <ul className="mt-4 space-y-2">
         {(data?.agents ?? []).map((agent) => (
           <li key={agent.agent_id} className="rounded-xl border border-(--line) bg-white p-4">
             <div className="font-semibold">{agent.name}</div>
-            <div className="text-[13px] text-(--ink-soft)">{agent.region} · {agent.stores.join(", ")}</div>
+            <div className="text-[13px] text-(--ink-soft)">
+              {agent.role ?? "haulage"} · {agent.packing_yard ?? agent.region} · {agent.transport_means ?? "lowbed"}
+            </div>
+            <div className="text-[12px] text-(--ink-faint)">{agent.stores.join(", ")}</div>
           </li>
         ))}
       </ul>

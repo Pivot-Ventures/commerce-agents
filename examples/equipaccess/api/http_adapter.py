@@ -16,10 +16,10 @@ Laravel route → StorefrontBackend method (as documented on the private app):
 | resource products | ``get_product_details`` |
 | resource cart | ``get_cart``, ``add_to_cart``, ``update_cart_item``, ``remove_from_cart`` |
 | GET rentals/rate | period quote inside search/cart (daily / weekly / monthly) |
-| POST haulage, GET shipping/options | ``get_fulfillment_options`` |
+| GET shipping/options | ``get_fulfillment_options`` (POST /api/haulage is a stub — not called) |
 | resource orders | ``get_orders``, ``get_order`` |
 | customer login | host session; the token stays on this adapter |
-| POST make-order-payment | not called; ``checkout_handoff`` returns a host URL |
+| POST make-order-payment | not called; ``checkout_handoff`` returns a Flutterwave hosted-pay URL |
 
 Search must not assume live Algolia (the Scout trait was commented out). Cart quantity
 must not exceed ``Product.stock``. Orders that include distance stay in Haulage Review.
@@ -106,9 +106,7 @@ class EquipAccessHttpBackend(StorefrontBackend):
         rows = payload.get("data") or payload.get("products") or payload
         products = [Product.model_validate(_product_row(row)) for row in rows][:limit]
         for product in products:
-            self.products[product.product_id] = ProductDetails.model_validate(
-                product.model_dump()
-            )
+            self.products[product.product_id] = ProductDetails.model_validate(product.model_dump())
         return products
 
     async def get_product_details(

@@ -37,8 +37,8 @@ Customer A — signed-in site manager (Amina, Mukono):
 
 1. Open the storefront (`:3004`). Ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
 2. See the machine carousel. Pick the ACME Iron 20-ton (the CAT 320 stand-in). The live hire summary shows the dated quote and haulage.
-3. Switch Daily vs Weekly. Ten days on the weekly rate is 1,260,000 UGX; haulage Mukono → Mukono is 240,000 UGX.
-4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. The hire lands in Haulage Review.
+3. Switch Daily vs Weekly. Ten days on the weekly rate is 1,260,000 UGX. Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
+4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. Payment options are Flutterwave (card or mobile money) and bank transfer — both handoffs. The hire lands in Haulage Review.
 
 Customer B — date conflict / on-hire machine:
 
@@ -57,15 +57,17 @@ Merchant operator (Mercy, ACME Plant Hire — Mukono):
 Admin (BTIC super admin):
 
 10. Open admin (`:3204`). Pending listings: Approve or Reject.
-11. View Stores and Agents. Payouts are visible. Attempt Pay is refused; the host does not move money.
+11. View Stores and haulage Agents (packing yard, transport). Payouts are visible. Attempt Pay is refused; the host does not move money.
 
 ## What is specific to this example
 
-- `api/rates.py`: daily / weekly / monthly period math and the distance haulage quote.
+- `api/rates.py`: daily / weekly / monthly period math. One-way haulage is method
+  price × distance; deposit equals that one-way fee; to+from is a later checkout
+  charge, not an assistant write.
 - `api/mock_equipaccess.py`: `MockEquipAccess`, the `StorefrontBackend`. Dated search
   results are hire quotes. A first `add_to_cart` on a rental holds those dates against
   stock. `request_hire` stages a haulage-review row and charges nothing.
-  `checkout_handoff` returns `https://hire.acme-equip.example/checkout`.
+  `checkout_handoff` returns a Flutterwave hosted-pay URL. The model never posts payment.
 - `api/http_adapter.py`: env-gated Laravel client. Reads only. Cart writes raise; payment
   is not called.
 - `api/mock_merchant.py`: `MockEquipMerchant`. A price update moves the daily rate. A
@@ -87,10 +89,10 @@ Admin (BTIC super admin):
 | resource products | `get_product_details` | read mapped |
 | resource cart | `get_cart` | read mapped; writes raise |
 | GET rentals/rate | period quote inside search/cart | fixture math; live rate left |
-| POST haulage, GET shipping/options | `get_fulfillment_options` | read mapped |
+| GET shipping/options | `get_fulfillment_options` | read mapped; POST `/api/haulage` is a stub and is not called |
 | resource orders | `get_orders`, `get_order` | read mapped |
 | customer login | host session | token header only |
-| POST make-order-payment | not called | `checkout_handoff` returns a host URL |
+| POST make-order-payment | not called | Flutterwave hosted-pay handoff |
 
 Search must not assume live Algolia. Cart quantity must not exceed `Product.stock`.
 Orders that include distance stay in Haulage Review until a person at the yard approves

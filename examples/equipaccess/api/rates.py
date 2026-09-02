@@ -3,8 +3,9 @@
 
 """Hire-rate and haulage arithmetic for the ACME Equip demo. Catalog prices are a
 daily rate in UGX; weekly and monthly rates are stored on the listing and applied as
-whole periods (``ceil(days / 7)`` weeks, ``ceil(days / 30)`` months). Haulage is a
-distance quote, not a shipping SKU."""
+whole periods (``ceil(days / 7)`` weeks, ``ceil(days / 30)`` months). One-way haulage
+is ``method.price * distance``; the security deposit equals that one-way amount;
+host checkout later charges to+from (twice the one-way)."""
 
 from __future__ import annotations
 
@@ -19,10 +20,9 @@ RATE_WEEKLY = "Weekly"
 RATE_MONTHLY = "Monthly"
 RATE_TYPES = (RATE_DAILY, RATE_WEEKLY, RATE_MONTHLY)
 
-# 60,000 UGX base plus 10,000 UGX per kilometre — 18 km (Mukono yard to a Mukono
-# industrial site) quotes 240,000 UGX, matching the fixture haulage row.
-HAULAGE_BASE_UGX = 60_000
-HAULAGE_PER_KM_UGX = 10_000
+# Lowbed method price per kilometre so 18 km (Mukono yard → Mukono industrial)
+# quotes 240,000 UGX one-way, matching the fixture haulage row.
+HAULAGE_PER_KM_UGX = 240_000 / 18
 
 # Yard-to-site road kilometres used when the customer names a yard city and a site city.
 YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
@@ -95,9 +95,7 @@ def unit_rate(product: ProductDetails, rate_type: str) -> float:
     return float(attrs.get("daily_rate") or product.price)
 
 
-def quote_hire(
-    product: ProductDetails, days: int, rate_type: str | None = None
-) -> dict[str, Any]:
+def quote_hire(product: ProductDetails, days: int, rate_type: str | None = None) -> dict[str, Any]:
     """Period price for one machine. ``rate_type`` defaults to the listing's own rate,
     then to the duration recommendation."""
     chosen = normalize_rate_type(rate_type or product.attributes.get("rate_type") or "")
@@ -122,9 +120,17 @@ def haulage_km(yard: str | None, site: str | None, explicit: float | None = None
 
 
 def haulage_fee(kilometres: float | None) -> float | None:
+    """One-way haulage: shipping method price times distance."""
     if kilometres is None or kilometres <= 0:
         return None
-    return float(HAULAGE_BASE_UGX + HAULAGE_PER_KM_UGX * kilometres)
+    return float(round(HAULAGE_PER_KM_UGX * kilometres))
+
+
+def haulage_round_trip(one_way: float | None) -> float | None:
+    """To+from haulage charged later on the host checkout, not in the assistant."""
+    if one_way is None:
+        return None
+    return float(one_way * 2)
 
 
 def ranges_overlap(start_a: date, end_a: date, start_b: date, end_b: date) -> bool:

@@ -46,12 +46,13 @@ def build_shopping_config() -> ShoppingAgentConfig:
             "(Mukono, Kampala, Entebbe, Jinja, Gulu) and the machine class as "
             "filters.attributes['machine_class'] (excavator, loader, dump truck, "
             "compactor, generator, scaffolding, crane, mixer, forklift). Default intent "
-            "is hire: do not return Sale or spare-part listings unless the customer "
-            "clearly asked to buy. When they ask for transport to site, pass "
-            "filters.attributes['include_haulage']='yes' and the site as "
-            "['site_location'], then call get_fulfillment_options. After dates are "
-            "known, a first add_to_cart books that window; quantity is machines, not "
-            "days. checkout stages a hire request and charges nothing."
+            "is hire: do not return Sale, spare-part, or construction-materials "
+            "listings unless the customer clearly asked to buy. When they ask for "
+            "transport to site, pass filters.attributes['include_haulage']='yes' and "
+            "the site as ['site_location'], then call get_fulfillment_options — do "
+            "not invent a haulage POST. After dates are known, a first add_to_cart "
+            "books that window; quantity is machines, not days. checkout is a "
+            "Flutterwave hosted-pay handoff and charges nothing."
         ),
         policy_intent_terms=ShoppingAgentConfig().policy_intent_terms + _POLICY_TERMS,
     )

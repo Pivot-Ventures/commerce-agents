@@ -73,9 +73,9 @@ export const SHOWCASE = {
       subtotal: 1260000,
       currency: "UGX",
       haulage: { from: "Mukono", to: "Mukono", distance_km: 18, fee: 240000, label: "Needs haulage review" },
-      deposit: 315000,
+      deposit: 240000,
     },
-    handoffs: [{ url: "https://hire.acme-equip.example/checkout", label: "Request this hire" }],
+    handoffs: [{ url: "https://checkout.flutterwave.com/pay/acme-equip-hire", label: "Request this hire" }],
   },
 };
 

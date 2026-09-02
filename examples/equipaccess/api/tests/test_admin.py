@@ -7,7 +7,9 @@ from demo_common import SESSION_HEADER
 def test_admin_approves_and_rejects_and_refuses_payouts(client):
     started = client.post("/api/admin/session").json()
     headers = {SESSION_HEADER: started["session_id"]}
-    pending = client.get("/api/admin/listings", headers=headers, params={"status": "pending"}).json()
+    pending = client.get(
+        "/api/admin/listings", headers=headers, params={"status": "pending"}
+    ).json()
     assert pending["total"] >= 3
     first = pending["listings"][0]["listing_id"]
     approved = client.post(f"/api/admin/listings/{first}/approve", json={}, headers=headers)

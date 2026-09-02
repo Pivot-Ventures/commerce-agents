@@ -23,7 +23,16 @@ export type AdminListing = {
 };
 
 export type AdminStore = { store_id: string; name: string; location: string; status: string };
-export type AdminAgent = { agent_id: string; name: string; region: string; stores: string[]; status: string };
+export type AdminAgent = {
+  agent_id: string;
+  name: string;
+  region: string;
+  stores: string[];
+  status: string;
+  role?: string;
+  packing_yard?: string;
+  transport_means?: string;
+};
 export type AdminCustomer = { user_id: string; name: string; company?: string; location?: string };
 export type AdminPayout = {
   payout_id: string;

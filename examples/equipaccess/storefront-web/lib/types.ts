@@ -36,6 +36,7 @@ export interface HaulageQuote {
   to?: string;
   distance_km?: number;
   fee: number;
+  round_trip_fee?: number;
   status?: string;
   label?: string;
 }

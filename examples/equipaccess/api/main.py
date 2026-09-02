@@ -3,16 +3,20 @@
 
 """ACME Equip example API: fixture storefront, merchant portal, and admin host.
 
-    uvicorn equipaccess.api.main:app --app-dir examples --reload --port 8004
+uvicorn equipaccess.api.main:app --app-dir examples --reload --port 8004
 """
 
-from __future__ import annotations
-
 from fastapi import HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from commerce_common.memory import InMemoryMemoryStore
-from demo_common import REPO_ROOT, CartAddRequest, MemorySeeder, build_storefront_host, load_demo_env
+from demo_common import (
+    REPO_ROOT,
+    CartAddRequest,
+    MemorySeeder,
+    build_storefront_host,
+    load_demo_env,
+)
 from shopping_agent import Unavailable
 from shopping_agent_runtime import ShoppingAgent
 
@@ -38,9 +42,9 @@ host = build_storefront_host(
     backend=backend,
     agent=agent,
     memory_seeder=MemorySeeder(DATA_DIR / "memory-seed.json"),
-    cart_extras=lambda record: backend.cart_extras(record.session_id)
-    if hasattr(backend, "cart_extras")
-    else {},
+    cart_extras=lambda record: (
+        backend.cart_extras(record.session_id) if hasattr(backend, "cart_extras") else {}
+    ),
 )
 app = host.app
 app.include_router(create_merchant_router(backend, InMemoryMemoryStore()), prefix="/api/merchant")
@@ -81,9 +85,10 @@ async def set_hire_window(request: HireWindowRequest, record: host.CurrentSessio
         HireWindow(
             start=start,
             end=end,
-            rate_type=normalize_rate_type(request.rate_type or (existing.rate_type if existing else None)),
-            site_location=request.site_location
-            or (existing.site_location if existing else None),
+            rate_type=normalize_rate_type(
+                request.rate_type or (existing.rate_type if existing else None)
+            ),
+            site_location=request.site_location or (existing.site_location if existing else None),
             distance_km=request.distance_km
             if request.distance_km is not None
             else (existing.distance_km if existing else None),

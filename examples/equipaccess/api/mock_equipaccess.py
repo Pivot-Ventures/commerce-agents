@@ -60,6 +60,7 @@ from .rates import (
     default_hire_window,
     haulage_fee,
     haulage_km,
+    haulage_round_trip,
     hire_days,
     normalize_rate_type,
     parse_iso_date,
@@ -70,7 +71,8 @@ from .rates import (
 
 DATA_DIR = example_data_dir(__file__)
 
-CHECKOUT_HANDOFF_URL = "https://hire.acme-equip.example/checkout"
+# Hosted Flutterwave checkout is a handoff URL only. The model never posts payment.
+CHECKOUT_HANDOFF_URL = "https://checkout.flutterwave.com/pay/acme-equip-hire"
 
 _SEARCH_WEIGHTS = {
     "title": 3.0,
@@ -141,9 +143,7 @@ def _is_rental(product: ProductDetails) -> bool:
 
 def _query_wants_sale(query: str) -> bool:
     tokens = {token.strip(".,!?") for token in query.lower().split()}
-    if tokens & _SALE_HINTS and not (tokens & _RENT_HINTS):
-        return True
-    return False
+    return bool(tokens & _SALE_HINTS and not (tokens & _RENT_HINTS))
 
 
 @dataclass
@@ -263,7 +263,9 @@ class MockEquipAccess(StorefrontBackend):
         self.note_hire_window(session.session_id, window)
         return window
 
-    def _window_for_add(self, session: ShoppingSessionContext, product: ProductDetails) -> HireWindow:
+    def _window_for_add(
+        self, session: ShoppingSessionContext, product: ProductDetails
+    ) -> HireWindow:
         existing = self._windows.get(session.session_id)
         if existing is not None:
             return existing
@@ -295,13 +297,17 @@ class MockEquipAccess(StorefrontBackend):
                 taken += int(row.get("quantity") or 1)
         return taken
 
-    def _held_on(self, product_id: str, start: date, end: date, *, except_session: str | None) -> int:
+    def _held_on(
+        self, product_id: str, start: date, end: date, *, except_session: str | None
+    ) -> int:
         taken = 0
         for session_id, holds in self._holds.items():
             if except_session and session_id == except_session:
                 continue
             for hold in holds:
-                if hold.product_id == product_id and ranges_overlap(start, end, hold.start, hold.end):
+                if hold.product_id == product_id and ranges_overlap(
+                    start, end, hold.start, hold.end
+                ):
                     taken += hold.quantity
         return taken
 
@@ -343,7 +349,9 @@ class MockEquipAccess(StorefrontBackend):
         }
 
     def _score(self, product: ProductDetails, query_tokens: list[str]) -> float:
-        return keyword_score(self._searchable_text(product), _SEARCH_WEIGHTS, query_tokens, _SYNONYMS)
+        return keyword_score(
+            self._searchable_text(product), _SEARCH_WEIGHTS, query_tokens, _SYNONYMS
+        )
 
     def _hard_filter(
         self, product: ProductDetails, filters: SearchFilters, *, sale_ok: bool
@@ -352,9 +360,7 @@ class MockEquipAccess(StorefrontBackend):
             return False
         if product.attributes.get("listing_status") == "pending":
             return False
-        if not sale_ok and not _is_rental(product):
-            return False
-        return True
+        return sale_ok or _is_rental(product)
 
     def _soft_filter(self, product: ProductDetails, filters: SearchFilters) -> bool:
         return matches_attribute_filters(product, filters, ignore=frozenset(_QUOTE_FILTERS))
@@ -390,6 +396,7 @@ class MockEquipAccess(StorefrontBackend):
         limit: int = 8,
     ) -> list[Product]:
         sale_ok = _query_wants_sale(query)
+        filters = filters or SearchFilters()
         window = self._window_from_filters(filters, session)
         ranked = rank_products(
             self.products.values(),
@@ -397,9 +404,7 @@ class MockEquipAccess(StorefrontBackend):
             filters,
             limit,
             score=self._score,
-            hard_filter=lambda product, chosen: self._hard_filter(
-                product, chosen, sale_ok=sale_ok
-            ),
+            hard_filter=lambda product, chosen: self._hard_filter(product, chosen, sale_ok=sale_ok),
             soft_filter=self._soft_filter,
         )
         results = [summary_of(product) for product in ranked]
@@ -503,10 +508,11 @@ class MockEquipAccess(StorefrontBackend):
                     "to": window.site_location,
                     "distance_km": kilometres,
                     "fee": fee,
+                    "round_trip_fee": haulage_round_trip(fee),
                     "status": "needs_review",
                     "label": "Needs haulage review",
                 }
-        deposit = round(sum(item.line_total for item in cart.items) * 0.25, 2)
+        deposit = float(haulage["fee"]) if haulage else 0.0
         return {
             "hire_window": {
                 "start": window.start.isoformat(),

@@ -3,10 +3,9 @@
 
 from datetime import date
 
-from shopping_agent import SearchFilters, ShoppingSessionContext, Unavailable
-
 from equipaccess.api.mock_equipaccess import HireWindow, MockEquipAccess
 from equipaccess.api.rates import RATE_WEEKLY, haulage_fee, quote_hire
+from shopping_agent import SearchFilters, Unavailable
 
 
 async def test_hire_search_quotes_dates_and_location(backend, session):
@@ -75,9 +74,7 @@ async def test_date_overlap_holds_stock(backend, session, other_session):
     backend.note_hire_window(session.session_id, window)
     cart = await backend.add_to_cart(session, "AE-EXC-101", 2)
     assert cart.items[0].quantity == 2
-    assert backend.units_left_on(
-        "AE-EXC-101", window.start, window.end, except_session=session.session_id
-    ) == 0
+    assert backend.units_left_on("AE-EXC-101", window.start, window.end) == 0
     backend.note_hire_window(other_session.session_id, window)
     try:
         await backend.add_to_cart(other_session, "AE-EXC-101", 1)
@@ -103,7 +100,9 @@ async def test_cart_line_is_the_period_quote(backend, session):
     assert line.option_values["rate_type"] == RATE_WEEKLY
     extras = backend.cart_extras(session.session_id)
     assert extras["haulage"]["fee"] == 240_000
+    assert extras["haulage"]["round_trip_fee"] == 480_000
     assert extras["haulage"]["label"] == "Needs haulage review"
+    assert extras["deposit"] == 240_000
 
 
 async def test_request_hire_does_not_charge_and_lands_in_haulage_review(backend, session):
@@ -126,7 +125,11 @@ async def test_request_hire_does_not_charge_and_lands_in_haulage_review(backend,
     assert any(row["hire_id"] == hire.hire_id for row in queue)
     approved = backend.approve_haulage(hire.hire_id)
     assert approved.status == "haulage_approved"
-    assert "not" in approved.note.lower() or "uncharged" in approved.note.lower() or "checkout" in approved.note.lower()
+    assert (
+        "not" in approved.note.lower()
+        or "uncharged" in approved.note.lower()
+        or "checkout" in approved.note.lower()
+    )
 
 
 async def test_checkout_handoff_never_charges(backend, session):

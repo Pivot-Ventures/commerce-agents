@@ -30,6 +30,9 @@
       "agent_id": "AG-11",
       "name": "Aisha Namara",
       "region": "Central",
+      "role": "haulage",
+      "packing_yard": "ACME Plant Hire Mukono",
+      "transport_means": "lowbed",
       "stores": [
         "ST-MUK",
         "ST-KLA"
@@ -40,6 +43,9 @@
       "agent_id": "AG-12",
       "name": "Peter Kato",
       "region": "Eastern",
+      "role": "haulage",
+      "packing_yard": "ACME East Jinja",
+      "transport_means": "lowbed",
       "stores": [
         "ST-JIN"
       ],
@@ -78,7 +84,7 @@
       "from": "Mukono",
       "to": "Kampala",
       "km": 22,
-      "typical_quote_ugx": 280000
+      "typical_quote_ugx": 293333
     },
     {
       "lane_id": "LN-2",
@@ -92,7 +98,7 @@
       "from": "Kampala",
       "to": "Entebbe",
       "km": 40,
-      "typical_quote_ugx": 460000
+      "typical_quote_ugx": 533333
     }
   ],
   "roles": [
@@ -105,8 +111,8 @@
       "description": "Yard operator; haulage approve/counter and staged rates."
     },
     {
-      "role": "commission_agent",
-      "description": "Visible in admin; payouts are not executed here."
+      "role": "haulage_agent",
+      "description": "Logistics desk: packing yard and transport means. Admin attaches an agent to a hire. The host does not pay the agent from here."
     },
     {
       "role": "admin",

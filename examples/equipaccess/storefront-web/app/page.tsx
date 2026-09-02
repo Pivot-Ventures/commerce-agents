@@ -43,6 +43,10 @@ export default function StorefrontPage() {
   const [picked, setPicked] = useState<Product | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
+  useEffect(() => {
+    setPanelOpen(window.innerWidth >= 1280);
+  }, []);
+
   const onEvent = useCallback((event: AgentEvent) => {
     if (event.type === "cart_update") setCart(event.data.cart as CartPayload);
   }, []);
@@ -119,12 +123,18 @@ export default function StorefrontPage() {
       <div className={view === "hire" ? "h-full" : "hidden"}>
         <Chat
           chat={chat}
-          onPick={setPicked}
+          onPick={(product) => {
+            setPicked(product);
+            setPanelOpen(true);
+          }}
           home={
             <HomeView
               name={shopper.name}
               machines={machines}
-              onAsk={(text) => void chat.send(text)}
+              onAsk={(text) => {
+                setPanelOpen(true);
+                void chat.send(text);
+              }}
             />
           }
         />

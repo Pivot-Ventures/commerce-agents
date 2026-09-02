@@ -95,20 +95,23 @@ export default function HireCart({
             <dd>{formatUgx(total)}</dd>
           </div>
         </dl>
-        <p className="mt-2 text-[12px] text-(--ink-soft)">All prices in Ugandan Shillings (UGX). VAT inclusive.</p>
+        <p className="mt-2 text-[12px] text-(--ink-soft)">
+          All prices in Ugandan Shillings (UGX). VAT inclusive. Deposit equals one-way haulage.
+          To+from is charged later on Flutterwave hosted checkout.
+        </p>
         <div className="mt-4 space-y-2 text-[13px]">
           <label className="flex items-start gap-2 rounded-lg border border-(--amber) bg-(--accent-soft)/40 p-2">
             <input type="radio" defaultChecked readOnly className="mt-1" />
             <span>
-              <span className="font-semibold">Pay with card (handoff)</span>
-              <span className="block text-(--ink-soft)">Secure checkout via the host. No auto-charge.</span>
+              <span className="font-semibold">Flutterwave (card or mobile money)</span>
+              <span className="block text-(--ink-soft)">Hosted checkout handoff. No auto-charge.</span>
             </span>
           </label>
           <label className="flex items-start gap-2 rounded-lg border border-(--line) p-2">
             <input type="radio" readOnly className="mt-1" />
             <span>
               <span className="font-semibold">Bank transfer</span>
-              <span className="block text-(--ink-soft)">Manual transfer. No auto-charge.</span>
+              <span className="block text-(--ink-soft)">Manual receipt. No auto-charge.</span>
             </span>
           </label>
         </div>
