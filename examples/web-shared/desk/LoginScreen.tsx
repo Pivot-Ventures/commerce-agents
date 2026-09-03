@@ -114,7 +114,13 @@ export function LoginScreen({
     );
 
   const form = (
-    <form onSubmit={(event) => void submit(event)} className="flex w-full max-w-[420px] flex-col" autoComplete="on">
+    <form
+      method="post"
+      action="#"
+      onSubmit={(event) => void submit(event)}
+      className="flex w-full max-w-[420px] flex-col"
+      autoComplete="on"
+    >
       <div className={role === "store" ? "flex justify-center" : ""}>{pill}</div>
       <h1
         className="eq-display mt-4 text-[40px] font-bold leading-[1.05] tracking-tight"

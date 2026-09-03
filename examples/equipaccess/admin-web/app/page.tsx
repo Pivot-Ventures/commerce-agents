@@ -104,7 +104,11 @@ export default function AdminPage() {
   }, [desk.ready, desk.sessionId, router]);
 
   if (!desk.ready || !desk.sessionId) {
-    return <p className="p-8 text-[14px] text-(--ink-soft)">Opening admin…</p>;
+    return (
+      <p className="p-8 text-[14px] text-(--ink-soft)">
+        Opening admin… <a href="/login" className="font-semibold underline">Sign in</a>
+      </p>
+    );
   }
 
   return (

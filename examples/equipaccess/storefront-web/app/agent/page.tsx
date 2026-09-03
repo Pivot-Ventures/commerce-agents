@@ -23,7 +23,11 @@ export default function AgentDeskPage() {
   }, [desk.ready, desk.sessionId, router]);
 
   if (!desk.ready || !desk.sessionId) {
-    return <p className="p-8 text-[14px] text-(--ink-soft)">Opening the agent desk…</p>;
+    return (
+      <p className="p-8 text-[14px] text-(--ink-soft)">
+        Opening the agent desk… <a href="/agent/login" className="font-semibold underline">Sign in</a>
+      </p>
+    );
   }
 
   async function close(hireId: string) {
