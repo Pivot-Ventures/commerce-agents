@@ -21,10 +21,12 @@ export default function HireCart({
   const [result, setResult] = useState<string | null>(null);
   const items = cart?.items ?? [];
   const haulage = cart?.haulage;
+  const delivery = cart?.delivery;
   const deposit = cart?.deposit ?? 0;
   const subtotal = cart?.subtotal ?? 0;
   const haulageFee = haulage?.fee ?? 0;
-  const total = subtotal + haulageFee + deposit;
+  const deliveryFee = delivery?.fee ?? 0;
+  const total = subtotal + haulageFee + deliveryFee + deposit;
 
   async function request() {
     const response = await requestHire();
@@ -73,6 +75,15 @@ export default function HireCart({
                 <div className="font-semibold text-(--navy)">{formatUgx(haulage.fee)}</div>
               </li>
             ) : null}
+            {delivery ? (
+              <li className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="font-bold text-(--navy)">Delivery to {delivery.to ?? "site"}</div>
+                  <div className="text-[13px] text-(--ink-soft)">{delivery.label ?? "Deliver to site"}</div>
+                </div>
+                <div className="font-semibold text-(--navy)">{formatUgx(delivery.fee)}</div>
+              </li>
+            ) : null}
           </ul>
         )}
       </section>
@@ -86,6 +97,12 @@ export default function HireCart({
             <dt>Haulage</dt>
             <dd>{haulage ? formatUgx(haulageFee) : "—"}</dd>
           </div>
+          {delivery ? (
+            <div className="flex justify-between">
+              <dt>Delivery</dt>
+              <dd>{formatUgx(deliveryFee)}</dd>
+            </div>
+          ) : null}
           <div className="flex justify-between">
             <dt>Deposit (refundable)</dt>
             <dd>{formatUgx(deposit)}</dd>

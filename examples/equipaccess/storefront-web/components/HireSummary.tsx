@@ -9,6 +9,9 @@ import {
   formatListPrice,
   formatUgx,
   haulageFeeUgx,
+  haulageKm,
+  hirePeriodLabel,
+  hirePeriods,
   isHireListing,
   isPriceOnRequest,
   isWebFind,
@@ -38,12 +41,6 @@ function unitRate(product: Product, rate: string): number {
   return Number(attrs.daily_rate ?? product.price);
 }
 
-function periodsFor(days: number, rate: string): number {
-  if (rate === "Weekly") return Math.ceil(days / 7);
-  if (rate === "Monthly") return Math.ceil(days / 30);
-  return days;
-}
-
 export default function HireSummary({
   product,
   cart,
@@ -58,7 +55,6 @@ export default function HireSummary({
   onCart: (cart: CartPayload) => void;
 }) {
   const window = cart?.hire_window;
-  const haulage = cart?.haulage;
   const kind = product ? listingKind(product) : "Rent";
   const hire = product ? isHireListing(product) : true;
   const web = product ? isWebFind(product) : false;
@@ -75,16 +71,21 @@ export default function HireSummary({
     if (window?.end) setEnd(window.end);
     if (window?.site_location) setSite(window.site_location);
     if (window?.include_haulage != null) setHaulageOn(window.include_haulage);
-  }, [window?.start, window?.end, window?.site_location, window?.include_haulage]);
+    if (product && !isHireListing(product) && window?.include_delivery != null) {
+      setDeliver(window.include_delivery);
+    }
+  }, [product, window?.start, window?.end, window?.site_location, window?.include_haulage, window?.include_delivery]);
 
   const rate = window?.rate_type ?? product?.attributes?.rate_type ?? "Daily";
   const days = window?.days ?? daysBetween(start, end);
   const hireSubtotal = useMemo(() => {
     if (!product || !hire) return 0;
-    return periodsFor(days, rate) * unitRate(product, rate);
+    return hirePeriods(days, rate) * unitRate(product, rate);
   }, [product, hire, days, rate]);
-  const estimatedHaulage = product ? haulageFeeUgx(product.attributes?.location, site) : 0;
-  const haulageFee = haulageOn ? (haulage?.fee ?? estimatedHaulage) : 0;
+  const yard = product?.attributes?.location;
+  const estimatedHaulage = product ? haulageFeeUgx(yard, site) : null;
+  const estimatedKm = product ? haulageKm(yard, site) : null;
+  const haulageFee = haulageOn ? (estimatedHaulage ?? 0) : 0;
   const deliveryFee = deliver ? materialsDeliveryFee(site) : 0;
   const goodsTotal = product && !hire ? qty * (isPriceOnRequest(product) ? 0 : product.price) : 0;
   const total = hire ? hireSubtotal + haulageFee : goodsTotal + (kind === "Sale" ? 0 : deliveryFee);
@@ -94,9 +95,14 @@ export default function HireSummary({
     end_date?: string;
     rate_type?: string;
     site_location?: string;
+    yard_location?: string;
     include_haulage?: boolean;
+    include_delivery?: boolean;
   }) {
-    const updated = await setHireWindow(next);
+    const updated = await setHireWindow({
+      ...next,
+      yard_location: next.yard_location ?? yard,
+    });
     if (updated) onCart(updated);
   }
 
@@ -108,7 +114,15 @@ export default function HireSummary({
         end_date: end,
         rate_type: rate,
         site_location: site,
+        yard_location: yard,
         include_haulage: haulageOn,
+        include_delivery: false,
+      });
+    } else {
+      await setHireWindow({
+        site_location: site,
+        include_delivery: deliver,
+        include_haulage: false,
       });
     }
     const next = await addToCart(product.product_id, hire ? 1 : qty);
@@ -226,10 +240,10 @@ export default function HireSummary({
               <span>
                 <span className="font-semibold text-(--navy)">Haulage to site</span>
                 <span className="block text-(--ink-soft)">
-                  {haulageOn && haulage
-                    ? `${haulage.from} → ${haulage.to} · ${haulage.distance_km} km`
+                  {haulageOn && product && estimatedKm != null
+                    ? `${yard ?? "yard"} → ${site || "site"} · ${estimatedKm} km`
                     : haulageOn && product
-                      ? `${product.attributes?.location ?? "yard"} → ${site || "site"}`
+                      ? `${yard ?? "yard"} → ${site || "site"} · distance pending`
                       : "Include transport to site"}
                 </span>
               </span>
@@ -275,12 +289,21 @@ export default function HireSummary({
               <input
                 value={site}
                 onChange={(event) => setSite(event.target.value)}
+                onBlur={() => void applyWindow({ site_location: site, include_delivery: deliver, include_haulage: false })}
                 className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
               />
             </label>
             <label className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
               <span className="font-semibold text-(--navy)">Deliver to site</span>
-              <input type="checkbox" checked={deliver} onChange={(event) => setDeliver(event.target.checked)} />
+              <input
+                type="checkbox"
+                checked={deliver}
+                onChange={(event) => {
+                  const next = event.target.checked;
+                  setDeliver(next);
+                  void applyWindow({ site_location: site, include_delivery: next, include_haulage: false });
+                }}
+              />
             </label>
             <p className="text-[12px] text-(--ok)">Available for collection or delivery.</p>
           </>
@@ -300,13 +323,19 @@ export default function HireSummary({
               <>
                 <div className="flex justify-between">
                   <dt>
-                    {days} days × {formatUgx(unitRate(product, rate), true).replace(" UGX", "")}
+                    {hirePeriodLabel(days, rate)} × {formatUgx(unitRate(product, rate), true).replace(" UGX", "")}
                   </dt>
                   <dd>{formatUgx(hireSubtotal)}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt>Haulage</dt>
-                  <dd>{haulageOn && haulageFee ? formatUgx(haulageFee) : "0 UGX"}</dd>
+                  <dd>
+                    {haulageOn && estimatedHaulage == null
+                      ? "Quote pending"
+                      : haulageOn && haulageFee
+                        ? formatUgx(haulageFee)
+                        : "0 UGX"}
+                  </dd>
                 </div>
               </>
             ) : (
