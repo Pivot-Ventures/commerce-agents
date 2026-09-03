@@ -146,7 +146,7 @@ One Docker image serves the three desks and the API on a single origin:
 | `/admin` | admin desk (listing approvals) |
 | `/api` | FastAPI |
 
-Build from the repo root. The image defaults to fixtures. Chat reads `ANTHROPIC_API_KEY` at run time; browsing the catalog, the haulage queue, and admin listings does not need it. Checkout still charges nothing. `POST /api/haulage` and payouts stay unwired. Do not put a key in the Dockerfile or compose file.
+Build from the repo root. The image defaults to fixtures. Chat reads `ANTHROPIC_API_KEY` at run time; browsing the catalog, the haulage queue, and admin listings does not need it. Checkout still charges nothing. `POST /api/haulage` and payouts stay unwired. Do not put a key in the Dockerfile, compose file, or `render.yaml`.
 
 ```bash
 docker build -f examples/equipaccess/Dockerfile -t equipaccess .
@@ -161,4 +161,6 @@ One-container Compose, from the repo root:
 docker compose -f examples/equipaccess/docker-compose.yml up --build
 ```
 
-Push the image to a registry, then point Azure Container Apps or a Render web service at it. Set `ANTHROPIC_API_KEY` as a host secret. Health check `/api/health`. Leave `EQUIPACCESS_API_BASE` unset. Sessions live in process memory; a restart is a fresh demo. `.github/workflows/equipaccess-image.yml` builds the image; it does not push and it does not hold secrets.
+The root `render.yaml` Blueprint deploys that image as one Render Docker web service. Apply it from the [Render Dashboard](https://dashboard.render.com/blueprint/new?repo=https://github.com/Pivot-Ventures/commerce-agents). Set `ANTHROPIC_API_KEY` in the Dashboard. Leave `EQUIPACCESS_API_BASE` unset. Render injects `PORT`.
+
+Azure Container Apps: push the image to a registry and set the key as a host secret. Health check `/api/health`. Sessions live in process memory; a restart is a fresh demo. `.github/workflows/equipaccess-image.yml` builds the image; it does not push and it does not hold secrets.

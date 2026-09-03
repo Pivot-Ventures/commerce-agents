@@ -1,0 +1,19 @@
+# Copyright 2026 Anthropic PBC
+# SPDX-License-Identifier: Apache-2.0
+#
+# One Docker web service for EquipAccess. Render injects PORT; nginx reads it.
+# ANTHROPIC_API_KEY is a Dashboard secret. Leave EQUIPACCESS_API_BASE unset
+# so the demo stays on fixtures. Do not put secrets in this file.
+
+services:
+  - type: web
+    name: equipaccess
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./examples/equipaccess/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false

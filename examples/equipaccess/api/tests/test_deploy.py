@@ -5,6 +5,8 @@
 
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[2]
 DEPLOY = ROOT / "deploy"
 DOCKERFILE = ROOT / "Dockerfile"
@@ -57,3 +59,29 @@ def test_place_static_script_is_in_the_image_tree():
     text = (DEPLOY / "place_static.py").read_text(encoding="utf-8")
     assert "server.js" in text
     assert (ROOT / "Dockerfile").read_text(encoding="utf-8").count("place_static.py") == 1
+
+
+def test_render_blueprint_is_one_docker_web_service():
+    text = (ROOT.parents[1] / "render.yaml").read_text(encoding="utf-8")
+    data = yaml.safe_load(text)
+    assert list(data) == ["services"]
+    assert len(data["services"]) == 1
+    service = data["services"][0]
+    assert service["type"] == "web"
+    assert service["name"] == "equipaccess"
+    assert service["runtime"] == "docker"
+    assert service["plan"] == "starter"
+    assert service["region"] == "frankfurt"
+    assert service["dockerfilePath"] == "./examples/equipaccess/Dockerfile"
+    assert service["dockerContext"] == "."
+    assert service["healthCheckPath"] == "/api/health"
+    assert service["envVars"] == [{"key": "ANTHROPIC_API_KEY", "sync": False}]
+    keys = {item["key"] for item in service["envVars"]}
+    assert "EQUIPACCESS_API_BASE" not in keys
+    assert "PORT" not in keys
+    assert "sk-ant" not in text
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert (
+        "https://dashboard.render.com/blueprint/new?repo=https://github.com/Pivot-Ventures/commerce-agents"
+        in readme
+    )
