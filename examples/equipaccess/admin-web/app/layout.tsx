@@ -20,7 +20,7 @@ const body = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ACME Equip · Admin",
+  title: "EquipAccess Admin",
   description: "Listing approvals, stores, and agents. Payouts are visible only.",
 };
 

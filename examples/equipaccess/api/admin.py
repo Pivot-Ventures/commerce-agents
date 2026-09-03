@@ -18,6 +18,122 @@ from .mock_equipaccess import DATA_DIR, MockEquipAccess
 
 ADMIN_USER = "admin-user"
 
+# Extra New listings so the approvals desk matches the review-queue density
+# of the mock without repeating the four detailed rows in admin.json.
+_DESK_LISTINGS: list[tuple[str, str, str, str, str, str, int]] = [
+    (
+        "AE-PND-305",
+        "ACME Lift Skid Steer",
+        "Rent",
+        "ACME Plant Hire Mukono",
+        "Mukono, Uganda",
+        "Loaders",
+        95_000,
+    ),
+    (
+        "AE-PND-306",
+        "ACME Iron 8-ton Mini Excavator",
+        "Rent",
+        "ACME Yard Kampala",
+        "Kampala, Uganda",
+        "Construction equipment",
+        110_000,
+    ),
+    (
+        "AE-PND-307",
+        "ACME Haul Water Bowser",
+        "Rent",
+        "ACME Shore Entebbe",
+        "Entebbe, Uganda",
+        "Trucks",
+        80_000,
+    ),
+    (
+        "AE-PND-308",
+        "ACME Power Tower Lights",
+        "Rent",
+        "ACME East Jinja",
+        "Jinja, Uganda",
+        "Power",
+        35_000,
+    ),
+    (
+        "AE-PND-309",
+        "ACME Mix Concrete Pump (used)",
+        "Sale",
+        "ACME Yard Kampala",
+        "Kampala, Uganda",
+        "Construction equipment",
+        18_500_000,
+    ),
+    (
+        "AE-PND-310",
+        "ACME Access Scissor Lift",
+        "Rent",
+        "ACME Plant Hire Mukono",
+        "Mukono, Uganda",
+        "Access & safety",
+        55_000,
+    ),
+    (
+        "AE-PND-311",
+        "ACME Pack Trench Roller",
+        "Rent",
+        "ACME East Jinja",
+        "Jinja, Uganda",
+        "Construction equipment",
+        70_000,
+    ),
+    (
+        "AE-PND-312",
+        "ACME Iron Hydraulic Breaker",
+        "Sale",
+        "ACME Yard Kampala",
+        "Kampala, Uganda",
+        "Construction equipment",
+        4_200_000,
+    ),
+]
+
+
+def _desk_listing(
+    listing_id: str,
+    title: str,
+    kind: str,
+    store: str,
+    location: str,
+    category: str,
+    price: int,
+    submitted: str,
+) -> dict[str, Any]:
+    return {
+        "listing_id": listing_id,
+        "store": store,
+        "location": location,
+        "type": kind,
+        "submitted": submitted,
+        "status": "pending",
+        "store_status": "New",
+        "published": False,
+        "category": category,
+        "product": {
+            "product_id": listing_id,
+            "title": title,
+            "brand": "ACME",
+            "price": price,
+            "currency": "UGX",
+            "category": category.lower(),
+            "in_stock": True,
+            "short_description": f"A {kind.lower()} listing waiting on admin publish.",
+            "attributes": {
+                "listing_type": kind,
+                "listing_status": "pending",
+                "yard": store,
+                "location": location.split(",")[0],
+            },
+        },
+    }
+
 
 class ListingDecision(BaseModel):
     note: str | None = Field(default=None, max_length=400)
@@ -38,6 +154,14 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
     router = APIRouter()
     state = load_admin()
     pending: list[dict[str, Any]] = list(state.get("pending_listings") or [])
+    if not any(row.get("listing_id") == "AE-PND-305" for row in pending):
+        for index, row in enumerate(_DESK_LISTINGS):
+            pending.append(
+                _desk_listing(
+                    *row,
+                    submitted=f"2026-08-{28 + (index % 4):02d}T{9 + index:02d}:12:00Z",
+                )
+            )
 
     @router.post("/session")
     async def start_session() -> dict:

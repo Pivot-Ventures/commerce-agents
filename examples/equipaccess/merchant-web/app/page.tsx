@@ -3,7 +3,7 @@
 
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   AssistantRail,
   Inspector,
@@ -41,7 +41,7 @@ function StoreMark() {
 export default function PortalPage() {
   const session = useSession(api);
   const [view, setView] = useState<PortalView>("haulage");
-  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false); // closed so the haulage drawer stays first-class
   const [activityOpen, setActivityOpen] = useState(false);
   const [prefill, setPrefill] = useState<Prefill | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -57,10 +57,6 @@ export default function PortalPage() {
     session.sessionId ? fetchOverview : null,
     [session.sessionId, refreshKey],
   );
-
-  useEffect(() => {
-    setAssistantOpen(window.innerWidth >= 1024);
-  }, []);
 
   const askAssistant = useCallback((text: string) => {
     setAssistantOpen(true);
@@ -83,11 +79,12 @@ export default function PortalPage() {
   return (
     <div className="equip-portal">
       <PortalShell
-        brand={{ mark: <StoreMark />, name: "ACME Equip", detail: "Merchant portal" }}
+        brand={{ mark: <StoreMark />, name: "EquipAccess", detail: "ACME Plant Hire · Mukono" }}
         nav={nav}
         view={view}
         onViewChange={setView}
         operator={{ name: session.operator ?? "Mercy N.", role: "Operator" }}
+        storeLabel="ACME Plant Hire Mukono · Uganda"
         assistantOpen={assistantOpen}
         assistantBusy={chat.busy}
         onToggleAssistant={() => setAssistantOpen((open) => !open)}
@@ -124,7 +121,13 @@ export default function PortalPage() {
             ) : null}
             {view === "listings" ? <ListingsView refreshKey={refreshKey} onAskAssistant={askAssistant} /> : null}
             {view === "calendar" ? <CalendarView refreshKey={refreshKey} /> : null}
-            {view === "haulage" ? <HaulageView refreshKey={refreshKey} onRefresh={refreshPortal} /> : null}
+            {view === "haulage" ? (
+              <HaulageView
+                refreshKey={refreshKey}
+                onRefresh={refreshPortal}
+                onOpenCalendar={() => setView("calendar")}
+              />
+            ) : null}
             {view === "rates" ? <RatesView refreshKey={refreshKey} onAskAssistant={askAssistant} /> : null}
             {view === "inventory" ? <InventoryView refreshKey={refreshKey} onAskAssistant={askAssistant} /> : null}
             {view === "campaigns" ? <CampaignsView onAskAssistant={askAssistant} /> : null}

@@ -19,16 +19,31 @@ export default function CalendarView({ refreshKey }: { refreshKey: number }) {
               {data.yard} · {data.window.from} – {data.window.to}
             </div>
             <div className="grid grid-cols-7 gap-2">
-              {data.days.map((day) => (
-                <div key={day.date} className="rounded-xl border border-(--line) bg-white px-2 py-3 text-center">
-                  <div className="text-[11px] text-(--ink-soft)">{day.weekday}</div>
-                  <div className="text-[15px] font-bold text-(--navy)">{day.date.slice(8)}</div>
-                  <div className="mt-2 text-[12px] tabular-nums text-(--ink-2)">
-                    {day.on_hire} on hire
+              {data.days.map((day) => {
+                const fleet = day.fleet || 1;
+                const hirePct = Math.round((day.on_hire / fleet) * 100);
+                const highlight = day.weekday === "Fri";
+                return (
+                  <div
+                    key={day.date}
+                    className={`rounded-xl border px-2 py-3 text-center ${
+                      highlight ? "border-(--amber) bg-(--accent-soft)" : "border-(--line) bg-white"
+                    }`}
+                  >
+                    <div className="text-[11px] text-(--ink-soft)">{day.weekday}</div>
+                    <div className="text-[15px] font-bold text-(--navy)">{day.date.slice(8)}</div>
+                    <div className="mx-auto mt-2 flex h-12 w-8 items-end gap-0.5">
+                      <div className="w-1/2 rounded-t bg-(--navy)" style={{ height: `${Math.max(8, hirePct)}%` }} />
+                      <div
+                        className="w-1/2 rounded-t bg-[#c8cdd3]"
+                        style={{ height: `${Math.max(8, 100 - hirePct)}%` }}
+                      />
+                    </div>
+                    <div className="mt-2 text-[12px] tabular-nums text-(--ink-2)">{day.on_hire} on hire</div>
+                    <div className="text-[12px] tabular-nums text-(--ok)">{day.free} free</div>
                   </div>
-                  <div className="text-[12px] tabular-nums text-(--ok)">{day.free} free</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Panel>
           <Panel>

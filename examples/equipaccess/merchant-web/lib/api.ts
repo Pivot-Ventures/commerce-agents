@@ -58,6 +58,8 @@ export type HaulageItem = {
   title?: string;
   quantity?: number;
   site?: string | null;
+  site_city?: string | null;
+  via?: string | null;
   from_yard?: string | null;
   distance_km?: number | null;
   quote: number;

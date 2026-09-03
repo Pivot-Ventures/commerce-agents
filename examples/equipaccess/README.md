@@ -48,16 +48,16 @@ Customer C — spare parts (buy, not rent):
 
 6. Ask: "I need hydraulic hoses for an ACME Iron excavator." The hose kit is a sale SKU, not a hire.
 
-Merchant operator (Mercy, ACME Plant Hire — Mukono):
+Merchant operator (Mercy N., ACME Plant Hire — Mukono) — portal `:3104`:
 
-7. Open the portal (`:3104`). The haulage queue includes Customer A's hire (and the seed row HIRE-7821). Approve or Counter.
-8. Hire calendar shows units on hire vs free for the week.
-9. On Rates, ask the assistant to stage a daily-rate move. Apply only from the preview card — do not auto-apply.
+7. The default view is the haulage review queue. Seed rows include HIRE-7821 (Mukono → Kampala Industrial Park, 240k UGX) plus three more. Customer A's hire lands here after Request this hire.
+8. Open a row with Review. The drawer shows the yard-to-site route, the agent proposal, **Approve haulage** and **Counter with different rate**. Nothing charges.
+9. Hire calendar (and the queue strip) shows units on hire vs free. Listings, Rates, and Inventory stay wired. On Rates, ask the assistant to stage a daily-rate move. Apply only from the preview card — do not auto-apply.
 
-Admin (BTIC super admin):
+Admin (BTIC · Super admin) — desk `:3204`:
 
-10. Open admin (`:3204`). Pending listings: Approve or Reject.
-11. View Stores and haulage Agents (packing yard, transport). Payouts are visible. Attempt Pay is refused; the host does not move money.
+10. The default view is Listing approvals (Pending / Approved / Rejected). Approve publishes; reject leaves the listing unpublished.
+11. Stores, haulage Agents, Haulage desk (attach agent), Payouts (GET only; Attempt pay is 403), Shipping, and Roles stay wired. The host does not move money.
 
 ## What is specific to this example
 

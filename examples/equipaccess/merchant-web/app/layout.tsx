@@ -20,7 +20,7 @@ const body = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ACME Equip · Merchant",
+  title: "EquipAccess Merchant Portal",
   description: "Yard operator portal: haulage queue, hire calendar, staged rates.",
 };
 

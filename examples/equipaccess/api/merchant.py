@@ -19,7 +19,7 @@ from .agent_config import build_merchant_config
 from .mock_equipaccess import MockEquipAccess
 from .mock_merchant import MockEquipMerchant
 
-IDENTITY = MerchantIdentity(merchant_id="acme-equip", operator="Mercy")
+IDENTITY = MerchantIdentity(merchant_id="acme-equip", operator="Mercy N.")
 
 
 class HaulageCounter(BaseModel):

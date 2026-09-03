@@ -814,6 +814,8 @@ class MockEquipAccess(StorefrontBackend):
                     "title": first.get("title"),
                     "quantity": first.get("quantity"),
                     "site": (hire.haulage or {}).get("to"),
+                    "site_city": (hire.haulage or {}).get("city"),
+                    "via": (hire.haulage or {}).get("via"),
                     "from_yard": (hire.haulage or {}).get("from"),
                     "distance_km": (hire.haulage or {}).get("distance_km"),
                     "quote": hire.haulage_fee,

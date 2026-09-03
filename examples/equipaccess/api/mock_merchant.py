@@ -562,16 +562,23 @@ class MockEquipMerchant(MerchantBackend):
             on_hire += int(match.get("units_on_hire") or 0)
             free += int(match.get("units_free") or 0)
         start = date.fromisoformat(week_start)
-        days = [
-            {
-                "date": (start + timedelta(days=offset)).isoformat(),
-                "weekday": (start + timedelta(days=offset)).strftime("%a"),
-                "on_hire": on_hire,
-                "free": free,
-                "fleet": on_hire + free,
-            }
-            for offset in range(7)
-        ]
+        fleet = on_hire + free
+        # Small weekday wave so the strip is not a flat wall. Each day still
+        # partitions the same fleet (on hire + free).
+        wave = (-1, 0, 1, 2, 0, -1, 0)
+        days = []
+        for offset in range(7):
+            day = start + timedelta(days=offset)
+            day_on = max(0, min(fleet, on_hire + wave[offset]))
+            days.append(
+                {
+                    "date": day.isoformat(),
+                    "weekday": day.strftime("%a"),
+                    "on_hire": day_on,
+                    "free": fleet - day_on,
+                    "fleet": fleet,
+                }
+            )
         return {
             "yard": self.yard_name,
             "window": self._calendar_window,

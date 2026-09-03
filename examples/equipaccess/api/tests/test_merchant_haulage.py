@@ -8,11 +8,26 @@ def test_seed_hire_is_on_the_haulage_queue(client):
     headers = start_operator(client)
     queue = client.get("/api/merchant/haulage", headers=headers).json()["queue"]
     assert any(row["hire_id"] == "HIRE-7821" for row in queue)
+    assert len(queue) >= 4
+    seed = next(row for row in queue if row["hire_id"] == "HIRE-7821")
+    assert seed["quote"] == 240000
     calendar = client.get("/api/merchant/calendar", headers=headers).json()
     assert calendar["days"] and calendar["listings"]
     assert (
         calendar["days"][0]["on_hire"] + calendar["days"][0]["free"] == calendar["days"][0]["fleet"]
     )
+
+
+def test_operator_can_approve_seed_hire_without_charging(client):
+    headers = start_operator(client)
+    approved = client.post("/api/merchant/haulage/HIRE-7821/approve", json={}, headers=headers)
+    assert approved.status_code == 200
+    body = approved.json()
+    assert body["hire_id"] == "HIRE-7821"
+    assert body["quote"] == 240000
+    assert body["status"] == "haulage_approved"
+    queue = client.get("/api/merchant/haulage", headers=headers).json()["queue"]
+    assert all(row["hire_id"] != "HIRE-7821" for row in queue)
 
 
 def test_customer_hire_lands_in_merchant_queue_and_operator_can_counter(client, shopper):

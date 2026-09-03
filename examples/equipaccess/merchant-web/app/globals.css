@@ -53,6 +53,16 @@ body {
   font-family: var(--font-display), "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
 }
 
+.equip-portal aside nav span.rounded-full {
+  background: #f5a623;
+  color: #0b1f3a;
+}
+
+.equip-portal aside nav button[aria-current="page"] {
+  background: #f5a62322;
+  color: #f5a623;
+}
+
 .equip-portal > .flex.h-dvh > aside {
   --ink: #f7f4ee;
   --ink-2: #d5dce4;
