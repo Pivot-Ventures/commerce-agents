@@ -17,7 +17,7 @@ paths each, five vertical examples, and a Claude Code plugin.
 - `examples/<vertical>/`: `api/`, `data/`, `storefront-web/`, `merchant-web/` (equipaccess also has `admin-web/`); ports 8000-8004, 3000-3004, 3100-3104, admin 3204.
 - `plugins/commerce-builder/`: six skills, four commands; `.claude-plugin/marketplace.json` points at it.
 - `docs/`: `safety.md`, `backends.md`, `deployment.md`. `scripts/`: install, demo, smoke, screenshots, check, deploy, verify.
-- `examples/equipaccess/Dockerfile` and `examples/equipaccess/deploy/`: one public URL for the hire storefront, merchant portal, admin desk, and API.
+- `examples/equipaccess/Dockerfile` and `examples/equipaccess/deploy/`: one public URL for the hire storefront, merchant portal, admin desk, and API. Root `render.yaml` deploys that image as one Render Docker web service.
 - `tests/`: the suites that span packages (both roles on all three paths); each package keeps its own `tests/`.
 
 `requirements.txt` installs the seven packages and their pinned dependencies (`requirements-dev.txt`

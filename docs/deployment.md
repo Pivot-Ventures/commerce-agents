@@ -193,5 +193,7 @@ docker build -f examples/equipaccess/Dockerfile -t equipaccess .
 docker run -p 80:80 -e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" equipaccess
 ```
 
-Render and Azure Container Apps: listen on `PORT`, health check `/api/health`, set the key
-as a runtime secret. The EquipAccess README has the path table and Compose line.
+Render: the root `render.yaml` Blueprint is one Docker web service. Azure Container Apps:
+push the image and listen on `PORT`. Both: health check `/api/health`, set the key as a
+runtime secret. The EquipAccess README has the path table, Compose line, and Blueprint
+deeplink.
