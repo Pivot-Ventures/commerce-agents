@@ -828,6 +828,7 @@ class MockEquipAccess(StorefrontBackend):
                     "agent_id": hire.agent_id,
                 }
             )
+        rows.sort(key=lambda row: row["created_at"], reverse=True)
         return rows
 
     def attach_agent(self, hire_id: str, agent_id: str) -> HireRequest:

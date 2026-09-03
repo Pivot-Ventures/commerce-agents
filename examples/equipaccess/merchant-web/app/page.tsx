@@ -132,7 +132,9 @@ export default function PortalPage() {
             {view === "inventory" ? <InventoryView refreshKey={refreshKey} onAskAssistant={askAssistant} /> : null}
             {view === "campaigns" ? <CampaignsView onAskAssistant={askAssistant} /> : null}
           </>
-        ) : null}
+        ) : (
+          <p className="text-[14px] text-(--ink-soft)">Starting merchant session…</p>
+        )}
       </PortalShell>
       {activityOpen ? (
         <Inspector
