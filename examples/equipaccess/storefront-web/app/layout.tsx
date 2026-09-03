@@ -20,8 +20,8 @@ const body = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ACME Equip",
-  description: "Hire construction equipment in Uganda with the Hire assistant.",
+  title: "EquipAccess",
+  description: "Hire and buy construction equipment in Uganda.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

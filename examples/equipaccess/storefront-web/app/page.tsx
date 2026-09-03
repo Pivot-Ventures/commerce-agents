@@ -17,13 +17,14 @@ import {
 import Chat from "@/components/Chat";
 import HireCart from "@/components/HireCart";
 import HireSummary from "@/components/HireSummary";
+import MachineCard from "@/components/MachineCard";
 import HomeView from "@/components/views/HomeView";
-import { api, fetchProducts, UNREACHABLE } from "@/lib/api";
+import { api, fetchProducts, setHireWindow, UNREACHABLE } from "@/lib/api";
 import { formatUgx } from "@/lib/format";
 import { NOUNS, OrderThumb } from "@/lib/orders";
 import type { CartPayload, Product } from "@/lib/types";
 
-type View = "hire" | "buy" | "parts" | "haulage" | "cart" | "hires";
+type View = "shop" | "search" | "buy" | "parts" | "haulage" | "cart" | "hires";
 
 function Wordmark() {
   return (
@@ -31,14 +32,14 @@ function Wordmark() {
       <span aria-hidden className="grid h-[30px] w-[30px] place-items-center rounded-md bg-(--navy) text-[12px] font-bold text-(--amber)">
         AE
       </span>
-      <span className="eq-display text-[20px] font-bold tracking-wide text-(--navy)">ACME EQUIP</span>
+      <span className="eq-display text-[20px] font-bold tracking-wide text-(--navy)">EquipAccess</span>
     </span>
   );
 }
 
 export default function StorefrontPage() {
   const session = useSession(api);
-  const [view, setView] = useState<View>("hire");
+  const [view, setView] = useState<View>("shop");
   const [cart, setCart] = useState<CartPayload | null>(null);
   const [picked, setPicked] = useState<Product | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -62,21 +63,24 @@ export default function StorefrontPage() {
     if (session.sessionId) void api.fetchCart<CartPayload>().then((next) => next && setCart(next));
   }, [session.sessionId]);
 
-  const machines = useMemo(
-    () => (catalog ?? []).filter((product) => (product.attributes?.listing_type ?? "Rent") === "Rent"),
-    [catalog],
-  );
+  const listings = catalog ?? [];
   const sales = useMemo(
-    () => (catalog ?? []).filter((product) => product.attributes?.listing_type === "Sale" && product.category !== "spare-parts"),
-    [catalog],
+    () => listings.filter((product) => product.attributes?.listing_type === "Sale" && product.category !== "spare-parts"),
+    [listings],
   );
   const parts = useMemo(
-    () => (catalog ?? []).filter((product) => product.category === "spare-parts"),
-    [catalog],
+    () => listings.filter((product) => product.category === "spare-parts"),
+    [listings],
   );
 
+  const pick = useCallback((product: Product) => {
+    setPicked(product);
+    setPanelOpen(true);
+  }, []);
+
   const views: StoreView<View>[] = [
-    { id: "hire", label: "Hire", icon: "search" },
+    { id: "shop", label: "Shop", icon: "home" },
+    { id: "search", label: "Search", icon: "search" },
     { id: "buy", label: "Buy", icon: "tag" },
     { id: "parts", label: "Spare parts", icon: "box" },
     { id: "haulage", label: "Haulage", icon: "truck" },
@@ -92,6 +96,7 @@ export default function StorefrontPage() {
       views={views}
       view={view}
       onViewChange={setView}
+      assistantView="search"
       chat={chat}
       api={api}
       assistantName="Hire assistant"
@@ -120,24 +125,30 @@ export default function StorefrontPage() {
       onPanelOpenChange={setPanelOpen}
       placeholder="Need a 20-ton excavator in Mukono for 10 days…"
     >
-      <div className={view === "hire" ? "h-full" : "hidden"}>
+      {view === "shop" ? (
+        <StorePage>
+          <h1 className="eq-hero">Shop</h1>
+          <p className="text-(--ink-soft)">
+            Every hire machine, used sale, and spare part on the yard. Hire rates are per day; sale
+            prices are the list figure.
+          </p>
+          {catalog == null ? (
+            <p className="text-[14px] text-(--ink-soft)">Loading the yard catalog…</p>
+          ) : (
+            <CatalogGrid products={listings} onPick={pick} />
+          )}
+        </StorePage>
+      ) : null}
+      <div className={view === "search" ? "h-full" : "hidden"}>
         <Chat
           chat={chat}
-          onPick={(product) => {
-            setPicked(product);
-            setPanelOpen(true);
-          }}
+          onPick={pick}
           home={
             <HomeView
               name={shopper.name}
-              machines={machines}
               onAsk={(text) => {
                 setPanelOpen(true);
                 void chat.send(text);
-              }}
-              onPick={(product) => {
-                setPicked(product);
-                setPanelOpen(true);
               }}
             />
           }
@@ -149,14 +160,14 @@ export default function StorefrontPage() {
           <p className="text-(--ink-soft)">
             Used machines and construction materials. Sale stock starts at zero until a store inventories it. Buy, not hire.
           </p>
-          <CatalogGrid products={sales} />
+          <CatalogGrid products={sales} onPick={pick} />
         </StorePage>
       ) : null}
       {view === "parts" ? (
         <StorePage>
           <h1 className="eq-hero">Spare parts</h1>
           <p className="text-(--ink-soft)">A side catalog. Buy, not hire.</p>
-          <CatalogGrid products={parts} />
+          <CatalogGrid products={parts} onPick={pick} />
         </StorePage>
       ) : null}
       {view === "haulage" ? (
@@ -188,15 +199,20 @@ export default function StorefrontPage() {
   );
 }
 
-function CatalogGrid({ products }: { products: Product[] }) {
+function CatalogGrid({ products, onPick }: { products: Product[]; onPick: (product: Product) => void }) {
+  if (!products.length) {
+    return <p className="text-[14px] text-(--ink-soft)">No listings in this catalog.</p>;
+  }
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {products.map((product) => (
-        <article key={product.product_id} className="rounded-2xl border border-(--line) bg-white p-4">
-          <h2 className="font-bold text-(--navy)">{product.title}</h2>
-          <p className="text-[13px] text-(--ink-soft)">{product.short_description}</p>
-          <p className="mt-2 font-semibold text-(--amber)">{formatUgx(product.price)}</p>
-        </article>
+        <MachineCard
+          key={product.product_id}
+          product={product}
+          layout="grid"
+          onSelect={() => onPick(product)}
+          onRate={(rate) => void setHireWindow({ rate_type: rate })}
+        />
       ))}
     </div>
   );
