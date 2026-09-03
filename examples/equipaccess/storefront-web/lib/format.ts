@@ -33,3 +33,7 @@ export function rateSuffix(rateType?: string | null): string {
   if (folded.startsWith("month")) return "/month";
   return "/day";
 }
+
+export function isHireListing(product: { attributes?: Record<string, string> }): boolean {
+  return (product.attributes?.listing_type ?? "Rent") !== "Sale";
+}

@@ -57,6 +57,7 @@ export function StoreShell<V extends string>({
   onPanelOpenChange,
   placeholder,
   banner,
+  assistantView,
   children,
 }: {
   brand: ReactNode;
@@ -66,6 +67,8 @@ export function StoreShell<V extends string>({
   chat: AgentTurn;
   api: AgentApi;
   assistantName: string;
+  /** Tab the composer opens so the conversation is visible. Defaults to the first tab. */
+  assistantView?: V;
   shopper: { name: string; tier?: string };
   /** The demo's profiles, when the vertical has more than one to switch between. */
   profiles?: Profile[];
@@ -85,7 +88,7 @@ export function StoreShell<V extends string>({
   const [accountOpen, setAccountOpen] = useState(false);
   const bagButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
-  const home = views[0].id;
+  const conversation = assistantView ?? views[0].id;
   const { send } = chat;
 
   const closePanel = useCallback(() => onPanelOpenChange(false), [onPanelOpenChange]);
@@ -93,10 +96,10 @@ export function StoreShell<V extends string>({
   const ask = useCallback(
     (message: string) => {
       onPanelOpenChange(false);
-      onViewChange(home);
+      onViewChange(conversation);
       void send(message);
     },
-    [home, onPanelOpenChange, onViewChange, send],
+    [conversation, onPanelOpenChange, onViewChange, send],
   );
   const frame = useMemo(
     () => ({ chat, assistantName, ask, closePanel }),
@@ -123,7 +126,7 @@ export function StoreShell<V extends string>({
       <div className="flex h-dvh flex-col text-(--ink)">
         <header className="flex h-[58px] shrink-0 items-center gap-2 border-b border-(--line) bg-(--chrome) px-3 sm:gap-5 sm:px-5">
           <div className="flex shrink-0 items-center">{brand}</div>
-          <nav className="flex min-w-0 items-center gap-1" aria-label="Views">
+          <nav className="flex min-w-0 items-center gap-1 overflow-x-auto" aria-label="Views">
             {views.map((item) => {
               const active = item.id === view;
               return (

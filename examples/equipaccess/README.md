@@ -35,8 +35,8 @@ adapter at a running Laravel app. Cart writes and `POST make-order-payment` stay
 
 Customer A — signed-in site manager (Amina, Mukono):
 
-1. Open the storefront (`:3004`). Ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
-2. See the machine carousel. Pick the ACME Iron 20-ton (the CAT 320 stand-in). The live hire summary shows the dated quote and haulage.
+1. Open the storefront (`:3004`). Shop lists the full catalog. Open Search (or the composer) and ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
+2. See the machine cards. Pick the ACME Iron 20-ton (the CAT 320 stand-in). The live hire summary shows the dated quote and haulage.
 3. Switch Daily vs Weekly. Ten days on the weekly rate is 1,260,000 UGX. Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
 4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. Payment options are Flutterwave (card or mobile money) and bank transfer — both handoffs. The hire lands in Haulage Review.
 
@@ -145,7 +145,7 @@ One Docker image serves the three desks and the API on a single origin:
 
 | Path | Surface |
 |---|---|
-| `/` | storefront (hire) |
+| `/` | storefront (shop catalog) |
 | `/store` | store desk (haulage queue); `/store/login`, `/store/register` |
 | `/agent` | haulage-agent desk; `/agent/login` |
 | `/admin` | admin desk; `/admin/login` |
