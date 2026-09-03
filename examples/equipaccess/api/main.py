@@ -67,7 +67,7 @@ class HireWindowRequest(BaseModel):
     rate_type: str | None = None
     site_location: str | None = None
     distance_km: float | None = None
-    include_haulage: bool = False
+    include_haulage: bool | None = None
 
 
 @app.post("/api/cart/add")
@@ -107,8 +107,11 @@ async def set_hire_window(request: HireWindowRequest, record: host.CurrentSessio
             distance_km=request.distance_km
             if request.distance_km is not None
             else (existing.distance_km if existing else None),
-            include_haulage=request.include_haulage
-            or (existing.include_haulage if existing else False),
+            include_haulage=(
+                request.include_haulage
+                if request.include_haulage is not None
+                else (existing.include_haulage if existing else False)
+            ),
         ),
     )
     return {"ok": True, **backend.cart_extras(record.session_id)}

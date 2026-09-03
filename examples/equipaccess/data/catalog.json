@@ -1,7 +1,7 @@
 {
-  "_comment": "Hire listings quote daily/weekly/monthly in UGX. Sale and spare-part rows stay out of default hire search.",
+  "_comment": "Hire listings quote daily/weekly/monthly in UGX. Sale, spare, and material rows stay out of default hire search. Web-find rows carry source_url; checkout stays on the source. Public figures are labelled and are not EquipAccess quotes.",
   "dates_anchored_to": "2026-09-02",
-  "store_name": "ACME Equip",
+  "store_name": "EquipAccess",
   "products": [
     {
       "currency": "UGX",
@@ -13,36 +13,36 @@
       ],
       "in_stock": true,
       "product_id": "AE-EXC-101",
-      "title": "ACME Iron 20-ton Excavator",
-      "brand": "ACME Iron",
-      "price": 180000,
+      "title": "20-ton excavator — Mukono yard",
+      "brand": "EquipAccess",
+      "price": 1200000,
       "category": "excavators",
-      "short_description": "A 20-ton tracked excavator at the Mukono yard, the usual hire for a mid-size foundation or trench.",
-      "long_description": "ACME Iron's 20-ton sits on the Mukono yard and is the listing the hire assistant reaches for when a site manager asks for a twenty-ton digger. Two units, daily or weekly, operator optional. Haulage to a Mukono industrial site is a distance quote, not included in the machine rate.",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "A 20-ton tracked excavator at the Mukono yard. Public hire reference UGX 1,200,000 / day.",
+      "long_description": "Yard hire. The public daily figure is the Heavy Equipment Uganda hire reference, not an EquipAccess quote. Two units. Operator optional. Haulage is a distance quote.",
       "specs": {
         "operating_weight": "20 t",
-        "bucket": "1.0 m\u00b3",
-        "reach": "9.6 m",
-        "operator": "optional"
+        "bucket": "1.0 m³",
+        "reach": "9.6 m"
       },
-      "review_highlights": [
-        "Showed up on time and dug the first day",
-        "Weekly rate is the one that makes sense past a week",
-        "Ask for haulage when the site is off the main road"
-      ],
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "excavator",
         "location": "Mukono",
         "region": "Central",
-        "daily_rate": "180000",
-        "weekly_rate": "630000",
-        "monthly_rate": "2160000",
         "stock": "2",
         "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "1200000",
+        "weekly_rate": "7200000",
+        "monthly_rate": "26400000",
+        "price_source": "heavyequipmentuganda",
         "capacity_tons": "20",
-        "yard": "ACME Plant Hire Mukono"
+        "price_source_url": "https://heavyequipmentuganda.com/"
       }
     },
     {
@@ -54,703 +54,2109 @@
       ],
       "in_stock": true,
       "product_id": "AE-EXC-102",
-      "title": "ACME Earth 20-ton Excavator",
-      "brand": "ACME Earth",
-      "price": 175000,
+      "title": "20-ton excavator — Kampala yard",
+      "brand": "EquipAccess",
+      "price": 1000000,
       "category": "excavators",
-      "short_description": "A 20-ton excavator based in Kampala, close to the industrial area.",
-      "long_description": "Same class as the Mukono Iron, parked at the Kampala yard. One unit. Useful when the site is west of the city and haulage from Mukono would add a long empty run.",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "A 20-ton excavator at the Kampala yard. Public figure UGX 1,000,000 / day.",
+      "long_description": "Yard hire. Rate is labelled from public Kampala excavator/tractor/Sino-truck hire listings, not an EquipAccess quote.",
       "specs": {
         "operating_weight": "20 t",
-        "bucket": "0.9 m\u00b3",
-        "reach": "9.4 m"
+        "bucket": "0.9 m³"
       },
-      "review_highlights": [
-        "Clean machine",
-        "Kampala yard is faster for west-side sites"
-      ],
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "excavator",
         "location": "Kampala",
         "region": "Central",
-        "daily_rate": "175000",
-        "weekly_rate": "612500",
-        "monthly_rate": "2100000",
         "stock": "1",
         "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "1000000",
+        "weekly_rate": "6000000",
+        "monthly_rate": "22000000",
+        "price_source": "jiji",
         "capacity_tons": "20",
-        "yard": "ACME Yard Kampala"
+        "price_source_url": "https://jiji.ug/"
       }
     },
     {
       "currency": "UGX",
       "rating": 4.5,
-      "review_count": 64,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-EXC-103",
-      "title": "ACME Iron 14-ton Excavator",
-      "brand": "ACME Iron",
-      "price": 140000,
+      "title": "14-ton excavator — Entebbe",
+      "brand": "EquipAccess",
+      "price": 800000,
       "category": "excavators",
+      "image_url": "/products/excavator.jpg",
       "short_description": "A tighter 14-ton for urban sites and narrower access in Entebbe.",
       "long_description": "Fourteen tons, two units at the Entebbe yard. The right machine when a 20-ton will not fit the gate.",
-      "specs": {
-        "operating_weight": "14 t",
-        "bucket": "0.6 m\u00b3"
-      },
-      "review_highlights": [
-        "Fits our Entebbe access road"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "excavator",
         "location": "Entebbe",
         "region": "Central",
-        "daily_rate": "140000",
-        "weekly_rate": "490000",
-        "monthly_rate": "1680000",
         "stock": "2",
         "min_quantity": "1",
-        "capacity_tons": "14",
-        "yard": "ACME Shore Entebbe"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Entebbe",
+        "rate_type": "Daily",
+        "daily_rate": "800000",
+        "weekly_rate": "4800000",
+        "monthly_rate": "17600000",
+        "capacity_tons": "14"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.7,
-      "review_count": 31,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-EXC-104",
-      "title": "ACME Earth 30-ton Excavator",
-      "brand": "ACME Earth",
-      "price": 260000,
+      "title": "30-ton excavator — Mukono",
+      "brand": "EquipAccess",
+      "price": 1800000,
       "category": "excavators",
+      "image_url": "/products/excavator.jpg",
       "short_description": "A 30-ton at Mukono. One unit; often booked across mid-month windows.",
-      "long_description": "The heavy Iron's sibling. One unit. Overlapping dates in mid-September are already on the books.",
-      "specs": {
-        "operating_weight": "30 t",
-        "bucket": "1.4 m\u00b3"
-      },
-      "review_highlights": [
-        "Serious machine \u2014 book early"
-      ],
+      "long_description": "The heavy unit on the Mukono yard. One machine. Overlapping dates in mid-September are already on the books.",
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Monthly",
         "machine_class": "excavator",
         "location": "Mukono",
         "region": "Central",
-        "daily_rate": "260000",
-        "weekly_rate": "910000",
-        "monthly_rate": "3120000",
         "stock": "1",
         "min_quantity": "1",
-        "capacity_tons": "30",
-        "yard": "ACME Plant Hire Mukono"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "1800000",
+        "weekly_rate": "10800000",
+        "monthly_rate": "39600000",
+        "capacity_tons": "30"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.2,
-      "review_count": 12,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [],
       "in_stock": false,
       "product_id": "AE-EXC-105",
-      "title": "ACME Iron 20-ton Excavator \u2014 Gulu",
-      "brand": "ACME Iron",
-      "price": 170000,
+      "title": "20-ton excavator — Gulu",
+      "brand": "EquipAccess",
+      "price": 1100000,
       "category": "excavators",
+      "image_url": "/products/excavator.jpg",
       "short_description": "A 20-ton listed in Gulu, currently out of stock.",
       "long_description": "The northern unit is off the yard until a rebuild finishes. The assistant should not sell it.",
-      "specs": {
-        "operating_weight": "20 t"
-      },
-      "review_highlights": [
-        "When it is in, it saves the long haul from Kampala"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "excavator",
         "location": "Gulu",
         "region": "Northern",
-        "daily_rate": "170000",
-        "weekly_rate": "595000",
-        "monthly_rate": "2040000",
         "stock": "0",
         "min_quantity": "1",
-        "capacity_tons": "20",
-        "yard": "ACME North Gulu"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Gulu",
+        "rate_type": "Daily",
+        "daily_rate": "1100000",
+        "weekly_rate": "6600000",
+        "monthly_rate": "24200000",
+        "capacity_tons": "20"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.6,
-      "review_count": 77,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-LOD-201",
-      "title": "ACME Lift Wheel Loader",
-      "brand": "ACME Lift",
-      "price": 145000,
+      "title": "Wheel loader — Kampala yard",
+      "brand": "EquipAccess",
+      "price": 700000,
       "category": "loaders",
+      "image_url": "/products/loader.jpg",
       "short_description": "A wheel loader at the Kampala yard for stockpile and load-out work.",
       "long_description": "Two units. Daily, weekly, or monthly. The usual pair with a dump truck on a cut-and-fill.",
-      "specs": {
-        "bucket": "3.2 m\u00b3",
-        "operating_weight": "18 t"
-      },
-      "review_highlights": [
-        "Pairs cleanly with the Haul dump trucks"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "loader",
         "location": "Kampala",
         "region": "Central",
-        "daily_rate": "145000",
-        "weekly_rate": "507500",
-        "monthly_rate": "1740000",
         "stock": "2",
         "min_quantity": "1",
-        "capacity_tons": "18",
-        "yard": "ACME Yard Kampala"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "700000",
+        "weekly_rate": "4200000",
+        "monthly_rate": "15400000",
+        "capacity_tons": "18"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.4,
-      "review_count": 53,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-LOD-202",
-      "title": "ACME Lift Backhoe",
-      "brand": "ACME Lift",
-      "price": 110000,
+      "title": "JCB 3CX backhoe — Mukono",
+      "brand": "EquipAccess",
+      "price": 600000,
       "category": "loaders",
-      "short_description": "A backhoe loader for mixed trench and load work in Mukono.",
-      "long_description": "One unit at Mukono. Smaller sites that do not need a 20-ton excavator often take this instead.",
-      "specs": {
-        "operating_weight": "8 t"
-      },
-      "review_highlights": [
-        "Handy when the 20-ton is overkill"
-      ],
+      "image_url": "/products/backhoe.jpg",
+      "short_description": "A backhoe loader for mixed trench and load work. Public Jiji figure UGX 600,000 per service.",
+      "long_description": "Yard hire. The public per-service figure is a Jiji listing, not an EquipAccess quote.",
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "loader",
         "location": "Mukono",
         "region": "Central",
-        "daily_rate": "110000",
-        "weekly_rate": "385000",
-        "monthly_rate": "1320000",
         "stock": "1",
         "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "600000",
+        "weekly_rate": "3600000",
+        "monthly_rate": "13200000",
+        "price_source": "jiji",
         "capacity_tons": "8",
-        "yard": "ACME Plant Hire Mukono"
+        "price_source_url": "https://jiji.ug/"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.3,
-      "review_count": 41,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "On hire"
       ],
       "in_stock": true,
       "product_id": "AE-DMP-301",
-      "title": "ACME Haul Dump Truck",
-      "brand": "ACME Haul",
-      "price": 95000,
+      "title": "Sino dump truck — Entebbe",
+      "brand": "EquipAccess",
+      "price": 1000000,
       "category": "trucks",
-      "short_description": "An articulated dump truck at Entebbe \u2014 currently on hire.",
+      "image_url": "/products/dump.jpg",
+      "short_description": "An articulated dump truck at Entebbe — currently on hire. Public figure UGX 1,000,000.",
       "long_description": "One unit, and it is out. The assistant should offer the Jinja 10-wheeler as the substitute.",
-      "specs": {
-        "payload": "25 t"
-      },
-      "review_highlights": [
-        "When it is free it is the cheapest dump on the board"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "dump truck",
         "location": "Entebbe",
         "region": "Central",
-        "daily_rate": "95000",
-        "weekly_rate": "332500",
-        "monthly_rate": "1140000",
         "stock": "1",
         "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Entebbe",
+        "rate_type": "Daily",
+        "daily_rate": "1000000",
+        "weekly_rate": "6000000",
+        "monthly_rate": "22000000",
+        "price_source": "jiji",
         "capacity_tons": "25",
-        "yard": "ACME Shore Entebbe",
         "availability": "on_hire"
       }
     },
     {
       "currency": "UGX",
       "rating": 4.5,
-      "review_count": 39,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-DMP-302",
-      "title": "ACME Haul 10-wheeler Dump Truck",
-      "brand": "ACME Haul",
-      "price": 120000,
+      "title": "10-wheeler dump truck — Jinja",
+      "brand": "EquipAccess",
+      "price": 1000000,
       "category": "trucks",
+      "image_url": "/products/dump.jpg",
       "short_description": "A 10-wheeler dump truck at the Jinja yard, the usual stand-in when Entebbe is on hire.",
       "long_description": "Two units. Heavier payload than the Entebbe artic, longer haul to Central Region sites.",
-      "specs": {
-        "payload": "28 t"
-      },
-      "review_highlights": [
-        "The one they send when Entebbe is busy"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "dump truck",
         "location": "Jinja",
         "region": "Eastern",
-        "daily_rate": "120000",
-        "weekly_rate": "420000",
-        "monthly_rate": "1440000",
         "stock": "2",
         "min_quantity": "1",
-        "capacity_tons": "28",
-        "yard": "ACME East Jinja"
-      }
-    },
-    {
-      "currency": "UGX",
-      "rating": 4.4,
-      "review_count": 28,
-      "labels": [
-        "In stock"
-      ],
-      "in_stock": true,
-      "product_id": "AE-CMP-401",
-      "title": "ACME Pack Vibratory Roller",
-      "brand": "ACME Pack",
-      "price": 85000,
-      "category": "compactors",
-      "short_description": "A vibratory soil roller at Entebbe for sub-base and fill.",
-      "long_description": "One unit. Daily rate is the usual ask on a short compaction window.",
-      "specs": {
-        "drum": "2.1 m"
-      },
-      "review_highlights": [
-        "Does what a plate cannot on a haul road"
-      ],
-      "attributes": {
-        "listing_type": "Rent",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Jinja",
         "rate_type": "Daily",
-        "machine_class": "compactor",
-        "location": "Entebbe",
-        "region": "Central",
-        "daily_rate": "85000",
-        "weekly_rate": "297500",
-        "monthly_rate": "1020000",
-        "stock": "1",
-        "min_quantity": "1",
-        "yard": "ACME Shore Entebbe"
-      }
-    },
-    {
-      "currency": "UGX",
-      "rating": 4.7,
-      "review_count": 90,
-      "labels": [
-        "In stock"
-      ],
-      "in_stock": true,
-      "product_id": "AE-GEN-501",
-      "title": "ACME Power 150kVA Generator",
-      "brand": "ACME Power",
-      "price": 65000,
-      "category": "generators",
-      "short_description": "A 150kVA diesel genset in Kampala for site power.",
-      "long_description": "Three units. Full-to-full fuel. The common pair with night pours and tower lights.",
-      "specs": {
-        "output": "150 kVA",
-        "fuel": "diesel"
-      },
-      "review_highlights": [
-        "Quiet enough for a peri-urban site"
-      ],
-      "attributes": {
-        "listing_type": "Rent",
-        "rate_type": "Daily",
-        "machine_class": "generator",
-        "location": "Kampala",
-        "region": "Central",
-        "daily_rate": "65000",
-        "weekly_rate": "227500",
-        "monthly_rate": "780000",
-        "stock": "3",
-        "min_quantity": "1",
-        "yard": "ACME Yard Kampala"
+        "daily_rate": "1000000",
+        "weekly_rate": "6000000",
+        "monthly_rate": "22000000",
+        "capacity_tons": "28"
       }
     },
     {
       "currency": "UGX",
       "rating": 4.5,
-      "review_count": 71,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-CMP-401",
+      "title": "Vibratory roller — Entebbe",
+      "brand": "EquipAccess",
+      "price": 400000,
+      "category": "compactors",
+      "image_url": "/products/roller.jpg",
+      "short_description": "A vibratory soil roller at Entebbe for sub-base and fill.",
+      "long_description": "One unit. Daily rate is the usual ask on a short compaction window.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Rent",
+        "machine_class": "compactor",
+        "location": "Entebbe",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Entebbe",
+        "rate_type": "Daily",
+        "daily_rate": "400000",
+        "weekly_rate": "2400000",
+        "monthly_rate": "8800000"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-GEN-501",
+      "title": "150kVA generator — Kampala",
+      "brand": "EquipAccess",
+      "price": 250000,
+      "category": "generators",
+      "image_url": "/products/generator.jpg",
+      "short_description": "A 150kVA diesel genset in Kampala for site power.",
+      "long_description": "Three units. Full-to-full fuel. The common pair with night pours and tower lights.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Rent",
+        "machine_class": "generator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "3",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "250000",
+        "weekly_rate": "1500000",
+        "monthly_rate": "5500000"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-GEN-502",
-      "title": "ACME Power 50kVA Generator",
-      "brand": "ACME Power",
-      "price": 35000,
+      "title": "50kVA generator — Mukono",
+      "brand": "EquipAccess",
+      "price": 120000,
       "category": "generators",
+      "image_url": "/products/generator.jpg",
       "short_description": "A 50kVA genset at Mukono for smaller sites and offices.",
       "long_description": "Four units. The light option when 150kVA is more than the board needs.",
-      "specs": {
-        "output": "50 kVA"
-      },
-      "review_highlights": [
-        "Easy haul, starts first pull"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "generator",
         "location": "Mukono",
         "region": "Central",
-        "daily_rate": "35000",
-        "weekly_rate": "122500",
-        "monthly_rate": "420000",
         "stock": "4",
         "min_quantity": "1",
-        "yard": "ACME Plant Hire Mukono"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "120000",
+        "weekly_rate": "720000",
+        "monthly_rate": "2640000"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.3,
-      "review_count": 22,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-SCF-601",
-      "title": "ACME Access Scaffolding Set",
-      "brand": "ACME Access",
-      "price": 25000,
+      "title": "Scaffolding set — Kampala",
+      "brand": "EquipAccess",
+      "price": 80000,
       "category": "access",
+      "image_url": "/products/scaffold.jpg",
       "short_description": "A bayed scaffolding set from the Kampala yard.",
       "long_description": "Six sets. Hire is per set per day. Not a machine; still a dated hire.",
-      "specs": {
-        "bays": "8",
-        "height": "12 m"
-      },
-      "review_highlights": [
-        "Complete with boards and braces"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "scaffolding",
         "location": "Kampala",
         "region": "Central",
-        "daily_rate": "25000",
-        "weekly_rate": "87500",
-        "monthly_rate": "300000",
         "stock": "6",
         "min_quantity": "1",
-        "yard": "ACME Yard Kampala"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "80000",
+        "weekly_rate": "480000",
+        "monthly_rate": "1760000"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.8,
-      "review_count": 19,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-CRN-701",
-      "title": "ACME Reach Mobile Crane",
-      "brand": "ACME Reach",
-      "price": 320000,
+      "title": "Mobile crane — Entebbe",
+      "brand": "EquipAccess",
+      "price": 1500000,
       "category": "cranes",
+      "image_url": "/products/crane.jpg",
       "short_description": "A mobile crane at Entebbe. Operator included on this listing.",
       "long_description": "One unit. Operator travels with the crane. Haulage is always reviewed.",
-      "specs": {
-        "capacity": "25 t",
-        "operator": "included"
-      },
-      "review_highlights": [
-        "Operator knew the Entebbe industrial gates"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "crane",
         "location": "Entebbe",
         "region": "Central",
-        "daily_rate": "320000",
-        "weekly_rate": "1120000",
-        "monthly_rate": "3840000",
         "stock": "1",
         "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Entebbe",
+        "rate_type": "Daily",
+        "daily_rate": "1500000",
+        "weekly_rate": "9000000",
+        "monthly_rate": "33000000",
         "capacity_tons": "25",
-        "yard": "ACME Shore Entebbe",
         "operator": "included"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.2,
-      "review_count": 34,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-MIX-801",
-      "title": "ACME Mix Concrete Mixer",
-      "brand": "ACME Mix",
-      "price": 45000,
+      "title": "Site concrete mixer — Mukono",
+      "brand": "EquipAccess",
+      "price": 150000,
       "category": "concrete",
+      "image_url": "/products/mixer.jpg",
       "short_description": "A site mixer at Mukono for small pours.",
-      "long_description": "Two units. Not a truck mixer \u2014 a site drum.",
-      "specs": {
-        "drum": "400 L"
-      },
-      "review_highlights": [
-        "Fine for columns, not a slab"
-      ],
+      "long_description": "Two units. Not a truck mixer — a site drum.",
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "mixer",
         "location": "Mukono",
         "region": "Central",
-        "daily_rate": "45000",
-        "weekly_rate": "157500",
-        "monthly_rate": "540000",
         "stock": "2",
         "min_quantity": "1",
-        "yard": "ACME Plant Hire Mukono"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "150000",
+        "weekly_rate": "900000",
+        "monthly_rate": "3300000"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.4,
-      "review_count": 26,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-FRK-901",
-      "title": "ACME Yard Rough-Terrain Forklift",
-      "brand": "ACME Yard",
-      "price": 70000,
+      "title": "Rough-terrain forklift — Jinja",
+      "brand": "EquipAccess",
+      "price": 300000,
       "category": "handling",
+      "image_url": "/products/forklift.jpg",
       "short_description": "A rough-terrain forklift in Jinja for yard and site unloading.",
       "long_description": "One unit. Pneumatic tyres, 3-ton lift.",
-      "specs": {
-        "lift": "3 t"
-      },
-      "review_highlights": [
-        "Handles the Jinja yard gravel"
-      ],
+      "specs": {},
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Rent",
-        "rate_type": "Daily",
         "machine_class": "forklift",
         "location": "Jinja",
         "region": "Eastern",
-        "daily_rate": "70000",
-        "weekly_rate": "245000",
-        "monthly_rate": "840000",
         "stock": "1",
         "min_quantity": "1",
-        "yard": "ACME East Jinja"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Jinja",
+        "rate_type": "Daily",
+        "daily_rate": "300000",
+        "weekly_rate": "1800000",
+        "monthly_rate": "6600000"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.1,
-      "review_count": 6,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "For sale"
       ],
       "in_stock": false,
       "product_id": "AE-SAL-110",
-      "title": "ACME Iron 20-ton Excavator (used)",
-      "brand": "ACME Iron",
+      "title": "Used 20-ton excavator — Kampala yard",
+      "brand": "EquipAccess",
       "price": 185000000,
       "category": "excavators",
-      "short_description": "A used 20-ton for sale at the Kampala yard \u2014 not a hire.",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "A used 20-ton for sale at the Kampala yard — not a hire.",
       "long_description": "Sale listing. Hours and inspection notes live on the spec sheet. The hire assistant only shows this when the customer asks to buy.",
       "specs": {
         "hours": "6 200",
         "year": "2018"
       },
-      "review_highlights": [
-        "Inspected on the Kampala yard"
-      ],
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Sale",
-        "rate_type": "Daily",
         "machine_class": "excavator",
         "location": "Kampala",
         "region": "Central",
         "stock": "0",
         "min_quantity": "1",
-        "capacity_tons": "20",
+        "source": "yard",
         "published": "true",
-        "yard": "ACME Yard Kampala"
+        "yard": "EquipAccess Kampala",
+        "capacity_tons": "20"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.0,
-      "review_count": 4,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "For sale"
       ],
       "in_stock": false,
       "product_id": "AE-SAL-210",
-      "title": "ACME Lift Wheel Loader (used)",
-      "brand": "ACME Lift",
+      "title": "Used wheel loader — Entebbe",
+      "brand": "EquipAccess",
       "price": 92000000,
       "category": "loaders",
+      "image_url": "/products/loader.jpg",
       "short_description": "A used wheel loader for sale in Entebbe.",
       "long_description": "Sale listing. Not available to hire.",
       "specs": {
         "hours": "8 100",
         "year": "2016"
       },
-      "review_highlights": [
-        "Straight bucket, tired tyres"
-      ],
+      "review_highlights": [],
       "attributes": {
         "listing_type": "Sale",
-        "rate_type": "Daily",
         "machine_class": "loader",
         "location": "Entebbe",
         "region": "Central",
         "stock": "0",
         "min_quantity": "1",
+        "source": "yard",
         "published": "true",
-        "yard": "ACME Shore Entebbe"
-      }
-    },
-    {
-      "currency": "UGX",
-      "rating": 4.6,
-      "review_count": 18,
-      "labels": [
-        "In stock"
-      ],
-      "in_stock": true,
-      "product_id": "AE-PRT-010",
-      "title": "ACME Iron hydraulic hose kit",
-      "brand": "ACME Iron",
-      "price": 185000,
-      "category": "spare-parts",
-      "short_description": "A spare hydraulic hose kit sized for ACME Iron excavators.",
-      "long_description": "Side catalog. Buy, not hire. Stock 20. Ships from Kampala.",
-      "specs": {
-        "fits": "ACME Iron 14-ton and 20-ton"
-      },
-      "review_highlights": [
-        "Fit the 20-ton without a second trip"
-      ],
-      "attributes": {
-        "listing_type": "Sale",
-        "rate_type": "Daily",
-        "machine_class": "spare part",
-        "location": "Kampala",
-        "region": "Central",
-        "stock": "20",
-        "min_quantity": "1",
-        "yard": "ACME Yard Kampala"
+        "yard": "EquipAccess Entebbe"
       }
     },
     {
       "currency": "UGX",
       "rating": 4.5,
-      "review_count": 11,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-310",
+      "title": "Cat wheel loader — Mantrac Kampala class",
+      "brand": "EquipAccess",
+      "price": 0,
+      "category": "loaders",
+      "image_url": "/products/loader.jpg",
+      "short_description": "Cat-class wheel loader. Dealer list is price on request (Mantrac Kampala).",
+      "long_description": "Yard sale copy of a Mantrac-class wheel loader. The dealer does not publish a price; the shop shows price on request.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "mantrac",
+        "price_on_request": "true",
+        "price_source_url": "https://www.mantracgroup.com/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-320",
+      "title": "Used JCB 3CX backhoe — Namanve",
+      "brand": "EquipAccess",
+      "price": 78000000,
+      "category": "loaders",
+      "image_url": "/products/backhoe.jpg",
+      "short_description": "A used backhoe on the Namanve yard.",
+      "long_description": "Sale listing. Inspected on the yard. Not a hire.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Namanve",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Namanve"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-330",
+      "title": "Used XCMG 20-ton excavator — Wakiso",
+      "brand": "EquipAccess",
+      "price": 164000000,
+      "category": "excavators",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "A used 20-ton excavator at the Wakiso yard.",
+      "long_description": "Sale listing. XCMG-class machine. Hours on the spec sheet.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "excavator",
+        "location": "Wakiso",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Wakiso",
+        "capacity_tons": "20"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-340",
+      "title": "Used Sino dump truck — Kampala",
+      "brand": "EquipAccess",
+      "price": 95000000,
+      "category": "trucks",
+      "image_url": "/products/dump.jpg",
+      "short_description": "A used Sino dump truck for sale in Kampala.",
+      "long_description": "Sale listing. Tipper body, on-yard inspection.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "dump truck",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-350",
+      "title": "Used vibratory roller — Entebbe",
+      "brand": "EquipAccess",
+      "price": 48000000,
+      "category": "compactors",
+      "image_url": "/products/roller.jpg",
+      "short_description": "A used soil roller for sale at Entebbe.",
+      "long_description": "Sale listing. Not available to hire.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "compactor",
+        "location": "Entebbe",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Entebbe"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-360",
+      "title": "Used 150kVA generator — Kampala",
+      "brand": "EquipAccess",
+      "price": 22000000,
+      "category": "generators",
+      "image_url": "/products/generator.jpg",
+      "short_description": "A used 150kVA genset for sale in Kampala.",
+      "long_description": "Sale listing. Service records on request.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "generator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-370",
+      "title": "Used mini excavator — Gulu",
+      "brand": "EquipAccess",
+      "price": 54000000,
+      "category": "excavators",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "A used compact excavator for sale in Gulu.",
+      "long_description": "Sale listing. Useful when a 20-ton will not travel north.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "excavator",
+        "location": "Gulu",
+        "region": "Northern",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Gulu"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-380",
+      "title": "Used telehandler — Mukono",
+      "brand": "EquipAccess",
+      "price": 88000000,
+      "category": "handling",
+      "image_url": "/products/forklift.jpg",
+      "short_description": "A used telehandler on the Mukono yard.",
+      "long_description": "Sale listing. Rough-terrain forks and a short boom.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "forklift",
+        "location": "Mukono",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SAL-390",
+      "title": "Used concrete pump — Kampala",
+      "brand": "EquipAccess",
+      "price": 0,
+      "category": "concrete",
+      "image_url": "/products/mixer.jpg",
+      "short_description": "A used concrete pump. Price on request.",
+      "long_description": "Sale listing. The yard has not published a list price.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "mixer",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_on_request": "true"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-010",
+      "title": "Hydraulic industrial hose kit",
+      "brand": "EquipAccess",
+      "price": 185000,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A spare hydraulic hose kit sized for 14-ton and 20-ton excavators.",
+      "long_description": "Side catalog. Buy, not hire. Stock 20. Ships from Kampala.",
+      "specs": {
+        "fits": "14-ton and 20-ton excavators"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "20",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "kit"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
         "In stock"
       ],
       "in_stock": true,
       "product_id": "AE-PRT-011",
-      "title": "ACME Iron bucket teeth set",
-      "brand": "ACME Iron",
+      "title": "Bucket teeth set",
+      "brand": "EquipAccess",
       "price": 240000,
       "category": "spare-parts",
-      "short_description": "A set of bucket teeth for ACME Iron excavators.",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A set of bucket teeth for 20-ton excavators.",
       "long_description": "Side catalog. Eight sets in Kampala.",
       "specs": {
-        "fits": "ACME Iron 20-ton"
+        "fits": "20-ton excavator"
       },
-      "review_highlights": [
-        "Hardfaced, lasted a quarry month"
-      ],
+      "review_highlights": [],
       "attributes": {
-        "listing_type": "Sale",
-        "rate_type": "Daily",
+        "listing_type": "Spare",
         "machine_class": "spare part",
         "location": "Kampala",
         "region": "Central",
         "stock": "8",
         "min_quantity": "1",
-        "yard": "ACME Yard Kampala"
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "set"
       }
     },
     {
       "currency": "UGX",
-      "rating": 4.2,
-      "review_count": 3,
+      "rating": 4.5,
+      "review_count": 20,
       "labels": [
-        "For sale"
+        "In stock"
       ],
+      "in_stock": true,
+      "product_id": "AE-PRT-012",
+      "title": "Hydraulic hex nipple",
+      "brand": "EquipAccess",
+      "price": 26500,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A hydraulic hex nipple. Public Clone Supplies figure UGX 26,500.",
+      "long_description": "Yard spare. The public figure is the Clone Supplies list, not an EquipAccess quote.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "40",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "clone",
+        "unit": "pc",
+        "price_source_url": "https://clonesupplies.com/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-013",
+      "title": "Hydraulic industrial hose",
+      "brand": "EquipAccess",
+      "price": 48000,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A cut-length hydraulic industrial hose from the Kampala parts desk.",
+      "long_description": "Yard spare. Typical GET / hydraulics aisle.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "30",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "clone",
+        "unit": "pc",
+        "price_source_url": "https://clonesupplies.com/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-014",
+      "title": "Quick coupler set",
+      "brand": "EquipAccess",
+      "price": 95000,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A hydraulic quick coupler pair for excavator attachments.",
+      "long_description": "Yard spare. Buy, not hire.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "12",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "set"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-015",
+      "title": "GET / bucket tooth",
+      "brand": "EquipAccess",
+      "price": 18500,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A single GET bucket tooth for mid-size excavators.",
+      "long_description": "Yard spare. Sold per tooth.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Namanve",
+        "region": "Central",
+        "stock": "60",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Namanve",
+        "unit": "pc"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-016",
+      "title": "Air filter — 20-ton class",
+      "brand": "EquipAccess",
+      "price": 85000,
+      "category": "spare-parts",
+      "image_url": "/products/filter.jpg",
+      "short_description": "An air filter for a 20-ton class excavator.",
+      "long_description": "Yard spare. Filters aisle.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "16",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "pc"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-017",
+      "title": "Hydraulic seal kit",
+      "brand": "EquipAccess",
+      "price": 64000,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A cylinder seal kit for mid-size excavators.",
+      "long_description": "Yard spare. Seals and rings.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "10",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "kit"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-018",
+      "title": "Fuel filter",
+      "brand": "EquipAccess",
+      "price": 42000,
+      "category": "spare-parts",
+      "image_url": "/products/filter.jpg",
+      "short_description": "A fuel filter for diesel plant on the Mukono yard.",
+      "long_description": "Yard spare. Buy, not hire.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Mukono",
+        "region": "Central",
+        "stock": "24",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "unit": "pc"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-019",
+      "title": "Track shoe — 20-ton class",
+      "brand": "EquipAccess",
+      "price": 0,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A track shoe for a 20-ton excavator. Price on request.",
+      "long_description": "Yard spare. GET / undercarriage. The list price is not published.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "6",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "pc",
+        "price_on_request": "true"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-020",
+      "title": "Grease nipple pack",
+      "brand": "EquipAccess",
+      "price": 12000,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "A pack of grease nipples for plant service.",
+      "long_description": "Yard spare. Small parts.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "80",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "unit": "pack"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [],
       "in_stock": false,
       "product_id": "AE-MAT-010",
-      "title": "ACME Mix cement bags (42.5N)",
-      "brand": "ACME Mix",
-      "price": 38000,
+      "title": "Portland CEM II 42.5N cement bags",
+      "brand": "EquipAccess",
+      "price": 35000,
       "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
       "short_description": "Construction-materials vertical. Sale stock starts at zero until a store inventories a lot.",
-      "long_description": "A sellable row, not a family SKU. Published. Quantity is zero until inventory CRUD restocks it.",
+      "long_description": "A sellable row, not a family SKU. Published. Quantity is zero until inventory CRUD restocks it. Public Lexa figure UGX 35,000 / bag.",
       "specs": {
         "grade": "42.5N",
         "unit": "50 kg bag"
       },
       "review_highlights": [],
       "attributes": {
-        "listing_type": "Sale",
-        "business_unit": "construction-materials",
+        "listing_type": "Material",
         "machine_class": "cement",
         "location": "Kampala",
         "region": "Central",
         "stock": "0",
         "min_quantity": "1",
+        "source": "yard",
         "published": "true",
-        "yard": "ACME Yard Kampala"
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bag",
+        "business_unit": "construction-materials"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-011",
+      "title": "Ordinary Cement CEM IV 32.5N",
+      "brand": "EquipAccess",
+      "price": 31000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "Ordinary Cement CEM IV 32.5N, 50 kg bag. Public Lexa market list UGX 31,000.",
+      "long_description": "Yard materials. The public bag figure is the Lexa Engineering market list, not an EquipAccess quote.",
+      "specs": {
+        "grade": "CEM IV 32.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "800",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bag",
+        "business_unit": "construction-materials",
+        "material_group": "cement",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-012",
+      "title": "Portland Pozzolana CEM II 32.5N",
+      "brand": "EquipAccess",
+      "price": 33000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "Portland Pozzolana CEM II 32.5N. Public Lexa list UGX 33,000 / bag.",
+      "long_description": "Yard materials. Lexa market list figure.",
+      "specs": {
+        "grade": "CEM II 32.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "600",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bag",
+        "business_unit": "construction-materials",
+        "material_group": "cement",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-013",
+      "title": "CEM II 42.5N",
+      "brand": "EquipAccess",
+      "price": 35000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "CEM II 42.5N, 50 kg bag. Public Lexa list UGX 35,000.",
+      "long_description": "Yard materials. Inventoried lot on the Kampala yard.",
+      "specs": {
+        "grade": "CEM II 42.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "500",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bag",
+        "business_unit": "construction-materials",
+        "material_group": "cement",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-014",
+      "title": "Portland CEM I 32.5N",
+      "brand": "EquipAccess",
+      "price": 48000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "Portland CEM I 32.5N. Public Lexa list UGX 48,000 / bag.",
+      "long_description": "Yard materials. Lexa market list figure.",
+      "specs": {
+        "grade": "CEM I 32.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "200",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bag",
+        "business_unit": "construction-materials",
+        "material_group": "cement",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-015",
+      "title": "Hollow block 8\"",
+      "brand": "EquipAccess",
+      "price": 2400,
+      "category": "construction-materials",
+      "image_url": "/products/block.jpg",
+      "short_description": "Hollow block 8\". Public Lexa list UGX 2,400.",
+      "long_description": "Yard materials. Sold per block.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "block",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "2000",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "block",
+        "business_unit": "construction-materials",
+        "material_group": "blocks",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-016",
+      "title": "Burnt clay brick (bbumba)",
+      "brand": "EquipAccess",
+      "price": 450,
+      "category": "construction-materials",
+      "image_url": "/products/brick.jpg",
+      "short_description": "Burnt clay brick (bbumba). Public Lexa list UGX 450.",
+      "long_description": "Yard materials. Sold per brick.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "brick",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "8000",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "brick",
+        "business_unit": "construction-materials",
+        "material_group": "blocks",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-017",
+      "title": "T-12 rebar 12mm 12m",
+      "brand": "EquipAccess",
+      "price": 39000,
+      "category": "construction-materials",
+      "image_url": "/products/rebar.jpg",
+      "short_description": "T-12 rebar 12mm × 12m. Public Lexa list UGX 39,000 / bar.",
+      "long_description": "Yard materials. TMX bar.",
+      "specs": {
+        "size": "12 mm",
+        "length": "12 m"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "rebar",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "400",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bar",
+        "business_unit": "construction-materials",
+        "material_group": "steel",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-018",
+      "title": "T-16 rebar 16mm 12m",
+      "brand": "EquipAccess",
+      "price": 69000,
+      "category": "construction-materials",
+      "image_url": "/products/rebar.jpg",
+      "short_description": "T-16 rebar. Public Lexa list UGX 69,000 / bar.",
+      "long_description": "Yard materials. TMX bar.",
+      "specs": {
+        "size": "16 mm",
+        "length": "12 m"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "rebar",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "280",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bar",
+        "business_unit": "construction-materials",
+        "material_group": "steel",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-019",
+      "title": "T-20 rebar 20mm 12m",
+      "brand": "EquipAccess",
+      "price": 130000,
+      "category": "construction-materials",
+      "image_url": "/products/rebar.jpg",
+      "short_description": "T-20 rebar. Public Lexa list UGX 130,000 / bar.",
+      "long_description": "Yard materials. TMX bar.",
+      "specs": {
+        "size": "20 mm",
+        "length": "12 m"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "rebar",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "160",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "bar",
+        "business_unit": "construction-materials",
+        "material_group": "steel",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-020",
+      "title": "CoverMax 30G iron sheet",
+      "brand": "EquipAccess",
+      "price": 48500,
+      "category": "construction-materials",
+      "image_url": "/products/sheet.jpg",
+      "short_description": "CoverMax 30G iron sheet. Public Lexa list UGX 48,500.",
+      "long_description": "Yard materials. Sold per sheet.",
+      "specs": {
+        "gauge": "30G"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "sheet",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "220",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "sheet",
+        "business_unit": "construction-materials",
+        "material_group": "iron-sheets",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-021",
+      "title": "CoverMax 28G iron sheet",
+      "brand": "EquipAccess",
+      "price": 61500,
+      "category": "construction-materials",
+      "image_url": "/products/sheet.jpg",
+      "short_description": "CoverMax 28G iron sheet. Public Lexa list UGX 61,500.",
+      "long_description": "Yard materials. Sold per sheet.",
+      "specs": {
+        "gauge": "28G"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "sheet",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "180",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "sheet",
+        "business_unit": "construction-materials",
+        "material_group": "iron-sheets",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MAT-022",
+      "title": "Lake sand Sinotruck 25m3",
+      "brand": "EquipAccess",
+      "price": 2100000,
+      "category": "construction-materials",
+      "image_url": "/products/sand.jpg",
+      "short_description": "Lake sand, Sinotruck 25m³. Public Lexa list UGX 2,100,000.",
+      "long_description": "Yard materials. One truck load.",
+      "specs": {
+        "volume": "25 m³"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "aggregate",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "12",
+        "min_quantity": "1",
+        "source": "yard",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "price_source": "lexa",
+        "unit": "load",
+        "business_unit": "construction-materials",
+        "material_group": "aggregates",
+        "price_source_url": "https://www.lexauganda.com/materials-prices/"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-HIR-101",
+      "title": "20-ton excavator hire — Mukono",
+      "brand": "Heavyequipmentuganda",
+      "price": 1200000,
+      "category": "excavators",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "Public hire reference on Heavy Equipment Uganda. Checkout stays on the source.",
+      "long_description": "Web find. EquipAccess does not process payment. Open the source listing to continue.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Rent",
+        "machine_class": "excavator",
+        "location": "Mukono",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "heavyequipmentuganda",
+        "published": "true",
+        "yard": "EquipAccess Mukono",
+        "rate_type": "Daily",
+        "daily_rate": "1200000",
+        "weekly_rate": "7200000",
+        "monthly_rate": "26400000",
+        "source_url": "https://heavyequipmentuganda.com/",
+        "price_source": "heavyequipmentuganda",
+        "capacity_tons": "20"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-HIR-202",
+      "title": "JCB 3CX backhoe for hire, Central Division",
+      "brand": "Jiji",
+      "price": 600000,
+      "category": "loaders",
+      "image_url": "/products/backhoe.jpg",
+      "short_description": "Jiji listing. UGX 600,000 per service. Checkout stays on Jiji.",
+      "long_description": "Web find. EquipAccess does not process payment for web finds.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Rent",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "jiji",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "600000",
+        "weekly_rate": "3600000",
+        "monthly_rate": "13200000",
+        "source_url": "https://jiji.ug/",
+        "price_source": "jiji",
+        "rate_unit": "service",
+        "capacity_tons": "8"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-HIR-301",
+      "title": "Excavators, tractors and Sino trucks hire — Kampala",
+      "brand": "Jiji",
+      "price": 1000000,
+      "category": "trucks",
+      "image_url": "/products/dump.jpg",
+      "short_description": "Jiji listing (Messiah Investments class). UGX 1,000,000. Checkout stays on Jiji.",
+      "long_description": "Web find. Public Kampala hire figure. EquipAccess does not process payment.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Rent",
+        "machine_class": "dump truck",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "jiji",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "rate_type": "Daily",
+        "daily_rate": "1000000",
+        "weekly_rate": "6000000",
+        "monthly_rate": "22000000",
+        "source_url": "https://jiji.ug/",
+        "price_source": "jiji"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-310",
+      "title": "Cat wheel loader — Mantrac Uganda",
+      "brand": "Mantrac",
+      "price": 0,
+      "category": "loaders",
+      "image_url": "/products/loader.jpg",
+      "short_description": "Mantrac Kampala. Price on request. Checkout stays on Mantrac.",
+      "long_description": "Web find. The dealer does not publish a price. EquipAccess does not process payment.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "mantrac",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.mantracgroup.com/",
+        "price_source": "mantrac",
+        "price_on_request": "true"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-PRT-012",
+      "title": "Hydraulic hex nipple",
+      "brand": "Clone",
+      "price": 26500,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "Clone Supplies list UGX 26,500. Checkout stays on Clone.",
+      "long_description": "Web find. EquipAccess does not process payment for web finds.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "clone",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://clonesupplies.com/",
+        "price_source": "clone",
+        "unit": "pc"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-PRT-013",
+      "title": "Hydraulic industrial hose",
+      "brand": "Clone",
+      "price": 0,
+      "category": "spare-parts",
+      "image_url": "/products/hose.jpg",
+      "short_description": "Clone Supplies hydraulics aisle. Price on request. Checkout stays on Clone.",
+      "long_description": "Web find. Continue on the source site.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "clone",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://clonesupplies.com/",
+        "price_source": "clone",
+        "unit": "pc",
+        "price_on_request": "true"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-MAT-011",
+      "title": "Ordinary Cement CEM IV 32.5N",
+      "brand": "Lexa",
+      "price": 31000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "Lexa Engineering market list UGX 31,000 / bag. Checkout stays on Lexa.",
+      "long_description": "Web find. Public materials price. EquipAccess does not process payment.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "lexa",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.lexauganda.com/materials-prices/",
+        "price_source": "lexa",
+        "unit": "bag",
+        "material_group": "cement"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-MAT-012",
+      "title": "Portland Pozzolana CEM II 32.5N",
+      "brand": "Lexa",
+      "price": 33000,
+      "category": "construction-materials",
+      "image_url": "/products/cement.jpg",
+      "short_description": "Lexa market list UGX 33,000 / bag.",
+      "long_description": "Web find. Continue on Lexa.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "lexa",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.lexauganda.com/materials-prices/",
+        "price_source": "lexa",
+        "unit": "bag",
+        "material_group": "cement"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-MAT-017",
+      "title": "T-12 rebar 12mm 12m",
+      "brand": "Lexa",
+      "price": 39000,
+      "category": "construction-materials",
+      "image_url": "/products/rebar.jpg",
+      "short_description": "Lexa market list UGX 39,000 / bar.",
+      "long_description": "Web find. Continue on Lexa.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "rebar",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "lexa",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.lexauganda.com/materials-prices/",
+        "price_source": "lexa",
+        "unit": "bar",
+        "material_group": "steel"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-MAT-020",
+      "title": "CoverMax 30G iron sheet",
+      "brand": "Lexa",
+      "price": 48500,
+      "category": "construction-materials",
+      "image_url": "/products/sheet.jpg",
+      "short_description": "Lexa market list UGX 48,500 / sheet.",
+      "long_description": "Web find. Continue on Lexa.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "sheet",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "lexa",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.lexauganda.com/materials-prices/",
+        "price_source": "lexa",
+        "unit": "sheet",
+        "material_group": "iron-sheets"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-MAT-022",
+      "title": "Lake sand Sinotruck 25m3",
+      "brand": "Lexa",
+      "price": 2100000,
+      "category": "construction-materials",
+      "image_url": "/products/sand.jpg",
+      "short_description": "Lexa market list UGX 2,100,000 / load.",
+      "long_description": "Web find. Continue on Lexa.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Material",
+        "machine_class": "aggregate",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "lexa",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.lexauganda.com/materials-prices/",
+        "price_source": "lexa",
+        "unit": "load",
+        "material_group": "aggregates"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-320",
+      "title": "Used plant — Heavy Equipment Uganda",
+      "brand": "Heavyequipmentuganda",
+      "price": 0,
+      "category": "excavators",
+      "image_url": "/products/excavator.jpg",
+      "short_description": "Public used-plant board. Price on request. Checkout stays on the source.",
+      "long_description": "Web find. EquipAccess does not process payment.",
+      "specs": {},
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "excavator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "heavyequipmentuganda",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://heavyequipmentuganda.com/",
+        "price_source": "heavyequipmentuganda",
+        "price_on_request": "true"
       }
     }
   ]

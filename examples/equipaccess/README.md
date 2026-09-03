@@ -5,8 +5,10 @@ gated store desk for the yard operator, a gated haulage-agent desk, and a gated 
 host for listing review. Both commerce agents run over one fixture catalog. Checkout and
 payouts are handoffs — nothing charges a card and the model cannot move money.
 
-The public name on the mockups is EquipAccess. Brands, machines, yards, and people here
-are ACME fiction.
+The public name on the storefront is EquipAccess. The shop catalog mixes yard listings
+(on-platform hire and buy carts) with labelled web finds from public Uganda sources.
+Public market figures are labelled on each row and are not EquipAccess quotes. Web-find
+rows carry a `source_url`; their CTA opens the source. The model never posts payment.
 
 ## Run
 
@@ -36,8 +38,8 @@ adapter at a running Laravel app. Cart writes and `POST make-order-payment` stay
 Customer A — signed-in site manager (Amina, Mukono):
 
 1. Open the storefront (`:3004`). Shop lists the full catalog. Open Search (or the composer) and ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
-2. See the machine cards. Pick the ACME Iron 20-ton (the CAT 320 stand-in). The live hire summary shows the dated quote and haulage.
-3. Switch Daily vs Weekly. Ten days on the weekly rate is 1,260,000 UGX. Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
+2. See the machine cards. Pick the 20-ton excavator on the Mukono yard. The live hire summary shows the dated quote and haulage.
+3. Switch Daily vs Weekly. Ten days on the weekly rate is 14,400,000 UGX (two weeks at the public 1,200,000 / day figure). Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
 4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. Payment options are Flutterwave (card or mobile money) and bank transfer — both handoffs. The hire lands in Haulage Review.
 
 Customer B — date conflict / on-hire machine:
@@ -97,7 +99,7 @@ used.
 - Agents are haulage/logistics (`packing_yard`, `transport_means`), not sales. Admin
   attaches an agent on the haulage desk. Pay shipping and pay payouts are 403.
 - Business units: equipments, spare-parts, construction-materials. Each product is one
-  sellable row (no parent-family SKU matrix). `listing_type` is Sale or Rent.
+  sellable row (no parent-family SKU matrix). `listing_type` is Rent, Sale, Spare, or Material.
 - Laravel rent stock is always qty 1. This demo still does date-aware multi-unit holds so
   morning overlap tests work.
 - Sale stock starts at 0 until inventory CRUD. Spare parts here have been inventoried.

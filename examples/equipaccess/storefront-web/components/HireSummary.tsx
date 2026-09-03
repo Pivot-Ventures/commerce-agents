@@ -3,52 +3,129 @@
 
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { addToCart, setHireWindow } from "@/lib/api";
-import { formatUgx, isHireListing, rateSuffix } from "@/lib/format";
+import {
+  formatListPrice,
+  formatUgx,
+  isHireListing,
+  isPriceOnRequest,
+  isWebFind,
+  listingKind,
+  listingSource,
+  materialsDeliveryFee,
+  sourceCta,
+  sourceLabel,
+} from "@/lib/format";
 import type { CartPayload, Product } from "@/lib/types";
 import { MachineMark } from "./MachineCard";
+
+const DEFAULT_START = "2026-09-12";
+const DEFAULT_END = "2026-09-21";
+
+function daysBetween(start: string, end: string): number {
+  const from = Date.parse(start);
+  const to = Date.parse(end);
+  if (Number.isNaN(from) || Number.isNaN(to) || to < from) return 1;
+  return Math.round((to - from) / 86_400_000) + 1;
+}
+
+function unitRate(product: Product, rate: string): number {
+  const attrs = product.attributes ?? {};
+  if (rate === "Weekly") return Number(attrs.weekly_rate ?? Number(attrs.daily_rate ?? product.price) * 6);
+  if (rate === "Monthly") return Number(attrs.monthly_rate ?? Number(attrs.daily_rate ?? product.price) * 22);
+  return Number(attrs.daily_rate ?? product.price);
+}
+
+function periodsFor(days: number, rate: string): number {
+  if (rate === "Weekly") return Math.ceil(days / 7);
+  if (rate === "Monthly") return Math.ceil(days / 30);
+  return days;
+}
 
 export default function HireSummary({
   product,
   cart,
+  quantity,
+  onQuantity,
   onCart,
 }: {
   product: Product | null;
   cart: CartPayload | null;
+  quantity?: number;
+  onQuantity?: (quantity: number) => void;
   onCart: (cart: CartPayload) => void;
 }) {
   const window = cart?.hire_window;
   const haulage = cart?.haulage;
+  const kind = product ? listingKind(product) : "Rent";
   const hire = product ? isHireListing(product) : true;
-  const rate = window?.rate_type ?? product?.attributes?.rate_type ?? "Weekly";
-  const days = window?.days ?? Number(product?.attributes?.number_of_days ?? 10);
-  const subtotal = cart?.subtotal ?? Number(product?.attributes?.quoted_total ?? product?.price ?? 0);
-  const haulageFee = haulage?.fee ?? 0;
-  const total = hire ? subtotal + haulageFee : (product?.price ?? subtotal);
+  const web = product ? isWebFind(product) : false;
+  const source = product ? listingSource(product) : "yard";
+  const qty = Math.max(1, quantity ?? 1);
+  const [site, setSite] = useState(window?.site_location ?? "Ntinda");
+  const [start, setStart] = useState(window?.start ?? DEFAULT_START);
+  const [end, setEnd] = useState(window?.end ?? DEFAULT_END);
+  const [haulageOn, setHaulageOn] = useState(window?.include_haulage ?? true);
+  const [deliver, setDeliver] = useState(true);
 
-  async function applyRate(next: string) {
-    const updated = await setHireWindow({ rate_type: next, include_haulage: true });
+  useEffect(() => {
+    if (window?.start) setStart(window.start);
+    if (window?.end) setEnd(window.end);
+    if (window?.site_location) setSite(window.site_location);
+    if (window?.include_haulage != null) setHaulageOn(window.include_haulage);
+  }, [window?.start, window?.end, window?.site_location, window?.include_haulage]);
+
+  const rate = window?.rate_type ?? product?.attributes?.rate_type ?? "Daily";
+  const days = window?.days ?? daysBetween(start, end);
+  const hireSubtotal = useMemo(() => {
+    if (!product || !hire) return 0;
+    return periodsFor(days, rate) * unitRate(product, rate);
+  }, [product, hire, days, rate]);
+  const haulageFee = haulageOn ? (haulage?.fee ?? 0) : 0;
+  const deliveryFee = deliver ? materialsDeliveryFee(site) : 0;
+  const goodsTotal = product && !hire ? qty * (isPriceOnRequest(product) ? 0 : product.price) : 0;
+  const total = hire ? hireSubtotal + haulageFee : goodsTotal + (kind === "Sale" ? 0 : deliveryFee);
+
+  async function applyWindow(next: {
+    start_date?: string;
+    end_date?: string;
+    rate_type?: string;
+    site_location?: string;
+    include_haulage?: boolean;
+  }) {
+    const updated = await setHireWindow(next);
     if (updated) onCart(updated);
   }
 
   async function add() {
-    if (!product) return;
+    if (!product || web) return;
     if (hire) {
       await setHireWindow({
+        start_date: start,
+        end_date: end,
         rate_type: rate,
-        site_location: window?.site_location ?? product.attributes?.location,
-        include_haulage: true,
+        site_location: site,
+        include_haulage: haulageOn,
       });
     }
-    const next = await addToCart(product.product_id, 1);
+    const next = await addToCart(product.product_id, hire ? 1 : qty);
     if (next) onCart(next);
   }
+
+  const heading =
+    web ? "External listing" : kind === "Rent" ? "Live hire summary" : kind === "Sale" ? "Sale listing" : "Order summary";
 
   return (
     <aside className="flex h-full flex-col border-l border-(--line) bg-white">
       <div className="flex items-center justify-between border-b border-(--line) px-4 py-3">
-        <h2 className="text-[15px] font-bold text-(--navy)">{hire ? "Live hire summary" : "Sale listing"}</h2>
-        <span className="text-[11px] font-semibold text-(--ink-soft)">No charge yet</span>
+        <h2 className="flex items-center gap-2 text-[15px] font-bold text-(--navy)">
+          {heading}
+          {product ? <span className="h-2 w-2 rounded-full bg-(--ok)" aria-hidden /> : null}
+        </h2>
+        <span className="text-[11px] font-semibold text-(--ink-soft)">
+          {web ? "Source checkout" : "No charge yet"}
+        </span>
       </div>
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
         {product ? (
@@ -56,26 +133,67 @@ export default function HireSummary({
             <MachineMark product={product} className="h-14 w-14 rounded-lg text-sm" />
             <div>
               <div className="font-bold text-(--navy)">{product.title}</div>
-              <div className="text-[13px] text-(--amber)">
-                {hire
-                  ? `${formatUgx(Number(product.attributes?.daily_rate ?? product.price))}${rateSuffix("Daily")}`
-                  : formatUgx(product.price)}
+              <div className="text-[13px] text-(--amber)">{formatListPrice(product)}</div>
+              <div className="text-[12px] text-(--ink-soft)">
+                {product.attributes?.location ?? "Uganda"}
+                {web ? ` · ${sourceLabel(source)}` : ""}
               </div>
             </div>
           </div>
         ) : (
-          <p className="text-[13px] text-(--ink-soft)">Search a machine to stage a dated quote.</p>
-        )}
-        {hire && window ? (
-          <div className="rounded-xl bg-(--well) px-3 py-2 text-[13px]">
-            <div className="font-semibold text-(--navy)">
-              {window.start} – {window.end}
+          <div className="grid flex-1 place-items-center px-4 text-center">
+            <div>
+              <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-xl bg-(--well) text-(--ink-soft)">
+                ⌘
+              </div>
+              <p className="text-[13px] text-(--ink-soft)">Nothing selected — pick a machine or a bag of cement</p>
             </div>
-            <div className="text-(--ink-soft)">{days} days</div>
           </div>
-        ) : null}
-        {hire ? (
+        )}
+
+        {product && web ? (
           <>
+            <div className="rounded-xl bg-(--info-soft) px-3 py-2 text-[13px] text-(--info)">
+              Checkout stays on {sourceLabel(source)}. We open their listing with your dates.
+            </div>
+            <p className="text-[11px] text-(--ink-soft)">
+              Checkout happens on the source site for external items. EquipAccess does not process payment for web
+              finds.
+            </p>
+          </>
+        ) : null}
+
+        {product && hire && !web ? (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
+                Start
+                <input
+                  type="date"
+                  value={start}
+                  onChange={(event) => {
+                    const next = event.target.value;
+                    setStart(next);
+                    void applyWindow({ start_date: next, end_date: end, include_haulage: haulageOn, site_location: site });
+                  }}
+                  className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
+                />
+              </label>
+              <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
+                End
+                <input
+                  type="date"
+                  value={end}
+                  onChange={(event) => {
+                    const next = event.target.value;
+                    setEnd(next);
+                    void applyWindow({ start_date: start, end_date: next, include_haulage: haulageOn, site_location: site });
+                  }}
+                  className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
+                />
+              </label>
+            </div>
+            <div className="text-[13px] text-(--ink-soft)">{days} days</div>
             <div>
               <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">Rate</div>
               <div className="flex gap-1">
@@ -83,7 +201,7 @@ export default function HireSummary({
                   <button
                     key={option}
                     type="button"
-                    onClick={() => void applyRate(option)}
+                    onClick={() => void applyWindow({ rate_type: option, include_haulage: haulageOn, site_location: site })}
                     className={`flex-1 rounded-md border px-2 py-1.5 text-[12px] font-semibold ${
                       rate === option ? "border-(--amber) bg-(--amber) text-(--navy)" : "border-(--line) bg-white"
                     }`}
@@ -92,49 +210,158 @@ export default function HireSummary({
                   </button>
                 ))}
               </div>
-              {days >= 7 ? <p className="mt-1 text-[11px] text-(--ink-soft)">Weekly is usually the better 10-day rate.</p> : null}
             </div>
-            <div className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
-              <div>
-                <div className="font-semibold text-(--navy)">Haulage to site</div>
-                <div className="text-(--ink-soft)">
-                  {haulage ? `${haulage.from} → ${haulage.to} · ${haulage.distance_km} km` : "Priced by distance once a site is set"}
-                </div>
-              </div>
-              <span className="font-bold text-(--navy)">{haulage ? formatUgx(haulageFee, true) : "—"}</span>
-            </div>
+            <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
+              Site
+              <input
+                value={site}
+                onChange={(event) => setSite(event.target.value)}
+                onBlur={() => void applyWindow({ site_location: site, include_haulage: haulageOn, start_date: start, end_date: end })}
+                className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
+              />
+            </label>
+            <label className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
+              <span>
+                <span className="font-semibold text-(--navy)">Haulage to site</span>
+                <span className="block text-(--ink-soft)">
+                  {haulageOn && haulage
+                    ? `${haulage.from} → ${haulage.to} · ${haulage.distance_km} km`
+                    : "Include transport to site"}
+                </span>
+              </span>
+              <input
+                type="checkbox"
+                checked={haulageOn}
+                onChange={(event) => {
+                  const next = event.target.checked;
+                  setHaulageOn(next);
+                  void applyWindow({ include_haulage: next, site_location: site, start_date: start, end_date: end });
+                }}
+              />
+            </label>
           </>
-        ) : (
-          <p className="text-[13px] text-(--ink-soft)">Buy, not hire. Sale stock is the list price.</p>
-        )}
-        <dl className="space-y-1 text-[13px]">
-          <div className="flex justify-between">
-            <dt>{hire ? "Subtotal" : "Sale price"}</dt>
-            <dd>{formatUgx(hire ? subtotal : (product?.price ?? 0))}</dd>
-          </div>
-          {hire ? (
-            <div className="flex justify-between">
-              <dt>Haulage</dt>
-              <dd>{haulage ? formatUgx(haulageFee) : "—"}</dd>
+        ) : null}
+
+        {product && (kind === "Material" || kind === "Spare") && !web ? (
+          <>
+            <div className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2">
+              <span className="text-[13px] font-semibold text-(--navy)">Quantity</span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="grid h-8 w-8 place-items-center rounded-md border border-(--line)"
+                  onClick={() => onQuantity?.(Math.max(1, qty - 1))}
+                >
+                  −
+                </button>
+                <span className="min-w-[5ch] text-center text-[13px] font-bold">
+                  {qty} {product.attributes?.unit ?? "pcs"}
+                </span>
+                <button
+                  type="button"
+                  className="grid h-8 w-8 place-items-center rounded-md border border-(--line)"
+                  onClick={() => onQuantity?.(qty + 1)}
+                >
+                  +
+                </button>
+              </div>
             </div>
-          ) : null}
-          <div className="flex justify-between border-t border-(--line) pt-1 text-[18px] font-bold text-(--amber)">
-            <dt>Total</dt>
-            <dd>{formatUgx(total)}</dd>
-          </div>
-        </dl>
-        <p className="text-[11px] text-(--ink-soft)">VAT inclusive. Deposit is quoted at checkout and is not taken here.</p>
+            <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
+              Delivery site
+              <input
+                value={site}
+                onChange={(event) => setSite(event.target.value)}
+                className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
+              />
+            </label>
+            <label className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
+              <span className="font-semibold text-(--navy)">Deliver to site</span>
+              <input type="checkbox" checked={deliver} onChange={(event) => setDeliver(event.target.checked)} />
+            </label>
+            <p className="text-[12px] text-(--ok)">Available for collection or delivery.</p>
+          </>
+        ) : null}
+
+        {product && kind === "Sale" && !web ? (
+          <p className="text-[13px] text-(--ink-soft)">
+            {isPriceOnRequest(product)
+              ? "Buy, not hire. The dealer has not published a list price."
+              : "Buy, not hire. Sale stock is the list price."}
+          </p>
+        ) : null}
+
+        {product && !web ? (
+          <dl className="space-y-1 text-[13px]">
+            {hire ? (
+              <>
+                <div className="flex justify-between">
+                  <dt>
+                    {days} days × {formatUgx(unitRate(product, rate), true).replace(" UGX", "")}
+                  </dt>
+                  <dd>{formatUgx(hireSubtotal)}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt>Haulage</dt>
+                  <dd>{haulageOn && haulage ? formatUgx(haulageFee) : "0 UGX"}</dd>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between">
+                  <dt>{kind === "Sale" ? "Sale price" : `${qty} × ${formatUgx(product.price)}`}</dt>
+                  <dd>{isPriceOnRequest(product) ? "Price on request" : formatUgx(goodsTotal)}</dd>
+                </div>
+                {kind !== "Sale" ? (
+                  <div className="flex justify-between">
+                    <dt>Delivery to site {site || "—"}</dt>
+                    <dd>{deliver ? formatUgx(deliveryFee) : "0 UGX"}</dd>
+                  </div>
+                ) : null}
+              </>
+            )}
+            <div className="flex justify-between border-t border-(--line) pt-1 text-[18px] font-bold text-(--navy)">
+              <dt>Total</dt>
+              <dd className="text-(--amber)">{isPriceOnRequest(product) && !hire ? "Price on request" : formatUgx(total)}</dd>
+            </div>
+          </dl>
+        ) : null}
+
+        {product && !web && (kind === "Material" || kind === "Spare") ? (
+          <p className="text-[11px] text-(--ink-soft)">
+            Yard price
+            {product.attributes?.price_source ? ` • ${sourceLabel(product.attributes.price_source)} market list` : ""}.
+          </p>
+        ) : null}
+        {product && hire && !web ? (
+          <p className="text-[11px] text-(--ink-soft)">VAT inclusive. Deposit is quoted at checkout and is not taken here.</p>
+        ) : null}
       </div>
       <div className="border-t border-(--line) p-4">
-        <button
-          type="button"
-          disabled={!product}
-          onClick={() => void add()}
-          className="btn-primary w-full rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
-        >
-          {hire ? "Add to hire cart" : "Add to cart"}
-        </button>
-        <p className="mt-2 text-center text-[11px] text-(--ink-soft)">No charge yet. Pay when confirmed.</p>
+        {web && product ? (
+          <>
+            <a
+              href={product.attributes?.source_url || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full rounded-xl bg-(--navy) py-2.5 text-center text-sm font-bold text-white"
+            >
+              {sourceCta(source).replace("Continue on", "Open on")}
+            </a>
+            <p className="mt-2 text-center text-[11px] text-(--ink-soft)">Checkout stays on {sourceLabel(source)}.</p>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              disabled={!product || (isPriceOnRequest(product ?? {}) && !hire)}
+              onClick={() => void add()}
+              className="btn-primary w-full rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
+            >
+              {hire ? "Add to hire cart" : kind === "Material" ? "Add materials to cart" : "Add to cart"}
+            </button>
+            <p className="mt-2 text-center text-[11px] text-(--ink-soft)">No charge yet. Pay when confirmed.</p>
+          </>
+        )}
       </div>
     </aside>
   );
