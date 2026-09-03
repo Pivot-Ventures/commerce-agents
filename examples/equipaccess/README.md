@@ -134,3 +134,31 @@ or counters.
 ## Ports
 
 API `:8004`, storefront `:3004`, merchant portal `:3104`, admin `:3204`.
+
+## Public site
+
+One Docker image serves the three desks and the API on a single origin:
+
+| Path | Surface |
+|---|---|
+| `/` | storefront (hire) |
+| `/merchant` | merchant portal (haulage queue) |
+| `/admin` | admin desk (listing approvals) |
+| `/api` | FastAPI |
+
+Build from the repo root. The image defaults to fixtures. Chat reads `ANTHROPIC_API_KEY` at run time; browsing the catalog, the haulage queue, and admin listings does not need it. Checkout still charges nothing. `POST /api/haulage` and payouts stay unwired. Do not put a key in the Dockerfile or compose file.
+
+```bash
+docker build -f examples/equipaccess/Dockerfile -t equipaccess .
+docker run -p 80:80 -e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" equipaccess
+```
+
+`PORT` (default 80) is the public listen port; nginx binds `0.0.0.0:$PORT`. The Next apps and uvicorn bind loopback. Same-origin `/api` is baked into the web builds (`NEXT_PUBLIC_API_URL` empty; merchant `basePath` `/merchant`; admin `basePath` `/admin`). Local `run_demo.py` is unchanged: it does not set those variables, so the apps still listen on `:3004`, `:3104`, and `:3204`.
+
+One-container Compose, from the repo root:
+
+```bash
+docker compose -f examples/equipaccess/docker-compose.yml up --build
+```
+
+Push the image to a registry, then point Azure Container Apps or a Render web service at it. Set `ANTHROPIC_API_KEY` as a host secret. Health check `/api/health`. Leave `EQUIPACCESS_API_BASE` unset. Sessions live in process memory; a restart is a fresh demo. `.github/workflows/equipaccess-image.yml` builds the image; it does not push and it does not hold secrets.

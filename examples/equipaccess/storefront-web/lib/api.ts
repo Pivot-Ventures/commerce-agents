@@ -4,6 +4,7 @@
 import { AgentApi } from "web-shared";
 import type { CartPayload, Product } from "./types";
 
+// Empty string is same-origin (the production image). Unset is the local demo API.
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8004";
 
 export const api = new AgentApi(API_URL, "/api");

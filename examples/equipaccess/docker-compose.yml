@@ -1,0 +1,22 @@
+# Copyright 2026 Anthropic PBC
+# SPDX-License-Identifier: Apache-2.0
+#
+# One service, one container. From the repo root:
+#
+#   docker compose -f examples/equipaccess/docker-compose.yml up --build
+#
+# Chat needs ANTHROPIC_API_KEY in the environment. Catalog, haulage, and
+# listings do not. Do not set EQUIPACCESS_API_BASE if you want fixtures.
+
+services:
+  equipaccess:
+    build:
+      context: ../..
+      dockerfile: examples/equipaccess/Dockerfile
+    image: equipaccess
+    ports:
+      - "${PORT:-80}:80"
+    environment:
+      PORT: "80"
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    # Ephemeral: sessions live in process memory. A restart is a fresh demo.

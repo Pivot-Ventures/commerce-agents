@@ -1,0 +1,42 @@
+name: equipaccess-image
+
+on:
+  pull_request:
+    paths:
+      - examples/equipaccess/**
+      - examples/demo_common/**
+      - examples/web-shared/**
+      - examples/package.json
+      - examples/package-lock.json
+      - commerce-common/**
+      - shopping-agent/**
+      - merchant-agent/**
+      - requirements.txt
+      - .dockerignore
+      - .github/workflows/equipaccess-image.yml
+  push:
+    branches: [main]
+    paths:
+      - examples/equipaccess/**
+      - examples/demo_common/**
+      - examples/web-shared/**
+      - examples/package.json
+      - examples/package-lock.json
+      - commerce-common/**
+      - shopping-agent/**
+      - merchant-agent/**
+      - requirements.txt
+      - .dockerignore
+      - .github/workflows/equipaccess-image.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Build EquipAccess image
+        run: docker build -f examples/equipaccess/Dockerfile -t equipaccess:ci .
