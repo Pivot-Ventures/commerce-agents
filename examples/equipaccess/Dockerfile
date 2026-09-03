@@ -66,19 +66,7 @@ COPY --from=web /src/examples/equipaccess/merchant-web/.next/standalone /app/web
 COPY --from=web /src/examples/equipaccess/merchant-web/.next/static /tmp/static/merchant
 COPY --from=web /src/examples/equipaccess/admin-web/.next/standalone /app/web/admin
 COPY --from=web /src/examples/equipaccess/admin-web/.next/static /tmp/static/admin
-RUN python -c "\
-from pathlib import Path; import shutil;\
-\
-def place(name):\
-    root = Path('/app/web') / name;\
-    server = next(root.rglob('server.js'));\
-    dest = server.parent / '.next' / 'static';\
-    dest.parent.mkdir(parents=True, exist_ok=True);\
-    shutil.copytree(Path('/tmp/static') / name, dest, dirs_exist_ok=True);\
-\
-for name in ('storefront', 'merchant', 'admin'):\
-    place(name);\
-"
+RUN python examples/equipaccess/deploy/place_static.py
 
 COPY examples/equipaccess/deploy/nginx.conf.template /etc/nginx/templates/equipaccess.conf.template
 

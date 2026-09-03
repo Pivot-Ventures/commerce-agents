@@ -51,3 +51,9 @@ def test_serve_does_not_enable_live_laravel_or_payouts():
     assert "EQUIPACCESS_API_BASE is not set here" in text
     assert "POST /api/haulage" in text
     assert 'os.environ.get("PORT", "80")' in text
+
+
+def test_place_static_script_is_in_the_image_tree():
+    text = (DEPLOY / "place_static.py").read_text(encoding="utf-8")
+    assert "server.js" in text
+    assert (ROOT / "Dockerfile").read_text(encoding="utf-8").count("place_static.py") == 1
