@@ -128,6 +128,7 @@ the MCP servers bind to loopback.
 | [`examples/travel/`](examples/travel/) ACME Travel | Date-bound inventory and a `present_itinerary` extension | Occupancy calendar and date-window rate moves |
 | [`examples/telecom/`](examples/telecom/) ACME Mobile | Account context, plan matrix, server-authored fee disclosures | Plan mix, price moves that state the lines affected, protected regulated fees |
 | [`examples/entertainment/`](examples/entertainment/) ACME Tickets | Timed holds, waitlists, transfers, venue map, all-in fee disclosures | Event pacing, hold releases that add real capacity, fee-preserving price moves |
+| [`examples/equipaccess/`](examples/equipaccess/) ACME Equip | Dated hire quotes, haulage in the cart, Flutterwave handoff (no charge) | Haulage review queue, hire calendar, staged daily-rate moves; admin desk for listing approvals |
 
 Each example's README has a `Try` section: the turns `scripts/smoke_chat.py` runs, and single
 prompts with what a good answer does.
@@ -150,6 +151,9 @@ runtime's logger: zero on a second turn means the prefix changed.
 
 The runtimes take any `anthropic` client as `client=` and the SDK runtimes take the platform
 from the CLI environment; [`docs/deployment.md`](docs/deployment.md) covers GCP Vertex AI, AWS Bedrock, Microsoft Foundry, and gateways.
+
+ACME Equip also ships a single-container image (storefront `/`, merchant `/merchant`, admin
+`/admin`, API `/api`). Build and run are in that README; the key is a run-time env var.
 
 ## MCP connectors
 

@@ -65,7 +65,7 @@ jobs:
           done
 
   web:
-    # The eight example apps are one npm workspace (examples/); install once, build each.
+    # The example web apps are one npm workspace (examples/); install once, build each.
     runs-on: ubuntu-latest
     defaults:
       run:

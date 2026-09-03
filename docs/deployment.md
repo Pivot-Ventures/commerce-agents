@@ -179,3 +179,19 @@ and checks that both Messages API runtimes bind it, and that each environment ab
 runs. No test holds cloud credentials, so no live platform conversation runs here; run one
 on your platform before relying on it. To drive either agent with no credentials at all,
 script the model with `commerce_common.testing.FakeClient`.
+
+## EquipAccess public image
+
+`examples/equipaccess/Dockerfile` is one container: nginx on `0.0.0.0:$PORT` (default 80)
+reverse-proxies the Next storefront (`/`), merchant portal (`/merchant`), admin desk
+(`/admin`), and uvicorn (`/api`). The demo stays on fixtures. Pass `ANTHROPIC_API_KEY` at
+`docker run`; do not bake it into the image. Catalog, haulage, and listings work without
+the key. Checkout charges nothing; `POST /api/haulage` and payouts stay unwired.
+
+```bash
+docker build -f examples/equipaccess/Dockerfile -t equipaccess .
+docker run -p 80:80 -e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" equipaccess
+```
+
+Render and Azure Container Apps: listen on `PORT`, health check `/api/health`, set the key
+as a runtime secret. The EquipAccess README has the path table and Compose line.

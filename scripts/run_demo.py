@@ -147,7 +147,7 @@ def ensure_python_deps(install: bool) -> None:
 
 
 def ensure_web_deps(install: bool) -> None:
-    """The eight web apps share one npm workspace at examples/, installed once."""
+    """The example web apps share one npm workspace at examples/, installed once."""
     if NEXT.exists():
         return
     if not install:

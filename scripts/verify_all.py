@@ -1,7 +1,7 @@
 # Copyright 2026 Anthropic PBC
 # SPDX-License-Identifier: Apache-2.0
 
-"""The full verification loop: lint, format check, check.py, pytest, deploy dry-runs, the eight
+"""The full verification loop: lint, format check, check.py, pytest, deploy dry-runs, the
 web builds, and (with --live) a scripted conversation against the API.
 
     python scripts/verify_all.py            # everything that runs without API access
