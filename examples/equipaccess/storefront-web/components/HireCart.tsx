@@ -53,12 +53,18 @@ export default function HireCart({
                 <MachineMark product={{ product_id: item.product_id, title: item.title, price: item.price }} className="h-16 w-16 rounded-lg text-sm" />
                 <div className="min-w-0 flex-1">
                   <div className="font-bold text-(--navy)">{item.title}</div>
-                  <div className="text-[13px] text-(--ink-soft)">
-                    {item.option_values?.start_date} – {item.option_values?.end_date} ({item.option_values?.number_of_days} days)
-                  </div>
-                  <div className="text-[13px] text-(--amber)">
-                    {item.option_values?.rate_type ?? "Daily"} rate · qty {item.quantity}
-                  </div>
+                  {item.option_values?.start_date ? (
+                    <>
+                      <div className="text-[13px] text-(--ink-soft)">
+                        {item.option_values.start_date} – {item.option_values.end_date} ({item.option_values.number_of_days} days)
+                      </div>
+                      <div className="text-[13px] text-(--amber)">
+                        {item.option_values.rate_type ?? "Daily"} rate · qty {item.quantity}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-[13px] text-(--amber)">qty {item.quantity}</div>
+                  )}
                 </div>
                 <div className="font-semibold text-(--navy)">{formatUgx(item.line_total)}</div>
               </li>

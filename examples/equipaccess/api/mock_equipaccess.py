@@ -554,7 +554,13 @@ class MockEquipAccess(StorefrontBackend):
         window = self._windows.get(session_id)
         cart = self._carts.cart(session_id)
         haulage = None
-        if window is not None and window.include_haulage:
+        has_rental = False
+        for item in cart.items:
+            product = self.product(item.product_id)
+            if product is not None and _is_rental(product) and _is_yard(product):
+                has_rental = True
+                break
+        if window is not None and window.include_haulage and (has_rental or not cart.items):
             yard = self._window_yard(session_id)
             kilometres = haulage_km(yard, window.site_location, window.distance_km)
             fee = haulage_fee(kilometres)

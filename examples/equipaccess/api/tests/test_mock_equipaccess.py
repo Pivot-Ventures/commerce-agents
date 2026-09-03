@@ -256,6 +256,25 @@ async def test_materials_delivery_reaches_cart_extras(backend, session):
     assert hire.total == round(cart.subtotal + 180_000, 2)
 
 
+async def test_materials_cart_does_not_keep_leftover_hire_haulage(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            site_location="Ntinda",
+            yard_location="Mukono",
+            include_haulage=True,
+            include_delivery=True,
+        ),
+    )
+    await backend.add_to_cart(session, "AE-MAT-011", 1)
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"] is None
+    assert extras["deposit"] == 0
+    assert extras["delivery"]["fee"] == 180_000
+
+
 def test_catalog_has_a_full_shop_per_section():
     products = list(MockEquipAccess().products.values())
     kinds = {}

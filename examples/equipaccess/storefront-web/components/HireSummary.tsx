@@ -101,7 +101,7 @@ export default function HireSummary({
   }) {
     const updated = await setHireWindow({
       ...next,
-      yard_location: next.yard_location ?? yard,
+      yard_location: next.yard_location ?? (hire ? yard : undefined),
     });
     if (updated) onCart(updated);
   }
