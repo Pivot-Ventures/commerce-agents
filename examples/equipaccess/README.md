@@ -152,6 +152,7 @@ One Docker image serves the three desks and the API on a single origin:
 | `/agent` | haulage-agent desk; `/agent/login` |
 | `/admin` | admin desk; `/admin/login` |
 | `/merchant` | redirects to `/store` |
+| `/products/` | storefront category photographs (nginx; not proxied to Next) |
 | `/api` | FastAPI |
 
 Local `run_demo.py` does not set `NEXT_BASE_PATH`, so the same pages are `:3104/login`

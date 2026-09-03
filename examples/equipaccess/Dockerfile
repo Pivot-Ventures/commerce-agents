@@ -62,6 +62,8 @@ COPY examples/equipaccess/deploy ./examples/equipaccess/deploy
 
 COPY --from=web /src/examples/equipaccess/storefront-web/.next/standalone /app/web/storefront
 COPY --from=web /src/examples/equipaccess/storefront-web/.next/static /tmp/static/storefront
+COPY --from=web /src/examples/equipaccess/storefront-web/public /tmp/public/storefront
+COPY --from=web /src/examples/equipaccess/storefront-web/public /app/web/storefront-public
 COPY --from=web /src/examples/equipaccess/merchant-web/.next/standalone /app/web/merchant
 COPY --from=web /src/examples/equipaccess/merchant-web/.next/static /tmp/static/merchant
 COPY --from=web /src/examples/equipaccess/admin-web/.next/standalone /app/web/admin
