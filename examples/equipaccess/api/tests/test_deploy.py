@@ -3,6 +3,7 @@
 
 """The production image: one origin, fixtures by default, no baked secrets."""
 
+import importlib.util
 import json
 from pathlib import Path
 
@@ -71,6 +72,41 @@ def test_place_static_script_is_in_the_image_tree():
     assert "/tmp/public" in text
     assert 'parent / "public"' in text
     assert (ROOT / "Dockerfile").read_text(encoding="utf-8").count("place_static.py") == 1
+
+
+def _place_static_module():
+    spec = importlib.util.spec_from_file_location("place_static", DEPLOY / "place_static.py")
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_place_static_copies_public_next_to_standalone_server(tmp_path: Path):
+    web = tmp_path / "web"
+    static_root = tmp_path / "static"
+    public_root = tmp_path / "public"
+    nested = web / "storefront" / "examples" / "equipaccess" / "storefront-web"
+    nested.mkdir(parents=True)
+    (nested / "server.js").write_text("/* next */\n", encoding="utf-8")
+    (static_root / "storefront" / "chunks").mkdir(parents=True)
+    (static_root / "storefront" / "chunks" / "app.js").write_text("ok", encoding="utf-8")
+    photo_src = PUBLIC_PRODUCTS / "excavator.jpg"
+    photo_dst = public_root / "storefront" / "products" / "excavator.jpg"
+    photo_dst.parent.mkdir(parents=True)
+    photo_dst.write_bytes(photo_src.read_bytes())
+
+    module = _place_static_module()
+    parent = module.place(
+        "storefront",
+        web_root=web,
+        static_root=static_root,
+        public_root=public_root,
+    )
+    placed = parent / "public" / "products" / "excavator.jpg"
+    assert placed.is_file()
+    assert placed.read_bytes() == photo_src.read_bytes()
+    assert (parent / ".next" / "static" / "chunks" / "app.js").read_text(encoding="utf-8") == "ok"
 
 
 def test_catalog_product_photos_exist_in_storefront_public():
