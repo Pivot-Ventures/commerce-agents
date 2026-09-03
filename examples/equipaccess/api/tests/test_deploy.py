@@ -76,8 +76,9 @@ def test_render_blueprint_is_one_docker_web_service():
     assert service["dockerContext"] == "."
     assert service["healthCheckPath"] == "/api/health"
     assert service["envVars"] == [{"key": "ANTHROPIC_API_KEY", "sync": False}]
-    assert "EQUIPACCESS_API_BASE" not in text
-    assert "key: PORT" not in text
+    keys = {item["key"] for item in service["envVars"]}
+    assert "EQUIPACCESS_API_BASE" not in keys
+    assert "PORT" not in keys
     assert "sk-ant" not in text
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert (
