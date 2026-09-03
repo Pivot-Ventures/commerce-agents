@@ -8,6 +8,7 @@ import { addToCart, setHireWindow } from "@/lib/api";
 import {
   formatListPrice,
   formatUgx,
+  haulageFeeUgx,
   isHireListing,
   isPriceOnRequest,
   isWebFind,
@@ -82,7 +83,8 @@ export default function HireSummary({
     if (!product || !hire) return 0;
     return periodsFor(days, rate) * unitRate(product, rate);
   }, [product, hire, days, rate]);
-  const haulageFee = haulageOn ? (haulage?.fee ?? 0) : 0;
+  const estimatedHaulage = product ? haulageFeeUgx(product.attributes?.location, site) : 0;
+  const haulageFee = haulageOn ? (haulage?.fee ?? estimatedHaulage) : 0;
   const deliveryFee = deliver ? materialsDeliveryFee(site) : 0;
   const goodsTotal = product && !hire ? qty * (isPriceOnRequest(product) ? 0 : product.price) : 0;
   const total = hire ? hireSubtotal + haulageFee : goodsTotal + (kind === "Sale" ? 0 : deliveryFee);
@@ -226,7 +228,9 @@ export default function HireSummary({
                 <span className="block text-(--ink-soft)">
                   {haulageOn && haulage
                     ? `${haulage.from} → ${haulage.to} · ${haulage.distance_km} km`
-                    : "Include transport to site"}
+                    : haulageOn && product
+                      ? `${product.attributes?.location ?? "yard"} → ${site || "site"}`
+                      : "Include transport to site"}
                 </span>
               </span>
               <input
@@ -302,7 +306,7 @@ export default function HireSummary({
                 </div>
                 <div className="flex justify-between">
                   <dt>Haulage</dt>
-                  <dd>{haulageOn && haulage ? formatUgx(haulageFee) : "0 UGX"}</dd>
+                  <dd>{haulageOn && haulageFee ? formatUgx(haulageFee) : "0 UGX"}</dd>
                 </div>
               </>
             ) : (

@@ -132,6 +132,36 @@ export function formatListPrice(
   return `${formatUgx(amount, compact)}${suffix}`;
 }
 
+const HAULAGE_PER_KM = 240_000 / 18;
+const YARD_TO_SITE_KM: Record<string, number> = {
+  "mukono|mukono": 18,
+  "mukono|kampala": 22,
+  "mukono|ntinda": 34,
+  "mukono|entebbe": 48,
+  "mukono|namanve": 16,
+  "mukono|wakiso": 28,
+  "kampala|kampala": 12,
+  "kampala|ntinda": 8,
+  "kampala|mukono": 22,
+  "kampala|entebbe": 40,
+  "kampala|namanve": 18,
+  "kampala|wakiso": 20,
+  "entebbe|entebbe": 10,
+  "entebbe|kampala": 40,
+  "entebbe|ntinda": 42,
+  "entebbe|mukono": 48,
+  "jinja|jinja": 8,
+  "jinja|kampala": 80,
+  "jinja|mukono": 74,
+};
+
+export function haulageFeeUgx(yard?: string | null, site?: string | null): number {
+  if (!yard || !site) return 0;
+  const km = YARD_TO_SITE_KM[`${yard.trim().toLowerCase()}|${site.trim().toLowerCase()}`];
+  if (!km) return 0;
+  return Math.round(HAULAGE_PER_KM * km);
+}
+
 export function materialsDeliveryFee(site?: string | null): number {
   const folded = (site ?? "").trim().toLowerCase();
   if (!folded) return 0;
