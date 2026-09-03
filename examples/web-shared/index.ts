@@ -6,6 +6,16 @@
  * in its globals.css, a merchant portal imports `portal/portal.css`.
  */
 
+export { LoginScreen } from "./desk/LoginScreen";
+export { EquipAccessLogo } from "./desk/Logo";
+export {
+  type DeskRole,
+  clearDesk,
+  loginDesk,
+  readDesk,
+  useDeskSession,
+  writeDesk,
+} from "./desk/session";
 export { AgentApi } from "./api";
 export { useCatalogIndex } from "./catalog";
 export { type Prefill } from "./Composer";

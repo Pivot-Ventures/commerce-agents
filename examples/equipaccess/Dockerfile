@@ -1,7 +1,7 @@
 # Copyright 2026 Anthropic PBC
 # SPDX-License-Identifier: Apache-2.0
 #
-# One image: storefront /, merchant /merchant, admin /admin, FastAPI /api.
+# One image: storefront / (and /agent), store /store, admin /admin, FastAPI /api.
 # Build from the repo root. The demo stays on fixtures; pass ANTHROPIC_API_KEY
 # at run time for chat. Do not bake secrets into the image.
 #
@@ -27,13 +27,13 @@ COPY examples/equipaccess/merchant-web ./equipaccess/merchant-web
 COPY examples/equipaccess/admin-web ./equipaccess/admin-web
 RUN npm ci --no-audit --no-fund
 
-# Same-origin /api in the browser. Merchant and admin sit under path prefixes.
+# Same-origin /api in the browser. Store and admin sit under path prefixes.
 ENV NEXT_PUBLIC_API_URL=""
 ENV NEXT_OUTPUT=standalone
 WORKDIR /src/examples/equipaccess/storefront-web
 RUN npx next build
 WORKDIR /src/examples/equipaccess/merchant-web
-ENV NEXT_BASE_PATH=/merchant
+ENV NEXT_BASE_PATH=/store
 RUN npx next build
 WORKDIR /src/examples/equipaccess/admin-web
 ENV NEXT_BASE_PATH=/admin

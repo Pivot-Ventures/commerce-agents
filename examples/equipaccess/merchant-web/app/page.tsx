@@ -3,16 +3,17 @@
 
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   AssistantRail,
   Inspector,
   type PortalNavItem,
   PortalShell,
   type Prefill,
+  useDeskSession,
   useMerchantChat,
   useResource,
-  useSession,
 } from "web-shared";
 import AssistantPanel from "@/components/AssistantPanel";
 import CalendarView from "@/components/views/CalendarView";
@@ -39,7 +40,8 @@ function StoreMark() {
 }
 
 export default function PortalPage() {
-  const session = useSession(api);
+  const router = useRouter();
+  const desk = useDeskSession(api, "store");
   const [view, setView] = useState<PortalView>("haulage");
   const [assistantOpen, setAssistantOpen] = useState(false); // closed so the haulage drawer stays first-class
   const [activityOpen, setActivityOpen] = useState(false);
@@ -47,15 +49,19 @@ export default function PortalPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const refreshPortal = useCallback(() => setRefreshKey((value) => value + 1), []);
 
+  useEffect(() => {
+    if (desk.ready && !desk.sessionId) router.replace("/login");
+  }, [desk.ready, desk.sessionId, router]);
+
   const chat = useMerchantChat<StagedChange>(api, {
-    ...session,
+    sessionId: desk.sessionId,
     unreachable: UNREACHABLE,
     onPortalRefresh: refreshPortal,
   });
 
   const { data: overview, failed: overviewFailed } = useResource(
-    session.sessionId ? fetchOverview : null,
-    [session.sessionId, refreshKey],
+    desk.sessionId ? fetchOverview : null,
+    [desk.sessionId, refreshKey],
   );
 
   const askAssistant = useCallback((text: string) => {
@@ -76,6 +82,14 @@ export default function PortalPage() {
     ];
   }, [overview]);
 
+  if (!desk.ready || !desk.sessionId) {
+    return (
+      <p className="p-8 text-[14px] text-(--ink-soft)">
+        Opening the store desk… <a href="/login" className="font-semibold underline">Sign in</a>
+      </p>
+    );
+  }
+
   return (
     <div className="equip-portal">
       <PortalShell
@@ -83,7 +97,11 @@ export default function PortalPage() {
         nav={nav}
         view={view}
         onViewChange={setView}
-        operator={{ name: session.operator ?? "Mercy N.", role: "Operator" }}
+        operator={{ name: desk.name ?? "Mercy N.", role: "Operator" }}
+        onSignOut={() => {
+          desk.signOut();
+          router.replace("/login");
+        }}
         storeLabel="ACME Plant Hire Mukono · Uganda"
         assistantOpen={assistantOpen}
         assistantBusy={chat.busy}
@@ -107,13 +125,13 @@ export default function PortalPage() {
           </AssistantRail>
         }
       >
-        {session.sessionId ? (
+        {desk.sessionId ? (
           <>
             {view === "home" ? (
               <HomeView
                 data={overview}
                 failed={overviewFailed}
-                operator={session.operator}
+                operator={desk.name}
                 onAskAssistant={askAssistant}
                 onNavigate={setView}
                 refreshKey={refreshKey}

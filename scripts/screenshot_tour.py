@@ -297,6 +297,7 @@ MERCHANT_TOURS: dict[str, dict] = {
     },
     "equipaccess": {
         "base_url": "http://localhost:3104",
+        "login": {"email": "mercy@acme.equip", "password": "store-desk"},
         "assistant_box_label": "Message the yard assistant",
         "views": [("haulage", "Haulage queue"), ("calendar", "Hire calendar"), ("rates", "Rates")],
         "turns": [
@@ -462,6 +463,12 @@ def main() -> int:
         page = browser.new_page(viewport={"width": 1480, "height": 940})
         page.goto(args.base_url or config["base_url"], wait_until="networkidle")
         page.wait_for_timeout(900)
+        login = config.get("login") if args.merchant else None
+        if login:
+            page.get_by_label("Email").fill(login["email"])
+            page.get_by_label("Password").fill(login["password"])
+            page.get_by_role("button", name="Sign in").click()
+            page.wait_for_timeout(900)
         (run_merchant_tour if args.merchant else run_storefront_tour)(page, config, output_dir)
         browser.close()
     print(f"Saved screenshots to {output_dir}")

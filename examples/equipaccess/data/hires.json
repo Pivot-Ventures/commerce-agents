@@ -151,6 +151,45 @@
       "total": 654166.0,
       "currency": "UGX",
       "note": "No charge. Haulage review is outstanding."
+    },
+    {
+      "hire_id": "HIRE-7804",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_approved",
+      "created_at": "2026-08-28T09:10:00Z",
+      "items": [
+        {
+          "product_id": "AE-GEN-501",
+          "title": "ACME Power 150kVA Generator",
+          "quantity": 1,
+          "price": 227500.0,
+          "option_values": {
+            "start_date": "2026-09-04",
+            "end_date": "2026-09-10",
+            "number_of_days": "7",
+            "type": "Rent",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Ntinda works yard",
+        "city": "Kampala",
+        "via": "Kireka Rd",
+        "distance_km": 16,
+        "fee": 213333.0,
+        "status": "approved",
+        "label": "Haulage approved"
+      },
+      "subtotal": 227500.0,
+      "haulage_fee": 213333.0,
+      "deposit": 213333.0,
+      "total": 654166.0,
+      "currency": "UGX",
+      "note": "Haulage approved. Assigned to a field agent.",
+      "agent_id": "AG-11"
     }
   ]
 }

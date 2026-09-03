@@ -3,10 +3,12 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
-import { Notice, useResource, useSession } from "web-shared";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Notice, useDeskSession, useResource } from "web-shared";
 import {
   api,
+  approveStoreApplication,
   decideListing,
   attachHireAgent,
   fetchAgents,
@@ -91,10 +93,23 @@ function NavIcon({ name }: { name: string }) {
 }
 
 export default function AdminPage() {
-  const session = useSession(api);
+  const router = useRouter();
+  const desk = useDeskSession(api, "admin");
   const [view, setView] = useState<View>("listings");
   const [refresh, setRefresh] = useState(0);
-  const ready = Boolean(session.sessionId);
+  const ready = Boolean(desk.sessionId);
+
+  useEffect(() => {
+    if (desk.ready && !desk.sessionId) router.replace("/login");
+  }, [desk.ready, desk.sessionId, router]);
+
+  if (!desk.ready || !desk.sessionId) {
+    return (
+      <p className="p-8 text-[14px] text-(--ink-soft)">
+        Opening admin… <a href="/login" className="font-semibold underline">Sign in</a>
+      </p>
+    );
+  }
 
   return (
     <div className="flex min-h-dvh">
@@ -138,9 +153,19 @@ export default function AdminPage() {
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-end gap-3 border-b border-(--line) bg-white px-6 py-3">
-          <span className="text-[13px] font-semibold text-(--navy)">BTIC · Super admin</span>
+          <span className="text-[13px] font-semibold text-(--navy)">{desk.name ?? "BT"} · Super admin</span>
+          <button
+            type="button"
+            className="text-[12px] font-semibold text-(--ink-soft) underline-offset-2 hover:underline"
+            onClick={() => {
+              desk.signOut();
+              router.replace("/login");
+            }}
+          >
+            Sign out
+          </button>
           <span className="grid h-8 w-8 place-items-center rounded-full bg-(--navy) text-[12px] font-bold text-(--amber)">
-            BT
+            {(desk.name ?? "BT").slice(0, 2).toUpperCase()}
           </span>
         </header>
         <main className="grid flex-1 grid-cols-1 gap-6 p-6 xl:grid-cols-[1fr_240px]">
@@ -367,17 +392,49 @@ function Overview({ refresh }: { refresh: number }) {
 
 function Stores({ refresh }: { refresh: number }) {
   const { data } = useResource(fetchStores, [refresh]);
+  const [note, setNote] = useState<string | null>(null);
+  const [tick, setTick] = useState(0);
+  const { data: live } = useResource(fetchStores, [refresh, tick]);
+  const rows = live ?? data;
   return (
     <section>
       <h1 className="eq-display text-3xl font-bold">Stores</h1>
       <ul className="mt-4 space-y-2">
-        {(data?.stores ?? []).map((store) => (
+        {(rows?.stores ?? []).map((store) => (
           <li key={store.store_id} className="rounded-xl border border-(--line) bg-white p-4">
             <div className="font-semibold">{store.name}</div>
             <div className="text-[13px] text-(--ink-soft)">{store.location} · {store.status}</div>
           </li>
         ))}
       </ul>
+      {(rows?.applications ?? []).length ? (
+        <>
+          <h2 className="mt-8 text-[16px] font-semibold">Pending store accounts</h2>
+          <ul className="mt-2 space-y-2">
+            {(rows?.applications ?? []).map((row) => (
+              <li key={row.application_id} className="flex items-center justify-between gap-3 rounded-xl border border-(--line) bg-white p-4">
+                <div>
+                  <div className="font-semibold">{row.store_name}</div>
+                  <div className="text-[13px] text-(--ink-soft)">{row.email} · {row.location}</div>
+                </div>
+                <button
+                  type="button"
+                  className="btn-primary rounded-lg px-3 py-1.5 text-[13px]"
+                  onClick={() =>
+                    void approveStoreApplication(row.application_id).then((result) => {
+                      setNote(result ? `${row.store_name} approved.` : `Could not approve ${row.application_id}.`);
+                      setTick((value) => value + 1);
+                    })
+                  }
+                >
+                  Approve
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {note ? <Notice>{note}</Notice> : null}
     </section>
   );
 }

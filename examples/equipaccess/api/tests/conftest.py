@@ -43,7 +43,13 @@ def make_merchant_router():
 
 @pytest.fixture(scope="session")
 def extra_public_routes() -> set[str]:
-    return {"/api/admin/session", "/api/admin/health"}
+    return {
+        "/api/admin/session",
+        "/api/admin/health",
+        "/api/agent/session",
+        "/api/agent/health",
+        "/api/store/register",
+    }
 
 
 @pytest.fixture(scope="session")

@@ -24,6 +24,13 @@ export type AdminListing = {
 };
 
 export type AdminStore = { store_id: string; name: string; location: string; status: string };
+export type StoreApplication = {
+  application_id: string;
+  store_name?: string;
+  email: string;
+  location?: string;
+  status: string;
+};
 export type AdminAgent = {
   agent_id: string;
   name: string;
@@ -71,7 +78,14 @@ export function fetchOverview() {
 }
 
 export function fetchStores() {
-  return api.get<{ stores: AdminStore[] }>("/stores");
+  return api.get<{ stores: AdminStore[]; applications?: StoreApplication[] }>("/stores");
+}
+
+export function approveStoreApplication(applicationId: string) {
+  return api.post<{ application_id: string; status: string }>(
+    `/store-applications/${encodeURIComponent(applicationId)}/approve`,
+    {},
+  );
 }
 
 export function fetchAgents() {

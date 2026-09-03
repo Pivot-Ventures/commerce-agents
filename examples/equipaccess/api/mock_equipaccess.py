@@ -836,6 +836,14 @@ class MockEquipAccess(StorefrontBackend):
         hire.agent_id = agent_id
         return hire
 
+    def close_delivery(self, hire_id: str, agent_id: str) -> HireRequest:
+        hire = self._hire_by_id(hire_id)
+        if hire.agent_id != agent_id:
+            raise Unavailable(f"{hire_id} is not assigned to this agent")
+        hire.status = "delivered"
+        hire.note = "Delivery closed. Payment still happens on the host checkout, not here."
+        return hire
+
     def assigned_hires(self, agent_id: str | None = None) -> list[dict[str, Any]]:
         rows = []
         for hire in reversed(self._hires):

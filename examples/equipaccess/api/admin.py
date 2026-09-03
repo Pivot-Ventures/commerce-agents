@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from demo_common.storefront_fixtures import load_json
 from shopping_agent import ProductDetails, Unavailable
 
+from .desk_auth import SessionCredentials, desk_auth
 from .mock_equipaccess import DATA_DIR, MockEquipAccess
 
 ADMIN_USER = "admin-user"
@@ -150,7 +151,8 @@ def load_admin() -> dict[str, Any]:
 def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
     """Admin routes share the storefront session store so the demo contract stays
     one identity resolver. ``POST /api/admin/session`` mints a session for the
-    fixture admin profile."""
+    fixture admin profile. Email and password, when sent, must match an active
+    admin desk account."""
     router = APIRouter()
     state = load_admin()
     pending: list[dict[str, Any]] = list(state.get("pending_listings") or [])
@@ -164,7 +166,17 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
             )
 
     @router.post("/session")
-    async def start_session() -> dict:
+    async def start_session(request: SessionCredentials | None = None) -> dict:
+        if request is not None and (request.email or request.password):
+            account = desk_auth.verify("admin", request.email, request.password)
+            record = host.sessions.start(account.user_id)
+            return {
+                "session_id": record.session_id,
+                "user_id": account.user_id,
+                "name": account.name,
+                "role": "super_admin",
+                "org": account.org or "BTIC",
+            }
         record = host.sessions.start(ADMIN_USER)
         return {
             "session_id": record.session_id,
@@ -240,7 +252,16 @@ def create_admin_router(storefront: MockEquipAccess, host: Any) -> APIRouter:
     @router.get("/stores")
     async def stores(record: host.CurrentSession) -> dict:
         del record
-        return {"stores": state.get("stores") or []}
+        return {
+            "stores": state.get("stores") or [],
+            "applications": desk_auth.pending_stores(),
+        }
+
+    @router.post("/store-applications/{application_id}/approve")
+    async def approve_store_application(application_id: str, record: host.CurrentSession) -> dict:
+        if record.user_id != ADMIN_USER:
+            raise HTTPException(status_code=403, detail="Admin session required")
+        return desk_auth.approve_store(application_id)
 
     @router.get("/agents")
     async def agents(record: host.CurrentSession) -> dict:
