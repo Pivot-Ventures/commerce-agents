@@ -610,9 +610,7 @@ class MockEquipAccess(StorefrontBackend):
         if product is None:
             raise Unavailable(f"{product_id} is not in the catalog")
         if not _is_yard(product):
-            raise Unavailable(
-                f"{product.title} is a web find; checkout stays on the source site"
-            )
+            raise Unavailable(f"{product.title} is a web find; checkout stays on the source site")
         existing = self._carts.lines(session.session_id).get(product_id)
         quantity += existing.quantity if existing else 0
         if _is_rental(product):

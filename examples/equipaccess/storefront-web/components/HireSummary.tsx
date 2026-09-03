@@ -116,13 +116,11 @@ export default function HireSummary({
         site_location: site,
         yard_location: yard,
         include_haulage: haulageOn,
-        include_delivery: false,
       });
     } else {
       await setHireWindow({
         site_location: site,
         include_delivery: deliver,
-        include_haulage: false,
       });
     }
     const next = await addToCart(product.product_id, hire ? 1 : qty);
@@ -289,7 +287,7 @@ export default function HireSummary({
               <input
                 value={site}
                 onChange={(event) => setSite(event.target.value)}
-                onBlur={() => void applyWindow({ site_location: site, include_delivery: deliver, include_haulage: false })}
+                onBlur={() => void applyWindow({ site_location: site, include_delivery: deliver })}
                 className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
               />
             </label>
@@ -301,7 +299,7 @@ export default function HireSummary({
                 onChange={(event) => {
                   const next = event.target.checked;
                   setDeliver(next);
-                  void applyWindow({ site_location: site, include_delivery: next, include_haulage: false });
+                  void applyWindow({ site_location: site, include_delivery: next });
                 }}
               />
             </label>
