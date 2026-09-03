@@ -62,6 +62,7 @@ from .rates import (
     haulage_km,
     haulage_round_trip,
     hire_days,
+    materials_delivery_fee,
     normalize_rate_type,
     parse_iso_date,
     quote_hire,
@@ -114,8 +115,10 @@ _DATE_FILTERS = frozenset(
 _QUOTE_FILTERS = _DATE_FILTERS | {
     "rate_type",
     "site_location",
+    "yard_location",
     "distance_km",
     "include_haulage",
+    "include_delivery",
 }
 _SALE_HINTS = frozenset(
     {
@@ -168,6 +171,10 @@ def _is_yard(product: ProductDetails) -> bool:
     return (product.attributes.get("source") or "yard").strip().lower() == "yard"
 
 
+def _is_goods(product: ProductDetails) -> bool:
+    return _listing_type(product) in {"Material", "Spare"}
+
+
 def _query_wants_sale(query: str) -> bool:
     tokens = {token.strip(".,!?") for token in query.lower().split()}
     return bool(tokens & _SALE_HINTS and not (tokens & _RENT_HINTS))
@@ -182,8 +189,10 @@ class HireWindow:
     end: date
     rate_type: str = RATE_DAILY
     site_location: str | None = None
+    yard_location: str | None = None
     distance_km: float | None = None
     include_haulage: bool = False
+    include_delivery: bool = False
 
     @property
     def days(self) -> int:
@@ -271,11 +280,13 @@ class MockEquipAccess(StorefrontBackend):
         if end < start:
             start, end = end, start
         site = attrs.get("site_location") or attrs.get("location")
+        yard = attrs.get("yard_location") or attrs.get("location")
         try:
             distance = float(attrs["distance_km"]) if attrs.get("distance_km") else None
         except ValueError:
             distance = None
         haulage = attrs.get("include_haulage", "").lower() in {"1", "yes", "true"}
+        delivery = attrs.get("include_delivery", "").lower() in {"1", "yes", "true"}
         window = HireWindow(
             start=start,
             end=end,
@@ -285,8 +296,10 @@ class MockEquipAccess(StorefrontBackend):
                 else recommended_rate_type(hire_days(start, end))
             ),
             site_location=site,
+            yard_location=yard,
             distance_km=distance,
             include_haulage=haulage,
+            include_delivery=delivery,
         )
         self.note_hire_window(session.session_id, window)
         return window
@@ -308,6 +321,7 @@ class MockEquipAccess(StorefrontBackend):
             end=end,
             rate_type=recommended_rate_type(days),
             site_location=prefs.default_location,
+            yard_location=product.attributes.get("location"),
         )
         self.note_hire_window(session.session_id, window)
         return window
@@ -522,19 +536,32 @@ class MockEquipAccess(StorefrontBackend):
         extras = self.cart_extras(session.session_id)
         return cart.model_copy() if extras else cart
 
+    def _window_yard(self, session_id: str) -> str | None:
+        """Yard for a live haulage quote: the window's picked yard, else first yard rental."""
+        window = self._windows.get(session_id)
+        if window is not None and window.yard_location:
+            return window.yard_location
+        cart = self._carts.cart(session_id)
+        for item in cart.items:
+            product = self.product(item.product_id)
+            if product and _is_rental(product) and _is_yard(product):
+                return product.attributes.get("location")
+        if window is not None:
+            return window.site_location
+        return None
+
     def cart_extras(self, session_id: str) -> dict[str, Any]:
         window = self._windows.get(session_id)
         cart = self._carts.cart(session_id)
         haulage = None
-        if window is not None and window.include_haulage:
-            yard = None
-            for item in cart.items:
-                product = self.product(item.product_id)
-                if product and _is_rental(product):
-                    yard = product.attributes.get("location")
-                    break
-            if yard is None:
-                yard = window.site_location
+        has_rental = False
+        for item in cart.items:
+            product = self.product(item.product_id)
+            if product is not None and _is_rental(product) and _is_yard(product):
+                has_rental = True
+                break
+        if window is not None and window.include_haulage and (has_rental or not cart.items):
+            yard = self._window_yard(session_id)
             kilometres = haulage_km(yard, window.site_location, window.distance_km)
             fee = haulage_fee(kilometres)
             if fee is not None:
@@ -547,6 +574,21 @@ class MockEquipAccess(StorefrontBackend):
                     "status": "needs_review",
                     "label": "Needs haulage review",
                 }
+        delivery = None
+        if window is not None and window.include_delivery:
+            has_goods = False
+            for item in cart.items:
+                product = self.product(item.product_id)
+                if product is not None and _is_goods(product):
+                    has_goods = True
+                    break
+            fee = materials_delivery_fee(window.site_location)
+            if fee is not None and (has_goods or not cart.items):
+                delivery = {
+                    "to": window.site_location,
+                    "fee": fee,
+                    "label": "Deliver to site",
+                }
         deposit = float(haulage["fee"]) if haulage else 0.0
         return {
             "hire_window": {
@@ -555,11 +597,14 @@ class MockEquipAccess(StorefrontBackend):
                 "days": window.days,
                 "rate_type": window.rate_type,
                 "site_location": window.site_location,
+                "yard_location": window.yard_location,
                 "include_haulage": window.include_haulage,
+                "include_delivery": window.include_delivery,
             }
             if window
             else None,
             "haulage": haulage,
+            "delivery": delivery,
             "deposit": deposit,
             "currency": "UGX",
         }
@@ -570,6 +615,8 @@ class MockEquipAccess(StorefrontBackend):
         product = self.product(product_id)
         if product is None:
             raise Unavailable(f"{product_id} is not in the catalog")
+        if not _is_yard(product):
+            raise Unavailable(f"{product.title} is a web find; checkout stays on the source site")
         existing = self._carts.lines(session.session_id).get(product_id)
         quantity += existing.quantity if existing else 0
         if _is_rental(product):
@@ -762,9 +809,17 @@ class MockEquipAccess(StorefrontBackend):
         cart = self._carts.cart(session.session_id)
         if not cart.items:
             raise Unavailable("cart is empty")
+        for item in cart.items:
+            product = self.product(item.product_id)
+            if product is not None and not _is_yard(product):
+                raise Unavailable(
+                    f"{product.title} is a web find; checkout stays on the source site"
+                )
         extras = self.cart_extras(session.session_id)
         haulage = extras.get("haulage")
         haulage_amount = float(haulage["fee"]) if haulage else 0.0
+        delivery = extras.get("delivery")
+        delivery_amount = float(delivery["fee"]) if delivery else 0.0
         deposit = float(extras.get("deposit") or 0)
         self._hire_seq += 1
         hire = HireRequest(
@@ -786,7 +841,7 @@ class MockEquipAccess(StorefrontBackend):
             subtotal=cart.subtotal,
             haulage_fee=haulage_amount,
             deposit=deposit,
-            total=round(cart.subtotal + haulage_amount + deposit, 2),
+            total=round(cart.subtotal + haulage_amount + delivery_amount + deposit, 2),
             currency="UGX",
             created_at=datetime.now(UTC),
         )
@@ -797,7 +852,7 @@ class MockEquipAccess(StorefrontBackend):
         if window is not None:
             for item in cart.items:
                 product = self.products.get(item.product_id)
-                if product is not None and _is_rental(product):
+                if product is not None and _is_rental(product) and _is_yard(product):
                     self._bookings.append(
                         {
                             "product_id": item.product_id,

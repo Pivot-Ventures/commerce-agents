@@ -29,7 +29,9 @@ export async function setHireWindow(body: {
   end_date?: string;
   rate_type?: string;
   site_location?: string;
+  yard_location?: string;
   include_haulage?: boolean;
+  include_delivery?: boolean;
 }): Promise<CartPayload | null> {
   const data = await api.post<{ ok?: boolean }>("/hire/window", body);
   if (!data) return null;

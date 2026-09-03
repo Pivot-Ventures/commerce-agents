@@ -47,7 +47,15 @@ export interface HireWindow {
   days: number;
   rate_type: string;
   site_location?: string | null;
+  yard_location?: string | null;
   include_haulage?: boolean;
+  include_delivery?: boolean;
+}
+
+export interface DeliveryQuote {
+  to?: string;
+  fee: number;
+  label?: string;
 }
 
 export interface CartPayload {
@@ -57,6 +65,7 @@ export interface CartPayload {
   currency: string;
   hire_window?: HireWindow | null;
   haulage?: HaulageQuote | null;
+  delivery?: DeliveryQuote | null;
   deposit?: number;
 }
 
