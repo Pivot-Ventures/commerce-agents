@@ -36,6 +36,7 @@ export function PortalShell<V extends string>({
   view,
   onViewChange,
   operator,
+  storeLabel,
   assistantOpen,
   assistantBusy = false,
   onToggleAssistant,
@@ -47,6 +48,8 @@ export function PortalShell<V extends string>({
   view: V;
   onViewChange: (view: V) => void;
   operator: { name: string; role: string };
+  /** Optional yard line above the operator, used as a store switcher caption. */
+  storeLabel?: string;
   assistantOpen: boolean;
   assistantBusy?: boolean;
   onToggleAssistant: () => void;
@@ -116,11 +119,18 @@ export function PortalShell<V extends string>({
             <span className="hidden h-[7px] w-[7px] rounded-full bg-(--accent) shadow-[0_0_0_3px_var(--accent-soft)] xl:block" aria-hidden />
           ) : null}
         </button>
-        <div className="mt-auto flex items-center gap-2.5 border-t border-(--line) px-1 pt-3 xl:px-2">
-          <Avatar name={operator.name} />
-          <div className="hidden min-w-0 xl:block">
-            <div className="truncate text-[13px] font-semibold leading-tight">{operator.name}</div>
-            <div className="truncate text-[11.5px] text-(--ink-soft)">{operator.role}</div>
+        <div className="mt-auto">
+          {storeLabel ? (
+            <div className="hidden truncate px-2 pb-2 text-[11px] text-(--ink-soft) xl:block" title={storeLabel}>
+              {storeLabel}
+            </div>
+          ) : null}
+          <div className="flex items-center gap-2.5 border-t border-(--line) px-1 pt-3 xl:px-2">
+            <Avatar name={operator.name} />
+            <div className="hidden min-w-0 xl:block">
+              <div className="truncate text-[13px] font-semibold leading-tight">{operator.name}</div>
+              <div className="truncate text-[11.5px] text-(--ink-soft)">{operator.role}</div>
+            </div>
           </div>
         </div>
       </aside>

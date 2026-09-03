@@ -1,0 +1,681 @@
+{
+  "yard": "ACME Plant Hire \u2014 Mukono",
+  "window": {
+    "from": "2026-08-25",
+    "to": "2026-10-05"
+  },
+  "listings": [
+    {
+      "listing_id": "AE-EXC-101",
+      "units": 2,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-EXC-102",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-EXC-103",
+      "units": 2,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-EXC-104",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-EXC-105",
+      "units": 0,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 0,
+          "units_free": 0,
+          "occupancy_pct": 0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-LOD-201",
+      "units": 2,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-LOD-202",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-DMP-301",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-DMP-302",
+      "units": 2,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-CMP-401",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-GEN-501",
+      "units": 3,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 2,
+          "occupancy_pct": 33.3
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-GEN-502",
+      "units": 4,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 3,
+          "occupancy_pct": 25.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-SCF-601",
+      "units": 6,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 5,
+          "occupancy_pct": 16.7
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-CRN-701",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-MIX-801",
+      "units": 2,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 1,
+          "occupancy_pct": 50.0
+        }
+      ]
+    },
+    {
+      "listing_id": "AE-FRK-901",
+      "units": 1,
+      "weeks": [
+        {
+          "week_start": "2026-08-25",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-01",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-08",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-15",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-22",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        },
+        {
+          "week_start": "2026-09-29",
+          "units_on_hire": 1,
+          "units_free": 0,
+          "occupancy_pct": 100.0
+        }
+      ]
+    }
+  ]
+}

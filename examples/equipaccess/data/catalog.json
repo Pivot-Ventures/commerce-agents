@@ -1,0 +1,757 @@
+{
+  "_comment": "Hire listings quote daily/weekly/monthly in UGX. Sale and spare-part rows stay out of default hire search.",
+  "dates_anchored_to": "2026-09-02",
+  "store_name": "ACME Equip",
+  "products": [
+    {
+      "currency": "UGX",
+      "rating": 4.8,
+      "review_count": 126,
+      "labels": [
+        "In stock",
+        "Best match"
+      ],
+      "in_stock": true,
+      "product_id": "AE-EXC-101",
+      "title": "ACME Iron 20-ton Excavator",
+      "brand": "ACME Iron",
+      "price": 180000,
+      "category": "excavators",
+      "short_description": "A 20-ton tracked excavator at the Mukono yard, the usual hire for a mid-size foundation or trench.",
+      "long_description": "ACME Iron's 20-ton sits on the Mukono yard and is the listing the hire assistant reaches for when a site manager asks for a twenty-ton digger. Two units, daily or weekly, operator optional. Haulage to a Mukono industrial site is a distance quote, not included in the machine rate.",
+      "specs": {
+        "operating_weight": "20 t",
+        "bucket": "1.0 m\u00b3",
+        "reach": "9.6 m",
+        "operator": "optional"
+      },
+      "review_highlights": [
+        "Showed up on time and dug the first day",
+        "Weekly rate is the one that makes sense past a week",
+        "Ask for haulage when the site is off the main road"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "excavator",
+        "location": "Mukono",
+        "region": "Central",
+        "daily_rate": "180000",
+        "weekly_rate": "630000",
+        "monthly_rate": "2160000",
+        "stock": "2",
+        "min_quantity": "1",
+        "capacity_tons": "20",
+        "yard": "ACME Plant Hire Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.6,
+      "review_count": 88,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-EXC-102",
+      "title": "ACME Earth 20-ton Excavator",
+      "brand": "ACME Earth",
+      "price": 175000,
+      "category": "excavators",
+      "short_description": "A 20-ton excavator based in Kampala, close to the industrial area.",
+      "long_description": "Same class as the Mukono Iron, parked at the Kampala yard. One unit. Useful when the site is west of the city and haulage from Mukono would add a long empty run.",
+      "specs": {
+        "operating_weight": "20 t",
+        "bucket": "0.9 m\u00b3",
+        "reach": "9.4 m"
+      },
+      "review_highlights": [
+        "Clean machine",
+        "Kampala yard is faster for west-side sites"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "excavator",
+        "location": "Kampala",
+        "region": "Central",
+        "daily_rate": "175000",
+        "weekly_rate": "612500",
+        "monthly_rate": "2100000",
+        "stock": "1",
+        "min_quantity": "1",
+        "capacity_tons": "20",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 64,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-EXC-103",
+      "title": "ACME Iron 14-ton Excavator",
+      "brand": "ACME Iron",
+      "price": 140000,
+      "category": "excavators",
+      "short_description": "A tighter 14-ton for urban sites and narrower access in Entebbe.",
+      "long_description": "Fourteen tons, two units at the Entebbe yard. The right machine when a 20-ton will not fit the gate.",
+      "specs": {
+        "operating_weight": "14 t",
+        "bucket": "0.6 m\u00b3"
+      },
+      "review_highlights": [
+        "Fits our Entebbe access road"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "excavator",
+        "location": "Entebbe",
+        "region": "Central",
+        "daily_rate": "140000",
+        "weekly_rate": "490000",
+        "monthly_rate": "1680000",
+        "stock": "2",
+        "min_quantity": "1",
+        "capacity_tons": "14",
+        "yard": "ACME Shore Entebbe"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.7,
+      "review_count": 31,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-EXC-104",
+      "title": "ACME Earth 30-ton Excavator",
+      "brand": "ACME Earth",
+      "price": 260000,
+      "category": "excavators",
+      "short_description": "A 30-ton at Mukono. One unit; often booked across mid-month windows.",
+      "long_description": "The heavy Iron's sibling. One unit. Overlapping dates in mid-September are already on the books.",
+      "specs": {
+        "operating_weight": "30 t",
+        "bucket": "1.4 m\u00b3"
+      },
+      "review_highlights": [
+        "Serious machine \u2014 book early"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Monthly",
+        "machine_class": "excavator",
+        "location": "Mukono",
+        "region": "Central",
+        "daily_rate": "260000",
+        "weekly_rate": "910000",
+        "monthly_rate": "3120000",
+        "stock": "1",
+        "min_quantity": "1",
+        "capacity_tons": "30",
+        "yard": "ACME Plant Hire Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.2,
+      "review_count": 12,
+      "labels": [],
+      "in_stock": false,
+      "product_id": "AE-EXC-105",
+      "title": "ACME Iron 20-ton Excavator \u2014 Gulu",
+      "brand": "ACME Iron",
+      "price": 170000,
+      "category": "excavators",
+      "short_description": "A 20-ton listed in Gulu, currently out of stock.",
+      "long_description": "The northern unit is off the yard until a rebuild finishes. The assistant should not sell it.",
+      "specs": {
+        "operating_weight": "20 t"
+      },
+      "review_highlights": [
+        "When it is in, it saves the long haul from Kampala"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "excavator",
+        "location": "Gulu",
+        "region": "Northern",
+        "daily_rate": "170000",
+        "weekly_rate": "595000",
+        "monthly_rate": "2040000",
+        "stock": "0",
+        "min_quantity": "1",
+        "capacity_tons": "20",
+        "yard": "ACME North Gulu"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.6,
+      "review_count": 77,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-LOD-201",
+      "title": "ACME Lift Wheel Loader",
+      "brand": "ACME Lift",
+      "price": 145000,
+      "category": "loaders",
+      "short_description": "A wheel loader at the Kampala yard for stockpile and load-out work.",
+      "long_description": "Two units. Daily, weekly, or monthly. The usual pair with a dump truck on a cut-and-fill.",
+      "specs": {
+        "bucket": "3.2 m\u00b3",
+        "operating_weight": "18 t"
+      },
+      "review_highlights": [
+        "Pairs cleanly with the Haul dump trucks"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "daily_rate": "145000",
+        "weekly_rate": "507500",
+        "monthly_rate": "1740000",
+        "stock": "2",
+        "min_quantity": "1",
+        "capacity_tons": "18",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.4,
+      "review_count": 53,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-LOD-202",
+      "title": "ACME Lift Backhoe",
+      "brand": "ACME Lift",
+      "price": 110000,
+      "category": "loaders",
+      "short_description": "A backhoe loader for mixed trench and load work in Mukono.",
+      "long_description": "One unit at Mukono. Smaller sites that do not need a 20-ton excavator often take this instead.",
+      "specs": {
+        "operating_weight": "8 t"
+      },
+      "review_highlights": [
+        "Handy when the 20-ton is overkill"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "loader",
+        "location": "Mukono",
+        "region": "Central",
+        "daily_rate": "110000",
+        "weekly_rate": "385000",
+        "monthly_rate": "1320000",
+        "stock": "1",
+        "min_quantity": "1",
+        "capacity_tons": "8",
+        "yard": "ACME Plant Hire Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.3,
+      "review_count": 41,
+      "labels": [
+        "On hire"
+      ],
+      "in_stock": true,
+      "product_id": "AE-DMP-301",
+      "title": "ACME Haul Dump Truck",
+      "brand": "ACME Haul",
+      "price": 95000,
+      "category": "trucks",
+      "short_description": "An articulated dump truck at Entebbe \u2014 currently on hire.",
+      "long_description": "One unit, and it is out. The assistant should offer the Jinja 10-wheeler as the substitute.",
+      "specs": {
+        "payload": "25 t"
+      },
+      "review_highlights": [
+        "When it is free it is the cheapest dump on the board"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "dump truck",
+        "location": "Entebbe",
+        "region": "Central",
+        "daily_rate": "95000",
+        "weekly_rate": "332500",
+        "monthly_rate": "1140000",
+        "stock": "1",
+        "min_quantity": "1",
+        "capacity_tons": "25",
+        "yard": "ACME Shore Entebbe",
+        "availability": "on_hire"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 39,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-DMP-302",
+      "title": "ACME Haul 10-wheeler Dump Truck",
+      "brand": "ACME Haul",
+      "price": 120000,
+      "category": "trucks",
+      "short_description": "A 10-wheeler dump truck at the Jinja yard, the usual stand-in when Entebbe is on hire.",
+      "long_description": "Two units. Heavier payload than the Entebbe artic, longer haul to Central Region sites.",
+      "specs": {
+        "payload": "28 t"
+      },
+      "review_highlights": [
+        "The one they send when Entebbe is busy"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "dump truck",
+        "location": "Jinja",
+        "region": "Eastern",
+        "daily_rate": "120000",
+        "weekly_rate": "420000",
+        "monthly_rate": "1440000",
+        "stock": "2",
+        "min_quantity": "1",
+        "capacity_tons": "28",
+        "yard": "ACME East Jinja"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.4,
+      "review_count": 28,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-CMP-401",
+      "title": "ACME Pack Vibratory Roller",
+      "brand": "ACME Pack",
+      "price": 85000,
+      "category": "compactors",
+      "short_description": "A vibratory soil roller at Entebbe for sub-base and fill.",
+      "long_description": "One unit. Daily rate is the usual ask on a short compaction window.",
+      "specs": {
+        "drum": "2.1 m"
+      },
+      "review_highlights": [
+        "Does what a plate cannot on a haul road"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "compactor",
+        "location": "Entebbe",
+        "region": "Central",
+        "daily_rate": "85000",
+        "weekly_rate": "297500",
+        "monthly_rate": "1020000",
+        "stock": "1",
+        "min_quantity": "1",
+        "yard": "ACME Shore Entebbe"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.7,
+      "review_count": 90,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-GEN-501",
+      "title": "ACME Power 150kVA Generator",
+      "brand": "ACME Power",
+      "price": 65000,
+      "category": "generators",
+      "short_description": "A 150kVA diesel genset in Kampala for site power.",
+      "long_description": "Three units. Full-to-full fuel. The common pair with night pours and tower lights.",
+      "specs": {
+        "output": "150 kVA",
+        "fuel": "diesel"
+      },
+      "review_highlights": [
+        "Quiet enough for a peri-urban site"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "generator",
+        "location": "Kampala",
+        "region": "Central",
+        "daily_rate": "65000",
+        "weekly_rate": "227500",
+        "monthly_rate": "780000",
+        "stock": "3",
+        "min_quantity": "1",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 71,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-GEN-502",
+      "title": "ACME Power 50kVA Generator",
+      "brand": "ACME Power",
+      "price": 35000,
+      "category": "generators",
+      "short_description": "A 50kVA genset at Mukono for smaller sites and offices.",
+      "long_description": "Four units. The light option when 150kVA is more than the board needs.",
+      "specs": {
+        "output": "50 kVA"
+      },
+      "review_highlights": [
+        "Easy haul, starts first pull"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "generator",
+        "location": "Mukono",
+        "region": "Central",
+        "daily_rate": "35000",
+        "weekly_rate": "122500",
+        "monthly_rate": "420000",
+        "stock": "4",
+        "min_quantity": "1",
+        "yard": "ACME Plant Hire Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.3,
+      "review_count": 22,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-SCF-601",
+      "title": "ACME Access Scaffolding Set",
+      "brand": "ACME Access",
+      "price": 25000,
+      "category": "access",
+      "short_description": "A bayed scaffolding set from the Kampala yard.",
+      "long_description": "Six sets. Hire is per set per day. Not a machine; still a dated hire.",
+      "specs": {
+        "bays": "8",
+        "height": "12 m"
+      },
+      "review_highlights": [
+        "Complete with boards and braces"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "scaffolding",
+        "location": "Kampala",
+        "region": "Central",
+        "daily_rate": "25000",
+        "weekly_rate": "87500",
+        "monthly_rate": "300000",
+        "stock": "6",
+        "min_quantity": "1",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.8,
+      "review_count": 19,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-CRN-701",
+      "title": "ACME Reach Mobile Crane",
+      "brand": "ACME Reach",
+      "price": 320000,
+      "category": "cranes",
+      "short_description": "A mobile crane at Entebbe. Operator included on this listing.",
+      "long_description": "One unit. Operator travels with the crane. Haulage is always reviewed.",
+      "specs": {
+        "capacity": "25 t",
+        "operator": "included"
+      },
+      "review_highlights": [
+        "Operator knew the Entebbe industrial gates"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "crane",
+        "location": "Entebbe",
+        "region": "Central",
+        "daily_rate": "320000",
+        "weekly_rate": "1120000",
+        "monthly_rate": "3840000",
+        "stock": "1",
+        "min_quantity": "1",
+        "capacity_tons": "25",
+        "yard": "ACME Shore Entebbe",
+        "operator": "included"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.2,
+      "review_count": 34,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-MIX-801",
+      "title": "ACME Mix Concrete Mixer",
+      "brand": "ACME Mix",
+      "price": 45000,
+      "category": "concrete",
+      "short_description": "A site mixer at Mukono for small pours.",
+      "long_description": "Two units. Not a truck mixer \u2014 a site drum.",
+      "specs": {
+        "drum": "400 L"
+      },
+      "review_highlights": [
+        "Fine for columns, not a slab"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "mixer",
+        "location": "Mukono",
+        "region": "Central",
+        "daily_rate": "45000",
+        "weekly_rate": "157500",
+        "monthly_rate": "540000",
+        "stock": "2",
+        "min_quantity": "1",
+        "yard": "ACME Plant Hire Mukono"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.4,
+      "review_count": 26,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-FRK-901",
+      "title": "ACME Yard Rough-Terrain Forklift",
+      "brand": "ACME Yard",
+      "price": 70000,
+      "category": "handling",
+      "short_description": "A rough-terrain forklift in Jinja for yard and site unloading.",
+      "long_description": "One unit. Pneumatic tyres, 3-ton lift.",
+      "specs": {
+        "lift": "3 t"
+      },
+      "review_highlights": [
+        "Handles the Jinja yard gravel"
+      ],
+      "attributes": {
+        "listing_type": "Rent",
+        "rate_type": "Daily",
+        "machine_class": "forklift",
+        "location": "Jinja",
+        "region": "Eastern",
+        "daily_rate": "70000",
+        "weekly_rate": "245000",
+        "monthly_rate": "840000",
+        "stock": "1",
+        "min_quantity": "1",
+        "yard": "ACME East Jinja"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.1,
+      "review_count": 6,
+      "labels": [
+        "For sale"
+      ],
+      "in_stock": false,
+      "product_id": "AE-SAL-110",
+      "title": "ACME Iron 20-ton Excavator (used)",
+      "brand": "ACME Iron",
+      "price": 185000000,
+      "category": "excavators",
+      "short_description": "A used 20-ton for sale at the Kampala yard \u2014 not a hire.",
+      "long_description": "Sale listing. Hours and inspection notes live on the spec sheet. The hire assistant only shows this when the customer asks to buy.",
+      "specs": {
+        "hours": "6 200",
+        "year": "2018"
+      },
+      "review_highlights": [
+        "Inspected on the Kampala yard"
+      ],
+      "attributes": {
+        "listing_type": "Sale",
+        "rate_type": "Daily",
+        "machine_class": "excavator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "0",
+        "min_quantity": "1",
+        "capacity_tons": "20",
+        "published": "true",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.0,
+      "review_count": 4,
+      "labels": [
+        "For sale"
+      ],
+      "in_stock": false,
+      "product_id": "AE-SAL-210",
+      "title": "ACME Lift Wheel Loader (used)",
+      "brand": "ACME Lift",
+      "price": 92000000,
+      "category": "loaders",
+      "short_description": "A used wheel loader for sale in Entebbe.",
+      "long_description": "Sale listing. Not available to hire.",
+      "specs": {
+        "hours": "8 100",
+        "year": "2016"
+      },
+      "review_highlights": [
+        "Straight bucket, tired tyres"
+      ],
+      "attributes": {
+        "listing_type": "Sale",
+        "rate_type": "Daily",
+        "machine_class": "loader",
+        "location": "Entebbe",
+        "region": "Central",
+        "stock": "0",
+        "min_quantity": "1",
+        "published": "true",
+        "yard": "ACME Shore Entebbe"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.6,
+      "review_count": 18,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-010",
+      "title": "ACME Iron hydraulic hose kit",
+      "brand": "ACME Iron",
+      "price": 185000,
+      "category": "spare-parts",
+      "short_description": "A spare hydraulic hose kit sized for ACME Iron excavators.",
+      "long_description": "Side catalog. Buy, not hire. Stock 20. Ships from Kampala.",
+      "specs": {
+        "fits": "ACME Iron 14-ton and 20-ton"
+      },
+      "review_highlights": [
+        "Fit the 20-ton without a second trip"
+      ],
+      "attributes": {
+        "listing_type": "Sale",
+        "rate_type": "Daily",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "20",
+        "min_quantity": "1",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 11,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-PRT-011",
+      "title": "ACME Iron bucket teeth set",
+      "brand": "ACME Iron",
+      "price": 240000,
+      "category": "spare-parts",
+      "short_description": "A set of bucket teeth for ACME Iron excavators.",
+      "long_description": "Side catalog. Eight sets in Kampala.",
+      "specs": {
+        "fits": "ACME Iron 20-ton"
+      },
+      "review_highlights": [
+        "Hardfaced, lasted a quarry month"
+      ],
+      "attributes": {
+        "listing_type": "Sale",
+        "rate_type": "Daily",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "8",
+        "min_quantity": "1",
+        "yard": "ACME Yard Kampala"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.2,
+      "review_count": 3,
+      "labels": [
+        "For sale"
+      ],
+      "in_stock": false,
+      "product_id": "AE-MAT-010",
+      "title": "ACME Mix cement bags (42.5N)",
+      "brand": "ACME Mix",
+      "price": 38000,
+      "category": "construction-materials",
+      "short_description": "Construction-materials vertical. Sale stock starts at zero until a store inventories a lot.",
+      "long_description": "A sellable row, not a family SKU. Published. Quantity is zero until inventory CRUD restocks it.",
+      "specs": {
+        "grade": "42.5N",
+        "unit": "50 kg bag"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "business_unit": "construction-materials",
+        "machine_class": "cement",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "0",
+        "min_quantity": "1",
+        "published": "true",
+        "yard": "ACME Yard Kampala"
+      }
+    }
+  ]
+}

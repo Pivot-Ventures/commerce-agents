@@ -1,0 +1,40 @@
+{
+  "_comment": "In-flight orders are re-dated at load. Author as if dates_anchored_to were today.",
+  "dates_anchored_to": "2026-09-02",
+  "orders": [
+    {
+      "order_id": "AE-41012",
+      "user_id": "demo-user",
+      "status": "processing",
+      "placed_at": "2026-08-28T08:15:00Z",
+      "items": [
+        {
+          "product_id": "AE-EXC-101",
+          "title": "ACME Iron 20-ton Excavator",
+          "quantity": 1,
+          "price": 1260000.0
+        }
+      ],
+      "total": 1740000.0,
+      "estimated_delivery": "Haulage Review \u2014 Mukono industrial site",
+      "tracking_url": "https://hire.acme-equip.example/AE-41012"
+    },
+    {
+      "order_id": "AE-40901",
+      "user_id": "demo-user",
+      "status": "delivered",
+      "placed_at": "2026-07-04T10:02:00Z",
+      "items": [
+        {
+          "product_id": "AE-GEN-502",
+          "title": "ACME Power 50kVA Generator",
+          "quantity": 1,
+          "price": 245000.0
+        }
+      ],
+      "total": 245000.0,
+      "estimated_delivery": "2026-07-14",
+      "tracking_url": "https://hire.acme-equip.example/AE-40901"
+    }
+  ]
+}

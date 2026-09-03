@@ -118,10 +118,13 @@ def build_merchant_router(
     example_dir: str,
     overview_extras: Callable[[], dict[str, Any]] | None = None,
     portal_reads: Mapping[str, Callable[[], Any]] | None = None,
+    extra_routes: Callable[[APIRouter, Any], None] | None = None,
 ) -> APIRouter:
     """The router above, over an agent the vertical has already constructed.
     ``overview_extras`` supplies the vertical's own home-page keys on ``/overview``;
-    ``portal_reads`` maps a path to a callable (sync or async) served as a scoped GET."""
+    ``portal_reads`` maps a path to a callable (sync or async) served as a scoped GET;
+    ``extra_routes(router, CurrentSession)`` registers more scoped portal routes that
+    share the merchant session store."""
     memory_store = cast(MemoryStore, agent.memory.store)
     sessions: SessionStore[MerchantSessionState] = SessionStore(MerchantSessionState)
     CurrentSession = session_dependency(sessions, "/api/merchant/session")
@@ -304,5 +307,8 @@ def build_merchant_router(
             "skills": agent.skills.names,
             "model": agent.config.model,
         }
+
+    if extra_routes is not None:
+        extra_routes(router, CurrentSession)
 
     return router

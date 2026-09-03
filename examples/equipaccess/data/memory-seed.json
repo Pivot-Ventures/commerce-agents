@@ -1,0 +1,7 @@
+{
+  "demo-user": [
+    {"key": "site_location", "value": "default site is the Mukono industrial yard", "category": "preference", "updated_at": "2026-08-12T09:10:00Z"},
+    {"key": "typical_machine", "value": "usually hires a 20-ton excavator", "category": "preference", "updated_at": "2026-08-20T14:22:00Z"},
+    {"key": "hire_period", "value": "typical hire is about 10 days on a weekly rate", "category": "preference", "updated_at": "2026-08-28T11:05:00Z"}
+  ]
+}

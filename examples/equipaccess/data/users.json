@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "user_id": "demo-user",
+      "display_name": "Amina",
+      "loyalty_tier": "Site manager",
+      "default_location": "Mukono",
+      "preferences": {
+        "typical_machine_class": "excavator",
+        "preferred_hire_days": "10",
+        "site": "Mukono industrial yard",
+        "haulage": "usually wants transport to site",
+        "rate": "prefers weekly when the hire is a week or longer"
+      }
+    },
+    {
+      "user_id": "demo-user-2",
+      "display_name": "Guest",
+      "loyalty_tier": "Guest",
+      "default_location": null,
+      "preferences": {
+        "budget": "asks for daily rates first"
+      }
+    }
+  ],
+  "accounts": {
+    "demo-user": {
+      "role": "customer",
+      "company": "ACME Site Works Mukono"
+    }
+  }
+}

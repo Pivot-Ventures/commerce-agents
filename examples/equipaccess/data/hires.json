@@ -1,0 +1,156 @@
+{
+  "hires": [
+    {
+      "hire_id": "HIRE-7821",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_review",
+      "created_at": "2026-09-03T06:14:00Z",
+      "items": [
+        {
+          "product_id": "AE-EXC-101",
+          "title": "ACME Iron 20-ton Excavator",
+          "quantity": 1,
+          "price": 1260000.0,
+          "option_values": {
+            "start_date": "2026-09-14",
+            "end_date": "2026-09-23",
+            "number_of_days": "10",
+            "type": "Rent",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Kampala Industrial Park",
+        "city": "Kampala",
+        "via": "Mukono-Kampala Rd",
+        "distance_km": 23,
+        "fee": 240000.0,
+        "status": "needs_review",
+        "label": "Needs haulage review"
+      },
+      "subtotal": 1260000.0,
+      "haulage_fee": 240000.0,
+      "deposit": 240000.0,
+      "total": 1740000.0,
+      "currency": "UGX",
+      "note": "No charge. Haulage review is outstanding."
+    },
+    {
+      "hire_id": "HIRE-7816",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_review",
+      "created_at": "2026-09-02T14:20:00Z",
+      "items": [
+        {
+          "product_id": "AE-LOD-201",
+          "title": "ACME Lift Wheel Loader",
+          "quantity": 1,
+          "price": 507500.0,
+          "option_values": {
+            "start_date": "2026-09-08",
+            "end_date": "2026-09-14",
+            "number_of_days": "7",
+            "type": "Rent",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Namanve Industrial Park",
+        "city": "Mukono",
+        "via": "Jinja Rd",
+        "distance_km": 14,
+        "fee": 186667.0,
+        "status": "needs_review",
+        "label": "Needs haulage review"
+      },
+      "subtotal": 507500.0,
+      "haulage_fee": 186667.0,
+      "deposit": 186667.0,
+      "total": 880834.0,
+      "currency": "UGX",
+      "note": "No charge. Haulage review is outstanding."
+    },
+    {
+      "hire_id": "HIRE-7812",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_review",
+      "created_at": "2026-09-01T11:05:00Z",
+      "items": [
+        {
+          "product_id": "AE-DMP-302",
+          "title": "ACME Haul 10-wheeler Dump Truck",
+          "quantity": 1,
+          "price": 420000.0,
+          "option_values": {
+            "start_date": "2026-09-10",
+            "end_date": "2026-09-16",
+            "number_of_days": "7",
+            "type": "Rent",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Lugogo site offices",
+        "city": "Kampala",
+        "via": "Mukono-Kampala Rd",
+        "distance_km": 20,
+        "fee": 266667.0,
+        "status": "needs_review",
+        "label": "Needs haulage review"
+      },
+      "subtotal": 420000.0,
+      "haulage_fee": 266667.0,
+      "deposit": 266667.0,
+      "total": 953334.0,
+      "currency": "UGX",
+      "note": "No charge. Haulage review is outstanding."
+    },
+    {
+      "hire_id": "HIRE-7809",
+      "user_id": "demo-user",
+      "session_id": "seed",
+      "status": "haulage_review",
+      "created_at": "2026-08-30T13:40:00Z",
+      "items": [
+        {
+          "product_id": "AE-GEN-501",
+          "title": "ACME Power 150kVA Generator",
+          "quantity": 1,
+          "price": 227500.0,
+          "option_values": {
+            "start_date": "2026-09-04",
+            "end_date": "2026-09-10",
+            "number_of_days": "7",
+            "type": "Rent",
+            "rate_type": "Weekly"
+          }
+        }
+      ],
+      "haulage": {
+        "from": "Mukono",
+        "to": "Ntinda works yard",
+        "city": "Kampala",
+        "via": "Kireka Rd",
+        "distance_km": 16,
+        "fee": 213333.0,
+        "status": "needs_review",
+        "label": "Needs haulage review"
+      },
+      "subtotal": 227500.0,
+      "haulage_fee": 213333.0,
+      "deposit": 213333.0,
+      "total": 654166.0,
+      "currency": "UGX",
+      "note": "No charge. Haulage review is outstanding."
+    }
+  ]
+}

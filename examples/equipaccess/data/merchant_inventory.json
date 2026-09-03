@@ -1,0 +1,151 @@
+{
+  "inventory": [
+    {
+      "product_id": "AE-EXC-101",
+      "stock": 2,
+      "threshold": 1,
+      "hires_last_30d": 8,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-EXC-102",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-EXC-103",
+      "stock": 2,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-EXC-104",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-EXC-105",
+      "stock": 0,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-LOD-201",
+      "stock": 2,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-LOD-202",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-DMP-301",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-DMP-302",
+      "stock": 2,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-CMP-401",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-GEN-501",
+      "stock": 3,
+      "threshold": 2,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-GEN-502",
+      "stock": 4,
+      "threshold": 2,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-SCF-601",
+      "stock": 6,
+      "threshold": 2,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-CRN-701",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-MIX-801",
+      "stock": 2,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-FRK-901",
+      "stock": 1,
+      "threshold": 1,
+      "hires_last_30d": 0,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-SAL-110",
+      "stock": 0,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-SAL-210",
+      "stock": 0,
+      "threshold": 1,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-PRT-010",
+      "stock": 20,
+      "threshold": 2,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-PRT-011",
+      "stock": 8,
+      "threshold": 2,
+      "hires_last_30d": 3,
+      "content_quality": "good"
+    },
+    {
+      "product_id": "AE-MAT-010",
+      "stock": 0,
+      "threshold": 1,
+      "hires_last_30d": 0,
+      "content_quality": "good"
+    }
+  ]
+}

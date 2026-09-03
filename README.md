@@ -3,7 +3,7 @@
 Two commerce agents built on Claude: a **shopping agent** a business embeds in its app for
 customers, and a **merchant agent** its staff use to run the back office. Each is defined
 once (prompt, skills, tool contracts, gates) and runs on the Messages API, the Claude Agent
-SDK, and Managed Agents; four runnable verticals show both over the same libraries.
+SDK, and Managed Agents; five runnable verticals show both over the same libraries.
 
 > [!NOTE]
 > Every company, brand, product, and person here is fictional; the only company is ACME.
@@ -20,13 +20,14 @@ git clone https://github.com/anthropics/commerce-agents.git && cd commerce-agent
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt       # the seven packages and their pinned dependencies
 cp .env.example .env                  # add ANTHROPIC_API_KEY
-(cd examples && npm ci)               # the eight web apps share one workspace
+(cd examples && npm ci)               # the web apps share one workspace
 python scripts/run_demo.py retail     # API :8000 + storefront :3000
 ```
 
-`--merchant` starts the portal instead of the storefront and `--all` starts both. The
-verticals are `retail` (:3000, portal :3100), `travel` (:3001, :3101), `telecom` (:3002,
-:3102), and `entertainment` (:3003, :3103); each README lists prompts to try on both surfaces.
+`--merchant` starts the portal instead of the storefront and `--all` starts both (ACME Equip
+also boots admin). The verticals are `retail` (:3000, portal :3100), `travel` (:3001, :3101),
+`telecom` (:3002, :3102), `entertainment` (:3003, :3103), and `equipaccess` (:3004, portal
+:3104, admin :3204); each README lists prompts to try on both surfaces.
 
 ## Quick start: build your own
 
@@ -140,7 +141,7 @@ python scripts/smoke_chat.py --vertical travel      # one live conversation; nee
 ```
 
 `requirements-dev.txt` adds pytest and ruff. CI installs from it on two Python versions,
-builds the eight web apps, and checks that the package names stay unregistered on the
+builds the web apps, and checks that the package names stay unregistered on the
 public index (the pin files install them from their directories, never from the index). To confirm caching, read
 `cache_read_input_tokens` from `turn_complete`, or the line each model call logs on its
 runtime's logger: zero on a second turn means the prefix changed.

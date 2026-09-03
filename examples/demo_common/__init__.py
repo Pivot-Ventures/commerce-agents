@@ -1,7 +1,7 @@
 # Copyright 2026 Anthropic PBC
 # SPDX-License-Identifier: Apache-2.0
 
-"""Host code the four vertical examples share: the app and its middleware, the session
+"""Host code the five vertical examples share: the app and its middleware, the session
 store both roles use, the storefront routes, the merchant router, and (in
 ``storefront_fixtures`` and ``merchant_fixtures``) the helpers the mock backends call. A
 vertical's ``api/`` package constructs its backends, agents, and configs, mounts these,

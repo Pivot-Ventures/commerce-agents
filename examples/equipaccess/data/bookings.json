@@ -1,0 +1,18 @@
+{
+  "bookings": [
+    {
+      "product_id": "AE-DMP-301",
+      "start_date": "2026-08-01",
+      "end_date": "2027-12-31",
+      "quantity": 1,
+      "hire_id": "HIRE-7701"
+    },
+    {
+      "product_id": "AE-EXC-104",
+      "start_date": "2026-09-08",
+      "end_date": "2026-09-22",
+      "quantity": 1,
+      "hire_id": "HIRE-7702"
+    }
+  ]
+}

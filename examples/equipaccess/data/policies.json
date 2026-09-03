@@ -1,0 +1,46 @@
+{
+  "policies": [
+    {
+      "policy_id": "deposit",
+      "title": "Hire deposit",
+      "category": "deposit",
+      "content": "ACME Equip holds a refundable deposit of 25% of the machine hire subtotal when a hire is requested. The deposit is not a payment for the hire itself and is not taken in this conversation. It is collected on the host checkout after haulage is confirmed, and it is returned within 5 business days of a clean off-hire inspection at the yard."
+    },
+    {
+      "policy_id": "operator",
+      "title": "Operator optional",
+      "category": "operator",
+      "content": "Every listing can be hired dry (customer supplies a licensed operator) or with an ACME Equip operator at an extra daily figure shown on the listing when that option is offered. Operator hours are daylight only unless the listing says otherwise. The hire assistant does not add an operator unless the customer asks."
+    },
+    {
+      "policy_id": "fuel",
+      "title": "Fuel policy: full-to-full",
+      "category": "fuel",
+      "content": "Machines leave the yard full. Return them full. Fuel used during the hire is the customer's. A shortfall is charged at the yard's posted pump rate on off-hire. Generators follow the same full-to-full rule."
+    },
+    {
+      "policy_id": "insurance",
+      "title": "Insurance optional",
+      "category": "insurance",
+      "content": "Third-party liability cover is included on every ACME Equip hire in Uganda. Machine damage waiver is optional and quoted on the host checkout; it is not added in chat. Theft or disappearance is the customer's responsibility unless the waiver was taken."
+    },
+    {
+      "policy_id": "haulage-review",
+      "title": "Haulage review",
+      "category": "haulage",
+      "content": "Transport to site is priced by road distance from the yard. A hire that includes haulage is not charged in the assistant: it is staged as Haulage Review. A person at the yard approves or counters the quote. Payment, if any, happens after that confirmation on the host checkout. Same-city Mukono industrial sites typically quote 240,000 UGX one way."
+    },
+    {
+      "policy_id": "cancellation",
+      "title": "Cancelling a hire",
+      "category": "cancellations",
+      "content": "A hire can be cancelled free of charge until 48 hours before the start date. Inside 48 hours the first day's rate is held. Haulage that was already approved is cancelled with the hire; a truck that has already left the yard is charged the one-way quote."
+    },
+    {
+      "policy_id": "stock-and-dates",
+      "title": "Stock and overlapping dates",
+      "category": "availability",
+      "content": "The cart cannot hold more units than the listing's stock. Dates that overlap another hire or a live hold on the last unit show as On hire. The assistant offers the nearest free machine of the same class rather than overselling."
+    }
+  ]
+}
