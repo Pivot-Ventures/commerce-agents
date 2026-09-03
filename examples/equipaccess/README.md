@@ -1,9 +1,9 @@
 # ACME Equip (equipaccess)
 
-Hire-first construction equipment in Uganda: a storefront for site managers, a merchant
-portal for the yard operator, and a thin admin host for listing review. Both commerce
-agents run over one fixture catalog. Checkout and payouts are handoffs — nothing charges a
-card and the model cannot move money.
+Hire-first construction equipment in Uganda: a public storefront for site managers, a
+gated store desk for the yard operator, a gated haulage-agent desk, and a gated admin
+host for listing review. Both commerce agents run over one fixture catalog. Checkout and
+payouts are handoffs — nothing charges a card and the model cannot move money.
 
 The public name on the mockups is EquipAccess. Brands, machines, yards, and people here
 are ACME fiction.
@@ -48,13 +48,13 @@ Customer C — spare parts (buy, not rent):
 
 6. Ask: "I need hydraulic hoses for an ACME Iron excavator." The hose kit is a sale SKU, not a hire.
 
-Merchant operator (Mercy N., ACME Plant Hire — Mukono) — portal `:3104`:
+Merchant operator (Mercy N., ACME Plant Hire — Mukono) — portal `:3104/login`, then the desk:
 
 7. The default view is the haulage review queue. Seed rows include HIRE-7821 (Mukono → Kampala Industrial Park, 240k UGX) plus three more. Customer A's hire lands here after Request this hire.
 8. Open a row with Review. The drawer shows the yard-to-site route, the agent proposal, **Approve haulage** and **Counter with different rate**. Nothing charges.
 9. Hire calendar (and the queue strip) shows units on hire vs free. Listings, Rates, and Inventory stay wired. On Rates, ask the assistant to stage a daily-rate move. Apply only from the preview card — do not auto-apply.
 
-Admin (BTIC · Super admin) — desk `:3204`:
+Admin (BTIC · Super admin) — desk `:3204/login`, then the approvals host:
 
 10. The default view is Listing approvals (Pending / Approved / Rejected). Approve publishes; reject leaves the listing unpublished.
 11. Stores, haulage Agents, Haulage desk (attach agent), Payouts (GET only; Attempt pay is 403), Shipping, and Roles stay wired. The host does not move money.
@@ -73,8 +73,11 @@ Admin (BTIC · Super admin) — desk `:3204`:
 - `api/mock_merchant.py`: `MockEquipMerchant`. A price update moves the daily rate. A
   promotion is a date-window override. `hire_calendar` feeds the portal widget.
 - `api/merchant.py`: portal router plus host-only haulage approve/counter.
+- `api/desk_auth.py`: fixture emails for admin, store, and haulage-agent logins; store
+  applications wait on admin approval.
+- `api/agent_desk.py`: provisioned agent session, assigned hires, close-delivery.
 - `api/admin.py`: listing approve/reject, stores, agents, customers, payouts (GET only;
-  `POST /payouts/{id}/pay` is 403), shipping, roles.
+  `POST /payouts/{id}/pay` is 403), shipping, roles, store-application approve.
 - `api/agent_config.py`: hire-first `domain_search_notes`; merchant price fields include
   daily/weekly/monthly rates.
 - `storefront-web/`, `merchant-web/`, `admin-web/`: navy `#0B1F3A`, amber `#F5A623`,
@@ -103,9 +106,10 @@ used.
   class, location, dates, listing_type.
 - Live `GET /api/rentals/rate` converts a weekly/monthly list price to daily × days.
   Fixture quotes use whole weeks/months (`api/rates.py` `quote_hire`).
-- Four desks: customer, store (merchant portal), haulage agent (admin haulage desk — not
-  a fourth AI agent), admin. Customer JWT / store-agent-admin session on the live app;
-  this demo uses host session headers.
+- Four desks: customer (public storefront), store (`/store`), haulage agent (`/agent`),
+  admin (`/admin`). The three operator desks require email and password. Passwordless
+  `POST /session` on admin and merchant stays for the demo contract. Login screens never
+  prefill credentials.
 
 ## Laravel → StorefrontBackend (left for the HTTP adapter)
 
@@ -142,9 +146,17 @@ One Docker image serves the three desks and the API on a single origin:
 | Path | Surface |
 |---|---|
 | `/` | storefront (hire) |
-| `/merchant` | merchant portal (haulage queue) |
-| `/admin` | admin desk (listing approvals) |
+| `/store` | store desk (haulage queue); `/store/login`, `/store/register` |
+| `/agent` | haulage-agent desk; `/agent/login` |
+| `/admin` | admin desk; `/admin/login` |
+| `/merchant` | redirects to `/store` |
 | `/api` | FastAPI |
+
+Local `run_demo.py` does not set `NEXT_BASE_PATH`, so the same pages are `:3104/login`
+(store), `:3204/login` (admin), and `:3004/agent/login` (agent). Fixture emails live in
+`data/desk_accounts.json` (admin `bt@acme.equip` / `admin-desk`, store `mercy@acme.equip` /
+`store-desk`, agent `aisha@acme.equip` / `agent-desk`). Fields on the login screens stay
+empty.
 
 Build from the repo root. The image defaults to fixtures. Chat reads `ANTHROPIC_API_KEY` at run time; browsing the catalog, the haulage queue, and admin listings does not need it. Checkout still charges nothing. `POST /api/haulage` and payouts stay unwired. Do not put a key in the Dockerfile, compose file, or `render.yaml`.
 
@@ -153,7 +165,7 @@ docker build -f examples/equipaccess/Dockerfile -t equipaccess .
 docker run -p 80:80 -e ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" equipaccess
 ```
 
-`PORT` (default 80) is the public listen port; nginx binds `0.0.0.0:$PORT`. The Next apps and uvicorn bind loopback. Same-origin `/api` is baked into the web builds (`NEXT_PUBLIC_API_URL` empty; merchant `basePath` `/merchant`; admin `basePath` `/admin`). Local `run_demo.py` is unchanged: it does not set those variables, so the apps still listen on `:3004`, `:3104`, and `:3204`.
+`PORT` (default 80) is the public listen port; nginx binds `0.0.0.0:$PORT`. The Next apps and uvicorn bind loopback. Same-origin `/api` is baked into the web builds (`NEXT_PUBLIC_API_URL` empty; store `basePath` `/store`; admin `basePath` `/admin`). Local `run_demo.py` is unchanged: it does not set those variables, so the apps still listen on `:3004`, `:3104`, and `:3204`.
 
 One-container Compose, from the repo root:
 

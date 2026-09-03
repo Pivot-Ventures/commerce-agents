@@ -14,10 +14,12 @@ paths each, five vertical examples, and a Claude Code plugin.
 - `*/runtime-agent-sdk/`: each agent as `ClaudeAgentOptions`, with a console.
 - `*/managed-agents/`: the manifest directory (with the derived `system.md`) and the role's MCP server.
 - `examples/demo_common/` and `examples/web-shared/`: what the verticals' APIs and web apps share; `examples/` is the npm workspace.
-- `examples/<vertical>/`: `api/`, `data/`, `storefront-web/`, `merchant-web/` (equipaccess also has `admin-web/`); ports 8000-8004, 3000-3004, 3100-3104, admin 3204.
+- `examples/<vertical>/`: `api/`, `data/`, `storefront-web/`, `merchant-web/` (equipaccess also has `admin-web/` and a haulage-agent desk on the storefront); ports 8000-8004, 3000-3004, 3100-3104, admin 3204.
 - `plugins/commerce-builder/`: six skills, four commands; `.claude-plugin/marketplace.json` points at it.
 - `docs/`: `safety.md`, `backends.md`, `deployment.md`. `scripts/`: install, demo, smoke, screenshots, check, deploy, verify.
-- `examples/equipaccess/Dockerfile` and `examples/equipaccess/deploy/`: one public URL for the hire storefront, merchant portal, admin desk, and API. Root `render.yaml` deploys that image as one Render Docker web service.
+- `examples/equipaccess/Dockerfile` and `examples/equipaccess/deploy/`: one public URL for the hire storefront (`/`), store desk (`/store`), haulage-agent desk (`/agent`), admin desk (`/admin`), and API. Root `render.yaml` deploys that image as one Render Docker web service.
+- `examples/equipaccess/api/desk_auth.py`: fixture admin/store/agent accounts and pending store applications.
+- `examples/equipaccess/api/agent_desk.py`: haulage-agent session and assigned-order desk.
 - `tests/`: the suites that span packages (both roles on all three paths); each package keeps its own `tests/`.
 
 `requirements.txt` installs the seven packages and their pinned dependencies (`requirements-dev.txt`

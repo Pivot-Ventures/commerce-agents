@@ -99,7 +99,7 @@ def main() -> int:
         wait_port(port)
 
     children.append(subprocess.Popen(["nginx", "-g", "daemon off;", "-c", str(NGINX_CONF)]))
-    print(f"equipaccess: public http://0.0.0.0:{PORT}  (/ /merchant /admin /api)", flush=True)
+    print(f"equipaccess: public http://0.0.0.0:{PORT}  (/ /store /agent /admin /api)", flush=True)
 
     while True:
         for child in children:

@@ -97,6 +97,13 @@ class MerchantIdentity:
     operator: str
 
 
+class MerchantSessionRequest(BaseModel):
+    """Optional desk credentials. Empty keeps the demo's passwordless start."""
+
+    email: str | None = Field(default=None, max_length=120)
+    password: str | None = Field(default=None, max_length=120)
+
+
 class MerchantChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
 
@@ -119,12 +126,16 @@ def build_merchant_router(
     overview_extras: Callable[[], dict[str, Any]] | None = None,
     portal_reads: Mapping[str, Callable[[], Any]] | None = None,
     extra_routes: Callable[[APIRouter, Any], None] | None = None,
+    authorize_session: Callable[[MerchantSessionRequest | None], MerchantIdentity | None]
+    | None = None,
 ) -> APIRouter:
     """The router above, over an agent the vertical has already constructed.
     ``overview_extras`` supplies the vertical's own home-page keys on ``/overview``;
     ``portal_reads`` maps a path to a callable (sync or async) served as a scoped GET;
     ``extra_routes(router, CurrentSession)`` registers more scoped portal routes that
-    share the merchant session store."""
+    share the merchant session store.
+    ``authorize_session`` may return a different operator when the login screen sends
+    email and password; ``None`` keeps ``identity``. It raises to refuse a login."""
     memory_store = cast(MemoryStore, agent.memory.store)
     sessions: SessionStore[MerchantSessionState] = SessionStore(MerchantSessionState)
     CurrentSession = session_dependency(sessions, "/api/merchant/session")
@@ -139,12 +150,19 @@ def build_merchant_router(
         )
 
     @router.post("/session")
-    async def start_session() -> dict:
-        record = sessions.start(identity.merchant_id)
+    async def start_session(request: MerchantSessionRequest | None = None) -> dict:
+        chosen = identity
+        if authorize_session is not None:
+            override = authorize_session(request)
+            if override is not None:
+                chosen = override
+        record = sessions.start(chosen.merchant_id)
         return {
             "session_id": record.session_id,
-            "merchant_id": identity.merchant_id,
-            "operator": identity.operator,
+            "merchant_id": chosen.merchant_id,
+            "operator": chosen.operator,
+            "name": chosen.operator,
+            "role": "store",
         }
 
     @router.post("/chat")

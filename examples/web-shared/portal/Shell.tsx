@@ -41,6 +41,7 @@ export function PortalShell<V extends string>({
   assistantBusy = false,
   onToggleAssistant,
   rail,
+  onSignOut,
   children,
 }: {
   brand: PortalBrand;
@@ -54,6 +55,7 @@ export function PortalShell<V extends string>({
   assistantBusy?: boolean;
   onToggleAssistant: () => void;
   rail: ReactNode;
+  onSignOut?: () => void;
   children: ReactNode;
 }) {
   return (
@@ -130,6 +132,11 @@ export function PortalShell<V extends string>({
             <div className="hidden min-w-0 xl:block">
               <div className="truncate text-[13px] font-semibold leading-tight">{operator.name}</div>
               <div className="truncate text-[11.5px] text-(--ink-soft)">{operator.role}</div>
+              {onSignOut ? (
+                <button type="button" onClick={onSignOut} className="mt-1 text-[11px] font-semibold text-(--ink-soft) underline-offset-2 hover:underline">
+                  Sign out
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

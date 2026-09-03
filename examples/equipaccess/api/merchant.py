@@ -16,10 +16,20 @@ from merchant_agent_runtime import MerchantAgent
 from shopping_agent import Unavailable
 
 from .agent_config import build_merchant_config
+from .desk_auth import desk_auth
 from .mock_equipaccess import MockEquipAccess
 from .mock_merchant import MockEquipMerchant
 
 IDENTITY = MerchantIdentity(merchant_id="acme-equip", operator="Mercy N.")
+
+
+def authorize_store_session(request: Any) -> MerchantIdentity | None:
+    email = getattr(request, "email", None) if request is not None else None
+    password = getattr(request, "password", None) if request is not None else None
+    if not email and not password:
+        return None
+    account = desk_auth.verify("store", email, password)
+    return MerchantIdentity(merchant_id=IDENTITY.merchant_id, operator=account.name)
 
 
 class HaulageCounter(BaseModel):
@@ -82,4 +92,5 @@ def create_merchant_router(storefront: MockEquipAccess, memory_store: MemoryStor
             "/haulage": lambda: {"queue": storefront.haulage_queue()},
         },
         extra_routes=extra_routes,
+        authorize_session=authorize_store_session,
     )

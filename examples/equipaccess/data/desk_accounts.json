@@ -1,0 +1,38 @@
+{
+  "accounts": [
+    {
+      "email": "bt@acme.equip",
+      "password": "admin-desk",
+      "role": "admin",
+      "user_id": "admin-user",
+      "name": "BT",
+      "org": "BTIC",
+      "status": "active"
+    },
+    {
+      "email": "mercy@acme.equip",
+      "password": "store-desk",
+      "role": "store",
+      "user_id": "acme-equip",
+      "name": "Mercy N.",
+      "store": "ACME Plant Hire Mukono",
+      "status": "active"
+    },
+    {
+      "email": "aisha@acme.equip",
+      "password": "agent-desk",
+      "role": "agent",
+      "user_id": "AG-11",
+      "name": "Aisha Namara",
+      "status": "active"
+    },
+    {
+      "email": "peter@acme.equip",
+      "password": "agent-desk",
+      "role": "agent",
+      "user_id": "AG-12",
+      "name": "Peter Kato",
+      "status": "active"
+    }
+  ]
+}

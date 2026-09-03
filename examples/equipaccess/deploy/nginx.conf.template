@@ -68,7 +68,7 @@ http {
             return 301 /api/;
         }
 
-        location /merchant {
+        location /store {
             proxy_pass http://merchant;
             proxy_http_version 1.1;
             proxy_set_header Host $host;
@@ -76,6 +76,10 @@ http {
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection $connection_upgrade;
+        }
+
+        location /merchant {
+            rewrite ^/merchant(/.*)?$ /store$1 permanent;
         }
 
         location /admin {

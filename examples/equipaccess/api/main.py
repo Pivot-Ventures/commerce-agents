@@ -24,6 +24,8 @@ from shopping_agent_runtime import ShoppingAgent
 
 from .admin import create_admin_router
 from .agent_config import build_shopping_config
+from .agent_desk import create_agent_router
+from .desk_auth import StoreApplicationRequest, desk_auth
 from .http_adapter import build_storefront
 from .merchant import create_merchant_router
 from .mock_equipaccess import DATA_DIR, HireWindow
@@ -51,6 +53,12 @@ host = build_storefront_host(
 app = host.app
 app.include_router(create_merchant_router(backend, InMemoryMemoryStore()), prefix="/api/merchant")
 app.include_router(create_admin_router(backend, host), prefix="/api/admin")
+app.include_router(create_agent_router(backend, host), prefix="/api/agent")
+
+
+@app.post("/api/store/register")
+async def register_store(request: StoreApplicationRequest) -> dict:
+    return desk_auth.apply_store(request)
 
 
 class HireWindowRequest(BaseModel):

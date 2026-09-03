@@ -16,6 +16,7 @@ def test_nginx_template_routes_the_four_public_paths():
     text = (DEPLOY / "nginx.conf.template").read_text(encoding="utf-8")
     for needle in (
         "location /api/",
+        "location /store",
         "location /merchant",
         "location /admin",
         "location /",
@@ -33,7 +34,7 @@ def test_dockerfile_is_fixtures_only_and_takes_the_key_at_runtime():
     assert "ENV ANTHROPIC_API_KEY" not in text
     assert 'ENV EQUIPACCESS_API_BASE=""' in text
     assert "docker run -p 80:80 -e ANTHROPIC_API_KEY=" in text
-    assert "NEXT_BASE_PATH=/merchant" in text
+    assert "NEXT_BASE_PATH=/store" in text
     assert "NEXT_BASE_PATH=/admin" in text
     assert 'NEXT_PUBLIC_API_URL=""' in text
 
@@ -45,6 +46,7 @@ def test_next_configs_honor_base_path_and_standalone_only_when_set():
         assert "assetPrefix" in text
         assert 'NEXT_OUTPUT === "standalone"' in text
         assert "basePath: '/merchant'" not in text
+        assert "basePath: '/store'" not in text
         assert "basePath: '/admin'" not in text
 
 
