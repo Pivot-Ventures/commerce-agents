@@ -41,6 +41,13 @@ YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
     ("jinja", "jinja"): 8,
     ("jinja", "mukono"): 74,
     ("jinja", "kampala"): 80,
+    ("mukono", "ntinda"): 34,
+    ("kampala", "ntinda"): 8,
+    ("entebbe", "ntinda"): 42,
+    ("mukono", "namanve"): 16,
+    ("kampala", "namanve"): 18,
+    ("kampala", "wakiso"): 20,
+    ("mukono", "wakiso"): 28,
 }
 
 
@@ -98,7 +105,7 @@ def unit_rate(product: ProductDetails, rate_type: str) -> float:
 def laravel_daily_times_days(list_price: float, days: int) -> float:
     """What live ``GET /api/rentals/rate`` does: treat a weekly or monthly list
     price as a daily figure and multiply by days. Fixture quotes use ``quote_hire``
-    (whole weeks or months) so a 10-day weekly hire stays 1,260,000 UGX."""
+    (whole weeks or months) so a 10-day weekly hire is two weekly periods."""
     return round(float(list_price) * max(1, days), 2)
 
 

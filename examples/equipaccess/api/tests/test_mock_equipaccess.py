@@ -27,7 +27,7 @@ async def test_hire_search_quotes_dates_and_location(backend, session):
     hero = next(item for item in results if item.product_id == "AE-EXC-101")
     assert hero.attributes["hire_start"] == "2026-09-14"
     assert hero.attributes["number_of_days"] == "10"
-    assert hero.price == 1_260_000
+    assert hero.price == 14_400_000
     assert hero.attributes["rate_type"] == RATE_WEEKLY
     assert int(hero.attributes["units_left_for_dates"]) == 2
     assert all(item.attributes.get("listing_type") != "Sale" for item in results)
@@ -41,13 +41,15 @@ async def test_sale_and_parts_stay_out_of_hire_search(backend, session):
     parts = await backend.search_products(session, "spare hydraulic hose kit")
     assert parts and parts[0].product_id == "AE-PRT-010"
     sale = await backend.search_products(session, "buy used generator")
-    assert any(item.product_id == "AE-SAL-210" for item in sale)
+    assert any(item.product_id == "AE-SAL-360" for item in sale)
     materials = await backend.search_products(session, "cement bags for the site")
     assert materials and materials[0].product_id == "AE-MAT-010"
     hire_ids = {
         item.product_id for item in await backend.search_products(session, "excavator Mukono")
     }
     assert "AE-MAT-010" not in hire_ids
+    assert "AE-WEB-HIR-101" not in hire_ids
+    assert all(item.attributes.get("source", "yard") == "yard" for item in hire)
 
 
 async def test_on_hire_dump_truck_is_unavailable_and_substitute_ranks(backend, session):
@@ -105,6 +107,22 @@ async def test_haulage_quotes_before_a_cart_line(backend, session):
     assert extras["deposit"] == 240_000
 
 
+async def test_haulage_toggle_can_turn_off(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            rate_type=RATE_WEEKLY,
+            site_location="Ntinda",
+            include_haulage=False,
+        ),
+    )
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"] is None
+    assert extras["deposit"] == 0
+
+
 async def test_cart_line_is_the_period_quote(backend, session):
     backend.note_hire_window(
         session.session_id,
@@ -118,7 +136,7 @@ async def test_cart_line_is_the_period_quote(backend, session):
     )
     cart = await backend.add_to_cart(session, "AE-EXC-101", 1)
     line = cart.items[0]
-    assert line.line_total == 1_260_000
+    assert line.line_total == 14_400_000
     assert line.option_values["rate_type"] == RATE_WEEKLY
     assert line.option_values["type"] == "Rent"
     extras = backend.cart_extras(session.session_id)
@@ -143,7 +161,7 @@ async def test_request_hire_does_not_charge_and_lands_in_haulage_review(backend,
     hire = backend.request_hire(session)
     assert hire.status == "haulage_review"
     assert hire.haulage_fee == 240_000
-    assert hire.subtotal == 1_260_000
+    assert hire.subtotal == 14_400_000
     queue = backend.haulage_queue()
     assert any(row["hire_id"] == hire.hire_id for row in queue)
     approved = backend.approve_haulage(hire.hire_id)
@@ -165,5 +183,23 @@ async def test_checkout_handoff_never_charges(backend, session):
 def test_weekly_quote_math():
     product = MockEquipAccess().products["AE-EXC-101"]
     quote = quote_hire(product, 10, RATE_WEEKLY)
-    assert quote["quoted_total"] == 1_260_000
+    assert quote["quoted_total"] == 14_400_000
     assert haulage_fee(18) == 240_000
+
+
+def test_catalog_has_a_full_shop_per_section():
+    products = list(MockEquipAccess().products.values())
+    kinds = {}
+    for product in products:
+        kind = (product.attributes.get("listing_type") or "Rent").title()
+        kinds[kind] = kinds.get(kind, 0) + 1
+    assert kinds.get("Rent", 0) >= 10
+    assert kinds.get("Sale", 0) >= 10
+    assert kinds.get("Spare", 0) >= 10
+    assert kinds.get("Material", 0) >= 10
+    web = [
+        product for product in products if (product.attributes.get("source") or "yard") != "yard"
+    ]
+    assert len(web) >= 8
+    assert all(product.attributes.get("source_url") for product in web)
+    assert all(product.image_url for product in products)

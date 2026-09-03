@@ -136,6 +136,11 @@ _SALE_HINTS = frozenset(
         "material",
         "materials",
         "aggregate",
+        "jiji",
+        "lexa",
+        "clone",
+        "mantrac",
+        "web",
     }
 )
 _RENT_HINTS = frozenset({"hire", "rent", "rental", "lease"})
@@ -157,6 +162,10 @@ def _listing_type(product: ProductDetails) -> str:
 
 def _is_rental(product: ProductDetails) -> bool:
     return _listing_type(product) == "Rent"
+
+
+def _is_yard(product: ProductDetails) -> bool:
+    return (product.attributes.get("source") or "yard").strip().lower() == "yard"
 
 
 def _query_wants_sale(query: str) -> bool:
@@ -381,7 +390,9 @@ class MockEquipAccess(StorefrontBackend):
             return False
         if str(product.attributes.get("published") or "true").lower() in {"false", "0", "no"}:
             return False
-        return sale_ok or _is_rental(product)
+        if not sale_ok:
+            return _is_rental(product) and _is_yard(product)
+        return True
 
     def _soft_filter(self, product: ProductDetails, filters: SearchFilters) -> bool:
         return matches_attribute_filters(product, filters, ignore=frozenset(_QUOTE_FILTERS))
@@ -515,7 +526,7 @@ class MockEquipAccess(StorefrontBackend):
         window = self._windows.get(session_id)
         cart = self._carts.cart(session_id)
         haulage = None
-        if window is not None and (window.include_haulage or window.site_location):
+        if window is not None and window.include_haulage:
             yard = None
             for item in cart.items:
                 product = self.product(item.product_id)

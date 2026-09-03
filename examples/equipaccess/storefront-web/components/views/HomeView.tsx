@@ -8,7 +8,7 @@ import { Greeting, type Starter, Starters } from "web-shared";
 const STARTERS: Starter[] = [
   { icon: "search", prompt: "Need a 20-ton excavator in Mukono for 10 days, include transport to site." },
   { icon: "truck", prompt: "The Entebbe dump truck — is it free this week?" },
-  { icon: "tag", prompt: "I need hydraulic hoses for an ACME Iron excavator." },
+  { icon: "tag", prompt: "I need hydraulic hoses for a 20-ton excavator." },
 ];
 
 export default function HomeView({
