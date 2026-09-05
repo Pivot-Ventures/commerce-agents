@@ -133,6 +133,7 @@ export function formatListPrice(
 }
 
 const HAULAGE_PER_KM = 240_000 / 18;
+// Keep this table in lockstep with api/rates.py.
 const YARD_TO_SITE_KM: Record<string, number> = {
   "mukono|mukono": 18,
   "mukono|kampala": 22,
@@ -140,26 +141,81 @@ const YARD_TO_SITE_KM: Record<string, number> = {
   "mukono|entebbe": 48,
   "mukono|namanve": 16,
   "mukono|wakiso": 28,
+  "mukono|jinja": 74,
+  "mukono|gulu": 320,
   "kampala|kampala": 12,
   "kampala|ntinda": 8,
   "kampala|mukono": 22,
   "kampala|entebbe": 40,
   "kampala|namanve": 18,
   "kampala|wakiso": 20,
+  "kampala|jinja": 80,
+  "kampala|gulu": 332,
   "entebbe|entebbe": 10,
   "entebbe|kampala": 40,
   "entebbe|ntinda": 42,
   "entebbe|mukono": 48,
+  "entebbe|namanve": 45,
+  "entebbe|wakiso": 38,
+  "entebbe|jinja": 110,
+  "entebbe|gulu": 360,
   "jinja|jinja": 8,
   "jinja|kampala": 80,
+  "jinja|ntinda": 82,
   "jinja|mukono": 74,
+  "jinja|entebbe": 110,
+  "jinja|namanve": 70,
+  "jinja|wakiso": 90,
+  "jinja|gulu": 380,
+  "gulu|gulu": 12,
+  "gulu|kampala": 332,
+  "gulu|ntinda": 334,
+  "gulu|mukono": 320,
+  "gulu|entebbe": 360,
+  "gulu|namanve": 328,
+  "gulu|wakiso": 340,
+  "gulu|jinja": 380,
+  "namanve|namanve": 8,
+  "namanve|kampala": 18,
+  "namanve|ntinda": 20,
+  "namanve|mukono": 16,
+  "namanve|entebbe": 45,
+  "namanve|wakiso": 24,
+  "namanve|jinja": 70,
+  "namanve|gulu": 328,
+  "wakiso|wakiso": 10,
+  "wakiso|kampala": 20,
+  "wakiso|ntinda": 22,
+  "wakiso|mukono": 28,
+  "wakiso|entebbe": 35,
+  "wakiso|namanve": 24,
+  "wakiso|jinja": 90,
+  "wakiso|gulu": 340,
 };
 
-export function haulageFeeUgx(yard?: string | null, site?: string | null): number {
-  if (!yard || !site) return 0;
+export function haulageKm(yard?: string | null, site?: string | null): number | null {
+  if (!yard || !site) return null;
   const km = YARD_TO_SITE_KM[`${yard.trim().toLowerCase()}|${site.trim().toLowerCase()}`];
-  if (!km) return 0;
+  return km ?? null;
+}
+
+export function haulageFeeUgx(yard?: string | null, site?: string | null): number | null {
+  const km = haulageKm(yard, site);
+  if (!km) return null;
   return Math.round(HAULAGE_PER_KM * km);
+}
+
+export function hirePeriods(days: number, rate: string): number {
+  if (rate === "Weekly") return Math.ceil(days / 7);
+  if (rate === "Monthly") return Math.ceil(days / 30);
+  return days;
+}
+
+export function hirePeriodLabel(days: number, rate: string): string {
+  const periods = hirePeriods(days, rate);
+  if (rate === "Weekly") return periods === 1 ? "1 week" : `${periods} weeks`;
+  if (rate === "Monthly") return periods === 1 ? "1 month" : `${periods} months`;
+  return periods === 1 ? "1 day" : `${periods} days`;
 }
 
 export function materialsDeliveryFee(site?: string | null): number {

@@ -4,7 +4,7 @@
 from datetime import date
 
 from equipaccess.api.mock_equipaccess import HireWindow, MockEquipAccess
-from equipaccess.api.rates import RATE_WEEKLY, haulage_fee, quote_hire
+from equipaccess.api.rates import RATE_WEEKLY, haulage_fee, haulage_km, quote_hire
 from shopping_agent import SearchFilters, Unavailable
 
 
@@ -184,7 +184,95 @@ def test_weekly_quote_math():
     product = MockEquipAccess().products["AE-EXC-101"]
     quote = quote_hire(product, 10, RATE_WEEKLY)
     assert quote["quoted_total"] == 14_400_000
+    assert quote["periods"] == 2
     assert haulage_fee(18) == 240_000
+
+
+def test_default_ntinda_haulage_covers_catalog_yards():
+    assert haulage_km("Jinja", "Ntinda") == 82
+    assert haulage_km("Gulu", "Ntinda") == 334
+    assert haulage_fee(haulage_km("Jinja", "Ntinda")) == haulage_fee(82)
+    assert haulage_fee(haulage_km("Gulu", "Ntinda")) == haulage_fee(334)
+
+
+async def test_haulage_follows_picked_yard_not_leftover_cart(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            rate_type=RATE_WEEKLY,
+            site_location="Ntinda",
+            yard_location="Mukono",
+            include_haulage=True,
+        ),
+    )
+    await backend.add_to_cart(session, "AE-EXC-101", 1)
+    leftover = backend.cart_extras(session.session_id)
+    assert leftover["haulage"]["from"] == "Mukono"
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            rate_type=RATE_WEEKLY,
+            site_location="Ntinda",
+            yard_location="Jinja",
+            include_haulage=True,
+        ),
+    )
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"]["from"] == "Jinja"
+    assert extras["haulage"]["to"] == "Ntinda"
+    assert extras["haulage"]["distance_km"] == 82
+    assert extras["haulage"]["fee"] == haulage_fee(82)
+
+
+async def test_web_find_cannot_join_hire_cart(backend, session):
+    try:
+        await backend.add_to_cart(session, "AE-WEB-HIR-101", 1)
+        raise AssertionError("web finds must not join the hire cart")
+    except Unavailable as error:
+        assert "web find" in str(error).lower()
+    cart = await backend.get_cart(session)
+    assert cart.items == []
+
+
+async def test_materials_delivery_reaches_cart_extras(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            site_location="Ntinda",
+            include_delivery=True,
+        ),
+    )
+    cart = await backend.add_to_cart(session, "AE-MAT-011", 1)
+    extras = backend.cart_extras(session.session_id)
+    assert extras["delivery"]["to"] == "Ntinda"
+    assert extras["delivery"]["fee"] == 180_000
+    hire = backend.request_hire(session)
+    assert hire.total == round(cart.subtotal + 180_000, 2)
+
+
+async def test_materials_cart_does_not_keep_leftover_hire_haulage(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 12),
+            end=date(2026, 9, 21),
+            site_location="Ntinda",
+            yard_location="Mukono",
+            include_haulage=True,
+            include_delivery=True,
+        ),
+    )
+    await backend.add_to_cart(session, "AE-MAT-011", 1)
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"] is None
+    assert extras["deposit"] == 0
+    assert extras["delivery"]["fee"] == 180_000
 
 
 def test_catalog_has_a_full_shop_per_section():

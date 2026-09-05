@@ -25,29 +25,64 @@ RATE_TYPES = (RATE_DAILY, RATE_WEEKLY, RATE_MONTHLY)
 HAULAGE_PER_KM_UGX = 240_000 / 18
 
 # Yard-to-site road kilometres used when the customer names a yard city and a site city.
+# Keep this table in lockstep with storefront-web/lib/format.ts.
 YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
     ("mukono", "mukono"): 18,
     ("mukono", "kampala"): 22,
+    ("mukono", "ntinda"): 34,
     ("mukono", "entebbe"): 48,
+    ("mukono", "namanve"): 16,
+    ("mukono", "wakiso"): 28,
     ("mukono", "jinja"): 74,
     ("mukono", "gulu"): 320,
     ("kampala", "kampala"): 12,
+    ("kampala", "ntinda"): 8,
     ("kampala", "mukono"): 22,
     ("kampala", "entebbe"): 40,
-    ("kampala", "jinja"): 80,
-    ("entebbe", "entebbe"): 10,
-    ("entebbe", "kampala"): 40,
-    ("entebbe", "mukono"): 48,
-    ("jinja", "jinja"): 8,
-    ("jinja", "mukono"): 74,
-    ("jinja", "kampala"): 80,
-    ("mukono", "ntinda"): 34,
-    ("kampala", "ntinda"): 8,
-    ("entebbe", "ntinda"): 42,
-    ("mukono", "namanve"): 16,
     ("kampala", "namanve"): 18,
     ("kampala", "wakiso"): 20,
-    ("mukono", "wakiso"): 28,
+    ("kampala", "jinja"): 80,
+    ("kampala", "gulu"): 332,
+    ("entebbe", "entebbe"): 10,
+    ("entebbe", "kampala"): 40,
+    ("entebbe", "ntinda"): 42,
+    ("entebbe", "mukono"): 48,
+    ("entebbe", "namanve"): 45,
+    ("entebbe", "wakiso"): 38,
+    ("entebbe", "jinja"): 110,
+    ("entebbe", "gulu"): 360,
+    ("jinja", "jinja"): 8,
+    ("jinja", "kampala"): 80,
+    ("jinja", "ntinda"): 82,
+    ("jinja", "mukono"): 74,
+    ("jinja", "entebbe"): 110,
+    ("jinja", "namanve"): 70,
+    ("jinja", "wakiso"): 90,
+    ("jinja", "gulu"): 380,
+    ("gulu", "gulu"): 12,
+    ("gulu", "kampala"): 332,
+    ("gulu", "ntinda"): 334,
+    ("gulu", "mukono"): 320,
+    ("gulu", "entebbe"): 360,
+    ("gulu", "namanve"): 328,
+    ("gulu", "wakiso"): 340,
+    ("gulu", "jinja"): 380,
+    ("namanve", "namanve"): 8,
+    ("namanve", "kampala"): 18,
+    ("namanve", "ntinda"): 20,
+    ("namanve", "mukono"): 16,
+    ("namanve", "entebbe"): 45,
+    ("namanve", "wakiso"): 24,
+    ("namanve", "jinja"): 70,
+    ("namanve", "gulu"): 328,
+    ("wakiso", "wakiso"): 10,
+    ("wakiso", "kampala"): 20,
+    ("wakiso", "ntinda"): 22,
+    ("wakiso", "mukono"): 28,
+    ("wakiso", "entebbe"): 35,
+    ("wakiso", "namanve"): 24,
+    ("wakiso", "jinja"): 90,
+    ("wakiso", "gulu"): 340,
 }
 
 
@@ -145,6 +180,20 @@ def haulage_round_trip(one_way: float | None) -> float | None:
     if one_way is None:
         return None
     return float(one_way * 2)
+
+
+def materials_delivery_fee(site: str | None) -> float | None:
+    """Fixed materials/spares delivery to a named site. Matches storefront-web/lib/format.ts."""
+    folded = (site or "").strip().lower()
+    if not folded:
+        return None
+    if "ntinda" in folded:
+        return 180_000.0
+    if "kampala" in folded or "namanve" in folded or "wakiso" in folded:
+        return 150_000.0
+    if "mukono" in folded:
+        return 120_000.0
+    return 180_000.0
 
 
 def ranges_overlap(start_a: date, end_a: date, start_b: date, end_b: date) -> bool:

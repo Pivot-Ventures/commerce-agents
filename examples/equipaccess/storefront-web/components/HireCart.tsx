@@ -21,10 +21,12 @@ export default function HireCart({
   const [result, setResult] = useState<string | null>(null);
   const items = cart?.items ?? [];
   const haulage = cart?.haulage;
+  const delivery = cart?.delivery;
   const deposit = cart?.deposit ?? 0;
   const subtotal = cart?.subtotal ?? 0;
   const haulageFee = haulage?.fee ?? 0;
-  const total = subtotal + haulageFee + deposit;
+  const deliveryFee = delivery?.fee ?? 0;
+  const total = subtotal + haulageFee + deliveryFee + deposit;
 
   async function request() {
     const response = await requestHire();
@@ -51,12 +53,18 @@ export default function HireCart({
                 <MachineMark product={{ product_id: item.product_id, title: item.title, price: item.price }} className="h-16 w-16 rounded-lg text-sm" />
                 <div className="min-w-0 flex-1">
                   <div className="font-bold text-(--navy)">{item.title}</div>
-                  <div className="text-[13px] text-(--ink-soft)">
-                    {item.option_values?.start_date} – {item.option_values?.end_date} ({item.option_values?.number_of_days} days)
-                  </div>
-                  <div className="text-[13px] text-(--amber)">
-                    {item.option_values?.rate_type ?? "Daily"} rate · qty {item.quantity}
-                  </div>
+                  {item.option_values?.start_date ? (
+                    <>
+                      <div className="text-[13px] text-(--ink-soft)">
+                        {item.option_values.start_date} – {item.option_values.end_date} ({item.option_values.number_of_days} days)
+                      </div>
+                      <div className="text-[13px] text-(--amber)">
+                        {item.option_values.rate_type ?? "Daily"} rate · qty {item.quantity}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-[13px] text-(--amber)">qty {item.quantity}</div>
+                  )}
                 </div>
                 <div className="font-semibold text-(--navy)">{formatUgx(item.line_total)}</div>
               </li>
@@ -73,6 +81,15 @@ export default function HireCart({
                 <div className="font-semibold text-(--navy)">{formatUgx(haulage.fee)}</div>
               </li>
             ) : null}
+            {delivery ? (
+              <li className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="font-bold text-(--navy)">Delivery to {delivery.to ?? "site"}</div>
+                  <div className="text-[13px] text-(--ink-soft)">{delivery.label ?? "Deliver to site"}</div>
+                </div>
+                <div className="font-semibold text-(--navy)">{formatUgx(delivery.fee)}</div>
+              </li>
+            ) : null}
           </ul>
         )}
       </section>
@@ -86,6 +103,12 @@ export default function HireCart({
             <dt>Haulage</dt>
             <dd>{haulage ? formatUgx(haulageFee) : "—"}</dd>
           </div>
+          {delivery ? (
+            <div className="flex justify-between">
+              <dt>Delivery</dt>
+              <dd>{formatUgx(deliveryFee)}</dd>
+            </div>
+          ) : null}
           <div className="flex justify-between">
             <dt>Deposit (refundable)</dt>
             <dd>{formatUgx(deposit)}</dd>

@@ -94,6 +94,7 @@ export default function StorefrontPage() {
           end_date: "2026-09-21",
           rate_type: "Daily",
           site_location: "Ntinda",
+          yard_location: product.attributes?.location,
           include_haulage: true,
         }).then((next) => {
           if (next) setCart(next);
