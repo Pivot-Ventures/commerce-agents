@@ -47,7 +47,7 @@ export default function HireCart({
   const empty = hire
     ? "The hire cart is empty. Pick a rental from Shop."
     : "The cart is empty. Pick a listing from Shop.";
-  const cta = hire ? "Request this hire" : sale ? "Request this purchase" : "Request this order";
+  const cta = hire ? "Request this hire" : mode === "mixed" ? "Request this order" : "Request this purchase";
   const footnote = hire
     ? "No charge yet. A person confirms haulage, then you pay."
     : sale

@@ -49,6 +49,14 @@ export function isPriceOnRequest(product: { price?: number; attributes?: Record<
   return product.attributes?.price_on_request === "true" || (product.price ?? 0) <= 0;
 }
 
+export function stockOf(product: { in_stock?: boolean; attributes?: Record<string, string> }): number {
+  const raw = product.attributes?.stock;
+  if (raw == null || raw === "") return product.in_stock === false ? 0 : 1;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) return product.in_stock === false ? 0 : 1;
+  return Math.max(0, parsed);
+}
+
 export function lineListingKind(item: { option_values?: Record<string, string> }): ListingKind {
   const folded = (item.option_values?.type ?? "").trim().toLowerCase();
   if (folded === "sale") return "Sale";

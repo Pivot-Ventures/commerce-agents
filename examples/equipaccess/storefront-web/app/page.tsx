@@ -21,7 +21,7 @@ import HomeView from "@/components/views/HomeView";
 import ShopView from "@/components/views/ShopView";
 import { type ShopChip } from "@/lib/catalog";
 import { api, fetchProducts, setHireWindow, UNREACHABLE } from "@/lib/api";
-import { cartMode, formatUgx, isHireListing, isYardListing } from "@/lib/format";
+import { cartMode, formatUgx, isHireListing, isYardListing, stockOf } from "@/lib/format";
 import { NOUNS, OrderThumb } from "@/lib/orders";
 import type { CartPayload, Product } from "@/lib/types";
 
@@ -85,8 +85,9 @@ export default function StorefrontPage() {
   const pick = useCallback((product: Product) => {
     setPicked(product);
     setPanelOpen(true);
+    const stock = stockOf(product);
     const materialDefault = product.attributes?.unit === "bag" ? 200 : 1;
-    setQuantity(materialDefault);
+    setQuantity(stock > 0 ? Math.min(materialDefault, stock) : 1);
     if (isHireListing(product) && isYardListing(product)) {
       void setHireWindow({
         start_date: "2026-09-12",

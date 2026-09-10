@@ -14,6 +14,7 @@ import {
   isWebFind,
   listingKind,
   listingSource,
+  stockOf,
   materialsDeliveryFee,
   sourceCta,
   sourceLabel,
@@ -111,7 +112,7 @@ export default function HireSummary({
         include_haulage: haulageOn,
       });
     }
-    const next = await addToCart(product.product_id, hire ? 1 : qty);
+    const next = await addToCart(product.product_id, hire ? 1 : stock > 0 ? Math.min(qty, stock) : qty);
     if (next) onCart(next);
   }
 
@@ -125,8 +126,17 @@ export default function HireSummary({
           ? "Purchase summary"
           : "Order summary";
 
-  const addLabel =
-    hire ? "Add to hire cart" : kind === "Sale" ? "Add to cart" : kind === "Spare" ? "Add spares to cart" : "Add materials to cart";
+  const stock = product ? stockOf(product) : 0;
+  const out = Boolean(product && !web && (product.in_stock === false || stock <= 0));
+  const addLabel = out
+    ? "Out of stock"
+    : hire
+      ? "Add to hire cart"
+      : kind === "Sale"
+        ? "Add to cart"
+        : kind === "Spare"
+          ? "Add spares to cart"
+          : "Add materials to cart";
 
   return (
     <aside className="flex h-full flex-col border-l border-(--line) bg-white">
@@ -275,7 +285,7 @@ export default function HireSummary({
                 <button
                   type="button"
                   className="grid h-8 w-8 place-items-center rounded-md border border-(--line)"
-                  onClick={() => onQuantity?.(qty + 1)}
+                  onClick={() => onQuantity?.(stock > 0 ? Math.min(stock, qty + 1) : qty + 1)}
                 >
                   +
                 </button>
@@ -368,7 +378,7 @@ export default function HireSummary({
           <>
             <button
               type="button"
-              disabled={!product || (isPriceOnRequest(product ?? {}) && !hire)}
+              disabled={!product || out || (isPriceOnRequest(product ?? {}) && !hire)}
               onClick={() => void add()}
               className="btn-primary w-full rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
             >
