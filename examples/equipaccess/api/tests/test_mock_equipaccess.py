@@ -177,6 +177,35 @@ async def test_checkout_handoff_never_charges(backend, session):
     cart = await backend.add_to_cart(session, "AE-PRT-010", 1)
     handoffs = await backend.checkout_handoff(session, cart)
     assert handoffs and "checkout" in handoffs[0].url
+    assert handoffs[0].label == "Request this purchase"
+
+
+async def test_sale_cart_is_purchase_not_hire(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 14),
+            end=date(2026, 9, 23),
+            rate_type=RATE_WEEKLY,
+            site_location="Mukono",
+            include_haulage=True,
+        ),
+    )
+    cart = await backend.add_to_cart(session, "AE-SAL-360", 1)
+    assert cart.items[0].option_values["type"] == "Sale"
+    assert "start_date" not in cart.items[0].option_values
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"] is None
+    assert extras["deposit"] == 0
+    hire = backend.request_hire(session)
+    assert hire.status == "requested"
+    assert hire.haulage is None
+    assert "purchase" in hire.note.lower()
+
+
+async def test_hire_checkout_handoff_keeps_hire_label(backend, session):
+    cart = await backend.add_to_cart(session, "AE-EXC-101", 1)
+    handoffs = await backend.checkout_handoff(session, cart)
     assert handoffs[0].label == "Request this hire"
 
 

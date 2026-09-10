@@ -134,22 +134,31 @@ export default function MachineCard({
       onClick={onSelect}
     >
       <div className="relative">
-        <MachineMark product={product} className="h-36 text-3xl" />
-        <div className="absolute left-2 top-2">
+        <MachineMark
+          product={product}
+          className={layout === "grid" ? "aspect-[4/3] h-auto text-xl" : "h-36 text-3xl"}
+        />
+        <div className="absolute left-1.5 top-1.5">
           <Badge product={product} />
         </div>
         {selected ? (
-          <span className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full bg-(--amber) text-[12px] font-bold text-(--navy)">
+          <span className="absolute right-1.5 top-1.5 grid h-5 w-5 place-items-center rounded-full bg-(--amber) text-[11px] font-bold text-(--navy)">
             ✓
           </span>
         ) : null}
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <h3 className="text-[15px] font-bold leading-snug text-(--navy)">{product.title}</h3>
-        <div className="flex flex-wrap items-center gap-2 text-[12px]">
+      <div className={`flex flex-1 flex-col ${layout === "grid" ? "gap-1 p-2" : "gap-2 p-3"}`}>
+        <h3
+          className={`font-bold leading-snug text-(--navy) ${
+            layout === "grid" ? "line-clamp-2 text-[12.5px]" : "text-[15px]"
+          }`}
+        >
+          {product.title}
+        </h3>
+        <div className="flex flex-wrap items-center gap-1 text-[11px]">
           {hire ? (
             <span
-              className={`rounded-full px-2 py-0.5 font-semibold ${
+              className={`rounded-full px-1.5 py-0.5 font-semibold ${
                 onHire ? "bg-(--accent-soft) text-(--accent-ink)" : "bg-(--ok-soft) text-(--ok)"
               }`}
             >
@@ -157,7 +166,7 @@ export default function MachineCard({
             </span>
           ) : (
             <span
-              className={`rounded-full px-2 py-0.5 font-semibold ${
+              className={`rounded-full px-1.5 py-0.5 font-semibold ${
                 saleOut ? "bg-(--warn-soft) text-(--warn)" : "bg-(--ok-soft) text-(--ok)"
               }`}
             >
@@ -165,13 +174,15 @@ export default function MachineCard({
             </span>
           )}
           {web ? (
-            <span className="rounded-full bg-(--info-soft) px-2 py-0.5 font-semibold text-(--info)">
+            <span className="rounded-full bg-(--info-soft) px-1.5 py-0.5 font-semibold text-(--info)">
               {sourceLabel(attrs.source ?? "yard")}
             </span>
           ) : null}
         </div>
-        <div className="font-semibold text-(--amber)">{formatListPrice(product)}</div>
-        <div className="text-[12px] text-(--ink-soft)">{attrs.location ?? "Uganda"}</div>
+        <div className={`font-semibold text-(--amber) ${layout === "grid" ? "text-[12px]" : ""}`}>
+          {formatListPrice(product, layout === "grid")}
+        </div>
+        <div className="truncate text-[11px] text-(--ink-soft)">{attrs.location ?? "Uganda"}</div>
         {reason ? <p className="text-[12px] text-(--ink-2)">{reason}</p> : null}
         {showQty ? (
           <div className="mt-auto flex items-center gap-2">
@@ -219,11 +230,11 @@ export default function MachineCard({
               </button>
             ))}
           </div>
-        ) : (
+        ) : layout === "rail" ? (
           <p className="mt-auto text-[12px] font-semibold text-(--navy)">
             {web ? `Source: ${sourceLabel(attrs.source ?? "yard")}` : kind === "Rent" ? "Hire rate" : "Yard price"}
           </p>
-        )}
+        ) : null}
         {onSelect && layout === "rail" ? (
           <button
             type="button"

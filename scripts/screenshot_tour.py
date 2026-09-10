@@ -152,7 +152,7 @@ VERTICALS: dict[str, dict] = {
     },
     "equipaccess": {
         "base_url": "http://localhost:3004",
-        "view": ("hires", "Hires"),
+        "view": ("orders", "Orders"),
         "turns": [
             (
                 "hire-search",

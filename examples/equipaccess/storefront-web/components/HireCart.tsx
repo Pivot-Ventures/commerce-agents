@@ -5,9 +5,24 @@
 
 import { useState } from "react";
 import { api, requestHire } from "@/lib/api";
-import { formatUgx } from "@/lib/format";
-import type { CartPayload } from "@/lib/types";
+import { cartMode, formatUgx, isHireLine, lineListingKind } from "@/lib/format";
+import type { CartItem, CartPayload } from "@/lib/types";
 import { MachineMark } from "./MachineCard";
+
+function lineMeta(item: CartItem): string {
+  if (isHireLine(item)) {
+    const start = item.option_values?.start_date;
+    const end = item.option_values?.end_date;
+    const days = item.option_values?.number_of_days;
+    const rate = item.option_values?.rate_type ?? "Daily";
+    if (start && end) return `${start} – ${end} (${days ?? "?"} days) · ${rate} rate · qty ${item.quantity}`;
+    return `${rate} rate · qty ${item.quantity}`;
+  }
+  const kind = lineListingKind(item);
+  if (kind === "Spare") return `Spare · qty ${item.quantity}`;
+  if (kind === "Material") return `Materials · qty ${item.quantity}`;
+  return `Sale · qty ${item.quantity}`;
+}
 
 export default function HireCart({
   cart,
@@ -20,11 +35,24 @@ export default function HireCart({
 }) {
   const [result, setResult] = useState<string | null>(null);
   const items = cart?.items ?? [];
-  const haulage = cart?.haulage;
-  const deposit = cart?.deposit ?? 0;
+  const mode = cartMode(cart);
+  const hire = mode === "hire";
+  const sale = mode === "sale";
+  const haulage = hire || mode === "mixed" ? cart?.haulage : null;
+  const deposit = hire ? (cart?.deposit ?? 0) : 0;
   const subtotal = cart?.subtotal ?? 0;
   const haulageFee = haulage?.fee ?? 0;
   const total = subtotal + haulageFee + deposit;
+  const heading = hire ? "Your hire" : mode === "mixed" ? "Your order" : "Your cart";
+  const empty = hire
+    ? "The hire cart is empty. Pick a rental from Shop."
+    : "The cart is empty. Pick a listing from Shop.";
+  const cta = hire ? "Request this hire" : sale ? "Request this purchase" : "Request this order";
+  const footnote = hire
+    ? "No charge yet. A person confirms haulage, then you pay."
+    : sale
+      ? "No charge yet. The yard confirms the sale, then you pay."
+      : "No charge yet. Hire lines may need haulage review. Sale lines wait on the yard.";
 
   async function request() {
     const response = await requestHire();
@@ -34,16 +62,16 @@ export default function HireCart({
       const next = await api.fetchCart<CartPayload>();
       if (next && onCart) onCart(next);
     } else {
-      setResult("Could not request this hire. Nothing was charged.");
+      setResult(hire ? "Could not request this hire. Nothing was charged." : "Could not request this order. Nothing was charged.");
     }
   }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <section className="rounded-2xl border border-(--line) bg-white p-5 shadow-(--shadow-sm)">
-        <h2 className="eq-display text-2xl font-bold text-(--navy)">Your hire</h2>
+        <h2 className="eq-display text-2xl font-bold text-(--navy)">{heading}</h2>
         {items.length === 0 ? (
-          <p className="mt-4 text-[14px] text-(--ink-soft)">The hire cart is empty. Ask the assistant for a machine.</p>
+          <p className="mt-4 text-[14px] text-(--ink-soft)">{empty}</p>
         ) : (
           <ul className="mt-4 space-y-4">
             {items.map((item) => (
@@ -51,12 +79,7 @@ export default function HireCart({
                 <MachineMark product={{ product_id: item.product_id, title: item.title, price: item.price }} className="h-16 w-16 rounded-lg text-sm" />
                 <div className="min-w-0 flex-1">
                   <div className="font-bold text-(--navy)">{item.title}</div>
-                  <div className="text-[13px] text-(--ink-soft)">
-                    {item.option_values?.start_date} – {item.option_values?.end_date} ({item.option_values?.number_of_days} days)
-                  </div>
-                  <div className="text-[13px] text-(--amber)">
-                    {item.option_values?.rate_type ?? "Daily"} rate · qty {item.quantity}
-                  </div>
+                  <div className="text-[13px] text-(--ink-soft)">{lineMeta(item)}</div>
                 </div>
                 <div className="font-semibold text-(--navy)">{formatUgx(item.line_total)}</div>
               </li>
@@ -82,22 +105,28 @@ export default function HireCart({
             <dt>Subtotal</dt>
             <dd>{formatUgx(subtotal)}</dd>
           </div>
-          <div className="flex justify-between">
-            <dt>Haulage</dt>
-            <dd>{haulage ? formatUgx(haulageFee) : "—"}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt>Deposit (refundable)</dt>
-            <dd>{formatUgx(deposit)}</dd>
-          </div>
+          {hire || mode === "mixed" ? (
+            <div className="flex justify-between">
+              <dt>Haulage</dt>
+              <dd>{haulage ? formatUgx(haulageFee) : "—"}</dd>
+            </div>
+          ) : null}
+          {hire ? (
+            <div className="flex justify-between">
+              <dt>Deposit (refundable)</dt>
+              <dd>{formatUgx(deposit)}</dd>
+            </div>
+          ) : null}
           <div className="flex justify-between border-t border-(--line) pt-2 text-lg font-bold text-(--amber)">
             <dt>Total</dt>
             <dd>{formatUgx(total)}</dd>
           </div>
         </dl>
         <p className="mt-2 text-[12px] text-(--ink-soft)">
-          All prices in Ugandan Shillings (UGX). VAT inclusive. Deposit equals one-way haulage.
-          To+from is charged later on Flutterwave hosted checkout.
+          All prices in Ugandan Shillings (UGX). VAT inclusive.
+          {hire
+            ? " Deposit equals one-way haulage. To+from is charged later on Flutterwave hosted checkout."
+            : " Sale, spare, and material lines are purchase totals. Nothing is charged here."}
         </p>
         <div className="mt-4 space-y-2 text-[13px]">
           <label className="flex items-start gap-2 rounded-lg border border-(--amber) bg-(--accent-soft)/40 p-2">
@@ -121,17 +150,17 @@ export default function HireCart({
           onClick={() => void request()}
           className="btn-primary mt-4 w-full rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
         >
-          Request this hire
+          {cta}
         </button>
-        <p className="mt-2 text-center text-[11px] text-(--ink-soft)">
-          No charge yet. A person confirms haulage, then you pay.
-        </p>
+        <p className="mt-2 text-center text-[11px] text-(--ink-soft)">{footnote}</p>
         {result ? <p className="mt-3 rounded-lg bg-(--ok-soft) px-3 py-2 text-[13px] text-(--ok)">{result}</p> : null}
-        <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-(--ink-soft)">
-          <span>Operator optional</span>
-          <span>Fuel: full-to-full</span>
-          <span>Insurance optional</span>
-        </div>
+        {hire ? (
+          <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-(--ink-soft)">
+            <span>Operator optional</span>
+            <span>Fuel: full-to-full</span>
+            <span>Insurance optional</span>
+          </div>
+        ) : null}
       </aside>
     </div>
   );

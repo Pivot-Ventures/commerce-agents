@@ -81,3 +81,16 @@ body {
   background: var(--amber);
   color: var(--navy);
 }
+
+/* Dense catalog: 2-up on phones, then auto-fill toward ~7 columns on a typical desktop pane. */
+.eq-product-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .eq-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  }
+}
