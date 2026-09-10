@@ -21,11 +21,11 @@ import HomeView from "@/components/views/HomeView";
 import ShopView from "@/components/views/ShopView";
 import { type ShopChip } from "@/lib/catalog";
 import { api, fetchProducts, setHireWindow, UNREACHABLE } from "@/lib/api";
-import { formatUgx, isHireListing, isYardListing } from "@/lib/format";
+import { cartMode, formatUgx, isHireListing, isYardListing, stockOf } from "@/lib/format";
 import { NOUNS, OrderThumb } from "@/lib/orders";
 import type { CartPayload, Product } from "@/lib/types";
 
-type View = "shop" | "search" | "buy" | "parts" | "materials" | "web" | "cart" | "hires";
+type View = "shop" | "rent" | "sale" | "spare" | "material" | "search" | "cart" | "orders";
 
 function Wordmark() {
   return (
@@ -47,10 +47,10 @@ function Wordmark() {
 }
 
 function viewChip(view: View): ShopChip {
-  if (view === "buy") return "sale";
-  if (view === "parts") return "spare";
-  if (view === "materials") return "material";
-  if (view === "web") return "web";
+  if (view === "rent") return "rent";
+  if (view === "sale") return "sale";
+  if (view === "spare") return "spare";
+  if (view === "material") return "material";
   return "all";
 }
 
@@ -82,47 +82,48 @@ export default function StorefrontPage() {
     if (session.sessionId) void api.fetchCart<CartPayload>().then((next) => next && setCart(next));
   }, [session.sessionId]);
 
-  const pick = useCallback(
-    (product: Product) => {
-      setPicked(product);
-      setPanelOpen(true);
-      const materialDefault = product.attributes?.unit === "bag" ? 200 : 1;
-      setQuantity(materialDefault);
-      if (isHireListing(product) && isYardListing(product)) {
-        void setHireWindow({
-          start_date: "2026-09-12",
-          end_date: "2026-09-21",
-          rate_type: "Daily",
-          site_location: "Ntinda",
-          include_haulage: true,
-        }).then((next) => {
-          if (next) setCart(next);
-        });
-      }
-    },
-    [],
-  );
+  const pick = useCallback((product: Product) => {
+    setPicked(product);
+    setPanelOpen(true);
+    const stock = stockOf(product);
+    const materialDefault = product.attributes?.unit === "bag" ? 200 : 1;
+    setQuantity(stock > 0 ? Math.min(materialDefault, stock) : 1);
+    if (isHireListing(product) && isYardListing(product)) {
+      void setHireWindow({
+        start_date: "2026-09-12",
+        end_date: "2026-09-21",
+        rate_type: "Daily",
+        site_location: "Ntinda",
+        include_haulage: true,
+      }).then((next) => {
+        if (next) setCart(next);
+      });
+    }
+  }, []);
 
   const goView = useCallback((next: View) => {
     setView(next);
-    if (next === "shop" || next === "buy" || next === "parts" || next === "materials" || next === "web") {
+    if (next === "shop" || next === "rent" || next === "sale" || next === "spare" || next === "material") {
       setChip(viewChip(next));
     }
   }, []);
 
+  const mode = cartMode(cart);
   const views: StoreView<View>[] = [
     { id: "shop", label: "Shop", icon: "home" },
+    { id: "rent", label: "Rental", icon: "truck" },
+    { id: "sale", label: "Sale", icon: "tag" },
+    { id: "spare", label: "Spares", icon: "box" },
+    { id: "material", label: "Materials", icon: "inbox" },
     { id: "search", label: "Search", icon: "search" },
-    { id: "buy", label: "Buy", icon: "tag" },
-    { id: "parts", label: "Spares", icon: "box" },
-    { id: "materials", label: "Materials", icon: "inbox" },
-    { id: "web", label: "Web finds", icon: "expand" },
     { id: "cart", label: "Cart", icon: "bag" },
-    { id: "hires", label: "Hires", icon: "calendar" },
+    { id: "orders", label: "Orders", icon: "calendar" },
   ];
   const shopper = session.shopper ?? { name: "Guest shopper" };
   const count = cart?.items.length ?? 0;
-  const shopOpen = view === "shop" || view === "buy" || view === "parts" || view === "materials" || view === "web";
+  const shopOpen = view === "shop" || view === "rent" || view === "sale" || view === "spare" || view === "material";
+  const bagLabel = mode === "hire" ? "Hire cart" : "Cart";
+  const bagNoun = mode === "hire" ? "machine" : "item";
 
   return (
     <StoreShell
@@ -133,12 +134,12 @@ export default function StorefrontPage() {
       assistantView="search"
       chat={chat}
       api={api}
-      assistantName="Hire assistant"
+      assistantName="Shop assistant"
       shopper={shopper}
       bag={{
-        label: "Hire cart",
+        label: bagLabel,
         count,
-        noun: "machine",
+        noun: bagNoun,
         figure: count ? formatUgx(cart?.subtotal ?? 0, true) : null,
       }}
       panel={
@@ -159,7 +160,7 @@ export default function StorefrontPage() {
       }
       panelOpen={panelOpen}
       onPanelOpenChange={setPanelOpen}
-      placeholder="Need a 20-ton excavator in Mukono for 10 days…"
+      placeholder="20-ton excavator, used generator, hydraulic hose, or cement bags…"
     >
       {shopOpen ? (
         <ShopView
@@ -167,7 +168,7 @@ export default function StorefrontPage() {
           chip={chip}
           onChip={(next) => {
             setChip(next);
-            setView(next === "all" ? "shop" : next === "sale" ? "buy" : next === "spare" ? "parts" : next === "material" ? "materials" : next === "web" ? "web" : "shop");
+            setView(next === "all" ? "shop" : next);
           }}
           picked={picked}
           quantity={quantity}
@@ -195,12 +196,12 @@ export default function StorefrontPage() {
           <HireCart cart={cart} onCart={setCart} />
         </StorePage>
       ) : null}
-      {view === "hires" ? (
+      {view === "orders" ? (
         <OrdersView
           orders={orders}
           failed={ordersFailed}
           nouns={NOUNS}
-          subtitle="Requested hires land in Haulage Review until a person confirms transport."
+          subtitle="Requested hires land in Haulage Review. Sale, spare, and material orders wait on the yard. Nothing is charged here."
           thumb={(order) => <OrderThumb order={order} />}
         />
       ) : null}

@@ -49,6 +49,39 @@ export function isPriceOnRequest(product: { price?: number; attributes?: Record<
   return product.attributes?.price_on_request === "true" || (product.price ?? 0) <= 0;
 }
 
+export function stockOf(product: { in_stock?: boolean; attributes?: Record<string, string> }): number {
+  const raw = product.attributes?.stock;
+  if (raw == null || raw === "") return product.in_stock === false ? 0 : 1;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) return product.in_stock === false ? 0 : 1;
+  return Math.max(0, parsed);
+}
+
+export function lineListingKind(item: { option_values?: Record<string, string> }): ListingKind {
+  const folded = (item.option_values?.type ?? "").trim().toLowerCase();
+  if (folded === "sale") return "Sale";
+  if (folded === "spare") return "Spare";
+  if (folded === "material") return "Material";
+  if (folded === "rent") return "Rent";
+  if (item.option_values?.start_date) return "Rent";
+  return "Sale";
+}
+
+export function isHireLine(item: { option_values?: Record<string, string> }): boolean {
+  return lineListingKind(item) === "Rent";
+}
+
+export function cartMode(
+  cart: { items?: { option_values?: Record<string, string> }[] } | null,
+): "empty" | "hire" | "sale" | "mixed" {
+  const items = cart?.items ?? [];
+  if (!items.length) return "empty";
+  const hire = items.some(isHireLine);
+  const sale = items.some((item) => !isHireLine(item));
+  if (hire && sale) return "mixed";
+  return hire ? "hire" : "sale";
+}
+
 export function sourceLabel(source: string): string {
   switch (source) {
     case "jiji":

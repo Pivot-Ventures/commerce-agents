@@ -1,14 +1,15 @@
 # ACME Equip (equipaccess)
 
-Hire-first construction equipment in Uganda: a public storefront for site managers, a
+Four-catalog construction equipment in Uganda: a public storefront for site managers, a
 gated store desk for the yard operator, a gated haulage-agent desk, and a gated admin
 host for listing review. Both commerce agents run over one fixture catalog. Checkout and
 payouts are handoffs — nothing charges a card and the model cannot move money.
 
-The public name on the storefront is EquipAccess. The shop catalog mixes yard listings
-(on-platform hire and buy carts) with labelled web finds from public Uganda sources.
-Public market figures are labelled on each row and are not EquipAccess quotes. Web-find
-rows carry a `source_url`; their CTA opens the source. The model never posts payment.
+The public name on the storefront is EquipAccess. Shop IA is rental, sale of equipment,
+sale of spares, and sale of construction materials. Yard Rent listings use the hire cart
+(dates, rate, haulage). Yard Sale / Spare / Material listings use purchase checkout.
+Web-find rows carry a `source_url`; their CTA opens the source. Public market figures are
+labelled on each row and are not EquipAccess quotes. The model never posts payment.
 
 ## Run
 
@@ -37,7 +38,7 @@ adapter at a running Laravel app. Cart writes and `POST make-order-payment` stay
 
 Customer A — signed-in site manager (Amina, Mukono):
 
-1. Open the storefront (`:3004`). Shop lists the full catalog. Open Search (or the composer) and ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
+1. Open the storefront (`:3004`). Shop lands on the four catalogs (Rental, Sale, Spares, Materials) in a dense product grid. Open Search (or the composer) and ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
 2. See the machine cards. Pick the 20-ton excavator on the Mukono yard. The live hire summary shows the dated quote and haulage.
 3. Switch Daily vs Weekly. Ten days on the weekly rate is 14,400,000 UGX (two weeks at the public 1,200,000 / day figure). Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
 4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. Payment options are Flutterwave (card or mobile money) and bank transfer — both handoffs. The hire lands in Haulage Review.
@@ -48,7 +49,7 @@ Customer B — date conflict / on-hire machine:
 
 Customer C — spare parts (buy, not rent):
 
-6. Ask: "I need hydraulic hoses for an ACME Iron excavator." The hose kit is a sale SKU, not a hire.
+6. Open Sale of spares (or ask: "I need hydraulic hoses for an ACME Iron excavator."). The hose kit is a purchase SKU. The side panel and cart say add to cart / request this purchase — not hire dates or haulage.
 
 Merchant operator (Mercy N., ACME Plant Hire — Mukono) — portal `:3104/login`, then the desk:
 

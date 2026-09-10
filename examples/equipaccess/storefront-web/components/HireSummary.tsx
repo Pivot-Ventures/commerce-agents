@@ -14,6 +14,7 @@ import {
   isWebFind,
   listingKind,
   listingSource,
+  stockOf,
   materialsDeliveryFee,
   sourceCta,
   sourceLabel,
@@ -59,8 +60,8 @@ export default function HireSummary({
 }) {
   const window = cart?.hire_window;
   const haulage = cart?.haulage;
-  const kind = product ? listingKind(product) : "Rent";
-  const hire = product ? isHireListing(product) : true;
+  const kind = product ? listingKind(product) : null;
+  const hire = product ? isHireListing(product) : false;
   const web = product ? isWebFind(product) : false;
   const source = product ? listingSource(product) : "yard";
   const qty = Math.max(1, quantity ?? 1);
@@ -111,12 +112,31 @@ export default function HireSummary({
         include_haulage: haulageOn,
       });
     }
-    const next = await addToCart(product.product_id, hire ? 1 : qty);
+    const next = await addToCart(product.product_id, hire ? 1 : stock > 0 ? Math.min(qty, stock) : qty);
     if (next) onCart(next);
   }
 
-  const heading =
-    web ? "External listing" : kind === "Rent" ? "Live hire summary" : kind === "Sale" ? "Sale listing" : "Order summary";
+  const heading = !product
+    ? "Listing"
+    : web
+      ? "External listing"
+      : kind === "Rent"
+        ? "Live hire summary"
+        : kind === "Sale"
+          ? "Purchase summary"
+          : "Order summary";
+
+  const stock = product ? stockOf(product) : 0;
+  const out = Boolean(product && !web && (product.in_stock === false || stock <= 0));
+  const addLabel = out
+    ? "Out of stock"
+    : hire
+      ? "Add to hire cart"
+      : kind === "Sale"
+        ? "Add to cart"
+        : kind === "Spare"
+          ? "Add spares to cart"
+          : "Add materials to cart";
 
   return (
     <aside className="flex h-full flex-col border-l border-(--line) bg-white">
@@ -148,7 +168,7 @@ export default function HireSummary({
               <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-xl bg-(--well) text-(--ink-soft)">
                 ⌘
               </div>
-              <p className="text-[13px] text-(--ink-soft)">Nothing selected — pick a machine or a bag of cement</p>
+              <p className="text-[13px] text-(--ink-soft)">Nothing selected — pick a rental, a sale machine, a spare, or materials</p>
             </div>
           </div>
         )}
@@ -156,7 +176,8 @@ export default function HireSummary({
         {product && web ? (
           <>
             <div className="rounded-xl bg-(--info-soft) px-3 py-2 text-[13px] text-(--info)">
-              Checkout stays on {sourceLabel(source)}. We open their listing with your dates.
+              Checkout stays on {sourceLabel(source)}. We open their listing
+              {hire ? " with your dates" : ""}.
             </div>
             <p className="text-[11px] text-(--ink-soft)">
               Checkout happens on the source site for external items. EquipAccess does not process payment for web
@@ -264,7 +285,7 @@ export default function HireSummary({
                 <button
                   type="button"
                   className="grid h-8 w-8 place-items-center rounded-md border border-(--line)"
-                  onClick={() => onQuantity?.(qty + 1)}
+                  onClick={() => onQuantity?.(stock > 0 ? Math.min(stock, qty + 1) : qty + 1)}
                 >
                   +
                 </button>
@@ -357,11 +378,11 @@ export default function HireSummary({
           <>
             <button
               type="button"
-              disabled={!product || (isPriceOnRequest(product ?? {}) && !hire)}
+              disabled={!product || out || (isPriceOnRequest(product ?? {}) && !hire)}
               onClick={() => void add()}
               className="btn-primary w-full rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
             >
-              {hire ? "Add to hire cart" : kind === "Material" ? "Add materials to cart" : "Add to cart"}
+              {addLabel}
             </button>
             <p className="mt-2 text-center text-[11px] text-(--ink-soft)">No charge yet. Pay when confirmed.</p>
           </>

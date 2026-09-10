@@ -7,8 +7,9 @@ import { Greeting, type Starter, Starters } from "web-shared";
 
 const STARTERS: Starter[] = [
   { icon: "search", prompt: "Need a 20-ton excavator in Mukono for 10 days, include transport to site." },
-  { icon: "truck", prompt: "The Entebbe dump truck — is it free this week?" },
-  { icon: "tag", prompt: "I need hydraulic hoses for a 20-ton excavator." },
+  { icon: "tag", prompt: "Show used generators for sale on the yard." },
+  { icon: "box", prompt: "I need hydraulic hoses for a 20-ton excavator." },
+  { icon: "inbox", prompt: "200 bags of cement for a site in Ntinda." },
 ];
 
 export default function HomeView({
@@ -23,11 +24,12 @@ export default function HomeView({
       <Greeting
         title={
           <h1 className="eq-hero">
-            Hire assistant. <em className="not-italic text-(--navy)">Tell it the site.</em>
+            Shop assistant. <em className="not-italic text-(--navy)">Rent or buy.</em>
           </h1>
         }
       >
-        Location, dates, haulage included. The shop listing is on Shop. Signed in as {name}.
+        Four catalogs on Shop: rental, sale of equipment, sale of spares, and sale of construction
+        materials. Hire questions need site and dates. Signed in as {name}.
       </Greeting>
       <form
         className="flex gap-2 rounded-2xl border border-(--line) bg-white p-2 shadow-(--shadow-sm)"
@@ -41,7 +43,7 @@ export default function HomeView({
         <input
           name="q"
           className="min-w-0 flex-1 rounded-xl bg-transparent px-3 py-2 text-[15px] outline-none"
-          placeholder="Machine, location, and dates"
+          placeholder="Machine, spare, materials — or hire dates and site"
         />
         <button type="submit" className="btn-primary rounded-xl px-4 py-2 text-sm font-bold">
           Search

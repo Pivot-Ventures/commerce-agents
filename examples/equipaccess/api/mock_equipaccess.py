@@ -480,7 +480,7 @@ class MockEquipAccess(StorefrontBackend):
                 price=product.price,
                 quantity=quantity,
                 image_url=product.image_url,
-                option_values=product.option_values,
+                option_values={**product.option_values, "type": _listing_type(product)},
                 variant_of=product.variant_of,
             )
         quote = quote_hire(product, window.days, window.rate_type)
@@ -522,11 +522,19 @@ class MockEquipAccess(StorefrontBackend):
         extras = self.cart_extras(session.session_id)
         return cart.model_copy() if extras else cart
 
+    def _cart_has_rental(self, session_id: str) -> bool:
+        cart = self._carts.cart(session_id)
+        return any(
+            (product := self.product(item.product_id)) is not None and _is_rental(product)
+            for item in cart.items
+        )
+
     def cart_extras(self, session_id: str) -> dict[str, Any]:
         window = self._windows.get(session_id)
         cart = self._carts.cart(session_id)
+        sale_only = bool(cart.items) and not self._cart_has_rental(session_id)
         haulage = None
-        if window is not None and window.include_haulage:
+        if window is not None and window.include_haulage and not sale_only:
             yard = None
             for item in cart.items:
                 product = self.product(item.product_id)
@@ -588,7 +596,10 @@ class MockEquipAccess(StorefrontBackend):
             return self._carts.cart(session.session_id)
         if quantity > _stock_of(product) or not product.in_stock:
             raise Unavailable(unavailable_detail(product, None))
-        return self._carts.put(session.session_id, product, quantity)
+        self._carts.lines(session.session_id)[product.product_id] = self._line_for(
+            product, quantity, None
+        )
+        return self._carts.cart(session.session_id)
 
     async def update_cart_item(
         self, session: ShoppingSessionContext, product_id: str, quantity: int
@@ -646,11 +657,25 @@ class MockEquipAccess(StorefrontBackend):
     async def checkout_handoff(
         self, session: ShoppingSessionContext, cart: Cart
     ) -> list[CheckoutHandoff]:
-        del session, cart
+        has_rental = any(
+            (product := self.product(item.product_id)) is not None and _is_rental(product)
+            for item in cart.items
+        )
+        has_sale = any(
+            (product := self.product(item.product_id)) is not None and not _is_rental(product)
+            for item in cart.items
+        )
+        del session
+        if has_rental and has_sale:
+            label = "Request this order"
+        elif has_sale:
+            label = "Request this purchase"
+        else:
+            label = "Request this hire"
         return [
             CheckoutHandoff(
                 url=CHECKOUT_HANDOFF_URL,
-                label="Request this hire",
+                label=label,
             )
         ]
 
@@ -766,6 +791,13 @@ class MockEquipAccess(StorefrontBackend):
         haulage = extras.get("haulage")
         haulage_amount = float(haulage["fee"]) if haulage else 0.0
         deposit = float(extras.get("deposit") or 0)
+        sale_only = bool(cart.items) and not self._cart_has_rental(session.session_id)
+        if haulage:
+            note = "No charge. Haulage review is outstanding."
+        elif sale_only:
+            note = "No charge. Purchase request staged."
+        else:
+            note = "No charge. Hire request staged."
         self._hire_seq += 1
         hire = HireRequest(
             hire_id=f"HIRE-{self._hire_seq}",
@@ -789,6 +821,7 @@ class MockEquipAccess(StorefrontBackend):
             total=round(cart.subtotal + haulage_amount + deposit, 2),
             currency="UGX",
             created_at=datetime.now(UTC),
+            note=note,
         )
         self._hires.append(hire)
         # Convert the session hold into a booking so the calendar and later searches

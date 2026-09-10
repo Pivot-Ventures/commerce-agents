@@ -6,7 +6,7 @@
 import { type Order, ORDER_NOUNS } from "web-shared";
 import { productGlyph } from "./format";
 
-export const NOUNS = { ...ORDER_NOUNS, singular: "hire", plural: "hires" };
+export const NOUNS = { ...ORDER_NOUNS, singular: "order", plural: "orders" };
 
 export function OrderThumb({ order }: { order: Order }) {
   const title = order.items[0]?.title ?? order.order_id;

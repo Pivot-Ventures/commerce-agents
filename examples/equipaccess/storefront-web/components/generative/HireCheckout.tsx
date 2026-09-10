@@ -5,18 +5,23 @@
 
 import { useId } from "react";
 import { safeHandoffs } from "web-shared";
-import { formatUgx } from "@/lib/format";
+import { cartMode, formatUgx } from "@/lib/format";
 import type { CheckoutPayload } from "@/lib/types";
 
 export default function HireCheckout({ payload }: { payload: CheckoutPayload }) {
   const handoffs = safeHandoffs(payload.handoffs);
   const noteId = useId();
   const cart = payload.cart;
-  const haulage = cart.haulage;
+  const mode = cartMode(cart);
+  const hire = mode === "hire" || mode === "empty";
+  const haulage = hire || mode === "mixed" ? cart.haulage : undefined;
+  const title =
+    mode === "sale" ? "Ready to request this purchase" : mode === "mixed" ? "Ready to request this order" : "Ready to request this hire";
+  const cta = mode === "sale" ? "Request this purchase" : mode === "mixed" ? "Request this order" : "Request this hire";
   return (
     <section data-checkout-card className="rounded-2xl border-2 border-(--amber) bg-white p-4 shadow-(--shadow-sm)">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-[15px] font-semibold text-(--navy)">Ready to request this hire</h3>
+        <h3 className="text-[15px] font-semibold text-(--navy)">{title}</h3>
         <span className="rounded-full border border-(--line) px-2.5 py-0.5 text-[11px] font-semibold text-(--ink-soft)">
           Not charged
         </span>
@@ -53,17 +58,19 @@ export default function HireCheckout({ payload }: { payload: CheckoutPayload }) 
               aria-describedby={noteId}
               className="btn-primary w-full rounded-xl py-2.5 text-center text-sm font-bold"
             >
-              {handoff.label ?? "Request this hire"}
+              {handoff.label ?? cta}
             </a>
           ))}
         </div>
       ) : (
         <button disabled aria-describedby={noteId} className="btn-primary mt-3 w-full cursor-not-allowed rounded-xl py-2.5 text-sm font-bold opacity-90">
-          Request this hire
+          {cta}
         </button>
       )}
       <p id={noteId} className="mt-2 text-center text-[11px] text-(--ink-soft)">
-        Nothing is charged here. A person confirms haulage, then you pay.
+        {hire
+          ? "Nothing is charged here. A person confirms haulage, then you pay."
+          : "Nothing is charged here. The yard confirms the sale, then you pay."}
       </p>
     </section>
   );
