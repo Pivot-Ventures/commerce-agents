@@ -6,7 +6,15 @@
 const ugx = new Intl.NumberFormat("en-UG");
 
 export type ListingKind = "Rent" | "Sale" | "Spare" | "Material";
-export type ListingSource = "yard" | "jiji" | "mantrac" | "lexa" | "clone" | "heavyequipmentuganda";
+export type ListingSource =
+  | "yard"
+  | "jiji"
+  | "mantrac"
+  | "lexa"
+  | "clone"
+  | "heavyequipmentuganda"
+  | "alibaba"
+  | "indiamart";
 
 export function formatUgx(value: number, compact = false): string {
   if (compact && value >= 1000) {
@@ -30,6 +38,8 @@ export function listingSource(product: { attributes?: Record<string, string> }):
   if (folded === "lexa") return "lexa";
   if (folded === "clone") return "clone";
   if (folded === "heavyequipmentuganda") return "heavyequipmentuganda";
+  if (folded === "alibaba") return "alibaba";
+  if (folded === "indiamart") return "indiamart";
   return "yard";
 }
 
@@ -94,6 +104,10 @@ export function sourceLabel(source: string): string {
       return "Clone Supplies";
     case "heavyequipmentuganda":
       return "Heavy Equipment Uganda";
+    case "alibaba":
+      return "Alibaba.com";
+    case "indiamart":
+      return "IndiaMART";
     default:
       return "EquipAccess yard";
   }
@@ -111,6 +125,10 @@ export function sourceCta(source: string): string {
       return "Continue on Clone";
     case "heavyequipmentuganda":
       return "Continue on Heavy Equipment Uganda";
+    case "alibaba":
+      return "Continue on Alibaba.com";
+    case "indiamart":
+      return "Continue on IndiaMART";
     default:
       return "Open on source";
   }

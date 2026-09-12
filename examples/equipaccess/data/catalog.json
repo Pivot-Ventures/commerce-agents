@@ -2158,6 +2158,537 @@
         "price_source": "heavyequipmentuganda",
         "price_on_request": "true"
       }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-501",
+      "title": "CAT 336 used excavator",
+      "brand": "Alibaba.com",
+      "price": 89000000,
+      "category": "excavators",
+      "image_url": "https://s.alicdn.com/@sc04/kf/H49d84d27eeb0478aa7911014c99a8601Q.jpg_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 89,000,000. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Used CAT 336 crawler excavator, heavy mining/construction class. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "model": "CAT 336",
+        "class": "Heavy mining crawler excavator"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "excavator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/mini_excavator.html",
+        "price_source": "alibaba"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-502",
+      "title": "CAT 318C 18-ton excavator",
+      "brand": "Alibaba.com",
+      "price": 78400000,
+      "category": "excavators",
+      "image_url": "https://s.alicdn.com/@sc04/kf/H9bed4b7f126447d183676b3ed28a1abaP.jpg_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 78,400,000. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Used CAT 318C 18-ton medium crawler excavator. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "model": "CAT 318C",
+        "class": "Medium crawler excavator",
+        "operating_weight": "18 t"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "excavator",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/mini_excavator.html",
+        "price_source": "alibaba",
+        "capacity_tons": "18"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-503",
+      "title": "Used wheel loader (956/958/856H series)",
+      "brand": "Alibaba.com",
+      "price": 31800000,
+      "category": "loaders",
+      "image_url": "https://s.alicdn.com/@sc04/kf/Hd02818481085491fbd5d49d930caae17B.jpg_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 31,800,000. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Used wheel loader, 3-5 ton class (956/958/856H/950 series). EquipAccess does not process payment for web finds.",
+      "specs": {
+        "operating_weight": "3-5 t",
+        "compatible_models": "956/958/856H/950G/950C/950E/966G/966H/966F"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/used_wheel_loader.html",
+        "price_source": "alibaba"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-504",
+      "title": "CAT 950GC wheel loader",
+      "brand": "Alibaba.com",
+      "price": 141500000,
+      "category": "loaders",
+      "image_url": "https://s.alicdn.com/@sc04/kf/H913c8c215d01409880779dba17ac9f93T.jpg_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 141,500,000. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Used Caterpillar CAT 950GC front-end wheel loader. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "model": "CAT 950GC",
+        "class": "Front-end wheel loader"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/used_wheel_loader.html",
+        "price_source": "alibaba"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-505",
+      "title": "JCB motor grader",
+      "brand": "IndiaMART",
+      "price": 17400000,
+      "category": "graders",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2022/4/GS/UV/XM/2233680/jcb-motor-grader-500x500.jpg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 17,400,000. Checkout stays on IndiaMART; import lead time applies.",
+      "long_description": "Web find, sourced from IndiaMART. New JCB motor grader from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "operating_weight": "8000 kg",
+        "engine_power": "100 HP",
+        "blade_width": "3048 mm"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "grader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=motor+grader",
+        "price_source": "indiamart"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-506",
+      "title": "JCB 3DX EcoXpert backhoe loader",
+      "brand": "IndiaMART",
+      "price": 107500000,
+      "category": "loaders",
+      "image_url": "https://5.imimg.com/data5/NN/XN/MY-8211884/backhoe-loaders-500x500.jpg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 107,500,000. Checkout stays on IndiaMART; import lead time applies.",
+      "long_description": "Web find, sourced from IndiaMART. New JCB 3DX EcoXpert backhoe loader from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "engine_power": "55 kW",
+        "max_dig_depth": "4700 mm",
+        "bucket_capacity": "1.1 m3"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+backhoe+loader",
+        "price_source": "indiamart"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-507",
+      "title": "JCB 76HP backhoe loader",
+      "brand": "IndiaMART",
+      "price": 137600000,
+      "category": "loaders",
+      "image_url": "https://5.imimg.com/data5/BJ/UQ/NV/SELLER-9340697/backhoe-loader-500x500.jpg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 137,600,000. Checkout stays on IndiaMART; import lead time applies.",
+      "long_description": "Web find, sourced from IndiaMART. JCB 76HP backhoe loader from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "engine_power": "76 HP",
+        "operating_weight": "8000 kg"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+backhoe+loader",
+        "price_source": "indiamart"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SAL-508",
+      "title": "New JCB 3DX 74HP backhoe loader",
+      "brand": "IndiaMART",
+      "price": 159100000,
+      "category": "loaders",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2025/8/534185028/SB/HS/QI/3310079/3dx-jcb-backhoe-loader-500x500.jpg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 159,100,000. Checkout stays on IndiaMART; import lead time applies.",
+      "long_description": "Web find, sourced from IndiaMART. New JCB 3DX 74HP backhoe loader from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "engine_power": "74 HP",
+        "model": "JCB 3DX"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Sale",
+        "machine_class": "loader",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "1",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+backhoe+loader",
+        "price_source": "indiamart"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-504",
+      "title": "JCB copper washer, 8mm (823-00291)",
+      "brand": "IndiaMART",
+      "price": 12500,
+      "category": "spare-parts",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2026/5/608604689/ON/UY/KM/3094615/copper-washer-8-mm-jcb-823-00291-500x500.jpeg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 12,500 per piece. Checkout stays on IndiaMART.",
+      "long_description": "Web find, sourced from IndiaMART. Genuine-spec JCB copper washer (part 823-00291) from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "fits": "JCB 3CX"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "50",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+spare+parts",
+        "price_source": "indiamart",
+        "unit": "piece"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-505",
+      "title": "JCB hydraulic piston kit (320-09210)",
+      "brand": "IndiaMART",
+      "price": 1360000,
+      "category": "spare-parts",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2026/6/616868742/TI/VA/PO/3094615/jcb-spare-parts-kit-piston-320-09210-500x500.png",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 1,360,000 per piece. Checkout stays on IndiaMART; import lead time applies.",
+      "long_description": "Web find, sourced from IndiaMART. JCB hydraulic piston kit (part 320-09210) from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "part_number": "320-09210"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "10",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+spare+parts",
+        "price_source": "indiamart",
+        "unit": "piece"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-506",
+      "title": "JCB spare parts kit (3DX-compatible)",
+      "brand": "IndiaMART",
+      "price": 258000,
+      "category": "spare-parts",
+      "image_url": "https://5.imimg.com/data5/SELLER/Default/2025/11/558371415/TR/SR/PY/200232796/jcb-spares-for-exports-in-bulk-500x500.jpg",
+      "short_description": "IndiaMART listing from a verified exporter shipping to Uganda. UGX 258,000 per kit. Checkout stays on IndiaMART.",
+      "long_description": "Web find, sourced from IndiaMART. General JCB spare parts kit covering the 3C/3CX/3D/3DX/4C/4CN/4CX range, from a TrustSEAL-verified exporter that already ships to Uganda. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "fits": "JCB 3C/3CX/3D/3DX/4C/4CN/4CX"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "15",
+        "min_quantity": "1",
+        "source": "indiamart",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://dir.indiamart.com/search.mp?ss=jcb+spare+parts",
+        "price_source": "indiamart",
+        "unit": "kit"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-508",
+      "title": "JCB bucket tooth and adaptor set",
+      "brand": "Alibaba.com",
+      "price": 148000,
+      "category": "spare-parts",
+      "image_url": "https://s.alicdn.com/@sc04/kf/Hf2f6d6b909c74e53bcc61c3cf527ac5cn.jpg_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 148,000 per piece. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Bucket tooth and adaptor set with side-cutter rock teeth for JCB 3DX excavators. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "fits": "JCB 3DX"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "25",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/bulldozer_spare_parts.html",
+        "price_source": "alibaba",
+        "unit": "piece"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-509",
+      "title": "Starter motor, 12V 4.5kW (CAT/Case compatible)",
+      "brand": "Alibaba.com",
+      "price": 548000,
+      "category": "spare-parts",
+      "image_url": "https://s.alicdn.com/@sc04/kf/Hec2f6c381bf24907a27216c37746b623Z.png_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 548,000 per piece. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. 12V 4.5kW starter motor for Caterpillar and Case diesel engines (replaces Delco 1990316). EquipAccess does not process payment for web finds.",
+      "specs": {
+        "voltage": "12V",
+        "power": "4.5 kW",
+        "fits": "Caterpillar, Case diesel engines"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "8",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/bulldozer_spare_parts.html",
+        "price_source": "alibaba",
+        "unit": "piece"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-510",
+      "title": "D7R main control valve (CAT bulldozer)",
+      "brand": "Alibaba.com",
+      "price": 4550000,
+      "category": "spare-parts",
+      "image_url": "https://s.alicdn.com/@sc04/kf/Hd0031cf173f8444d8d222d639c31ba5di.png_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 4,550,000 per piece. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Main control valve (224-4941 / 308-6726) for Caterpillar D7R-series bulldozers. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "fits": "CAT D7R, D7R II, D7R XR"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "2",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/bulldozer_spare_parts.html",
+        "price_source": "alibaba",
+        "unit": "piece"
+      }
+    },
+    {
+      "currency": "UGX",
+      "rating": 4.5,
+      "review_count": 20,
+      "labels": [
+        "In stock"
+      ],
+      "in_stock": true,
+      "product_id": "AE-WEB-SPR-511",
+      "title": "Generator AMF control unit",
+      "brand": "Alibaba.com",
+      "price": 254000,
+      "category": "spare-parts",
+      "image_url": "https://s.alicdn.com/@sc04/kf/Hffddafe574154996a2592f2278943523j.png_720x720.jpg",
+      "short_description": "Alibaba.com listing. UGX 254,000 per piece. Checkout stays on Alibaba.com; import lead time applies.",
+      "long_description": "Web find, sourced from Alibaba.com. Automatic mains failure (AMF) control unit for diesel generators. EquipAccess does not process payment for web finds.",
+      "specs": {
+        "model": "DC42S"
+      },
+      "review_highlights": [],
+      "attributes": {
+        "listing_type": "Spare",
+        "machine_class": "spare part",
+        "location": "Kampala",
+        "region": "Central",
+        "stock": "10",
+        "min_quantity": "1",
+        "source": "alibaba",
+        "published": "true",
+        "yard": "EquipAccess Kampala",
+        "source_url": "https://www.alibaba.com/premium/generator_spare_parts.html",
+        "price_source": "alibaba",
+        "unit": "piece"
+      }
     }
   ]
 }

@@ -10,6 +10,7 @@ import {
   isWebFind,
   listingKind,
   productGlyph,
+  sourceCta,
   sourceLabel,
 } from "@/lib/format";
 import type { Product } from "@/lib/types";
@@ -105,6 +106,17 @@ export default function MachineCard({
           ) : (
             <p className="text-[12px] text-(--ink-soft)">On-platform checkout.</p>
           )}
+          {attrs.source_url ? (
+            <a
+              href={attrs.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="mt-0.5 inline-block text-[12px] font-semibold text-(--info) underline underline-offset-2"
+            >
+              {sourceCta(attrs.source ?? "yard")} ↗
+            </a>
+          ) : null}
         </div>
         {onSelect ? (
           <button
@@ -183,6 +195,17 @@ export default function MachineCard({
           {formatListPrice(product, layout === "grid")}
         </div>
         <div className="truncate text-[11px] text-(--ink-soft)">{attrs.location ?? "Uganda"}</div>
+        {attrs.source_url ? (
+          <a
+            href={attrs.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className={`font-semibold text-(--info) underline underline-offset-2 ${layout === "grid" ? "text-[11px]" : "text-[12px]"}`}
+          >
+            {sourceCta(attrs.source ?? "yard")} ↗
+          </a>
+        ) : null}
         {reason ? <p className="text-[12px] text-(--ink-2)">{reason}</p> : null}
         {showQty ? (
           <div className="mt-auto flex items-center gap-2">

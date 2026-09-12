@@ -110,10 +110,16 @@ def test_place_static_copies_public_next_to_standalone_server(tmp_path: Path):
 
 
 def test_catalog_product_photos_exist_in_storefront_public():
+    """Local photos must exist in storefront-web/public/products/. Web-find rows may
+    instead point straight at the supplier's own CDN (e.g. s.alicdn.com, 5.imimg.com)
+    -- those are real listing photos scraped from Alibaba/IndiaMART category pages,
+    not something this repo hosts, so they only need to be well-formed https URLs."""
     catalog = json.loads((ROOT / "data" / "catalog.json").read_text(encoding="utf-8"))
     urls = {item["image_url"] for item in catalog["products"] if item.get("image_url")}
     assert urls
     for url in urls:
+        if url.startswith("https://"):
+            continue
         assert url.startswith("/products/"), url
         path = PUBLIC_PRODUCTS / Path(url).name
         assert path.is_file(), url
