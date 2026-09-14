@@ -20,9 +20,18 @@ RATE_WEEKLY = "Weekly"
 RATE_MONTHLY = "Monthly"
 RATE_TYPES = (RATE_DAILY, RATE_WEEKLY, RATE_MONTHLY)
 
-# Lowbed method price per kilometre so 18 km (Mukono yard → Mukono industrial)
-# quotes 240,000 UGX one-way, matching the fixture haulage row.
+# General haulage method price per kilometre, for rental machine classes that don't
+# need a lowbed trailer (generators, scaffolding, mixers, compactors, forklifts,
+# water tankers, ...). Calibrated so 18 km (Mukono yard -> Mukono industrial) quotes
+# 240,000 UGX one-way, matching the fixture haulage row.
 HAULAGE_PER_KM_UGX = 240_000 / 18
+
+# Lowbed trailer method price per kilometre, for machine classes too heavy/tracked to
+# self-drive (excavators, bulldozers, wheel loaders, graders, cranes). Calibrated
+# against a real market quote: Kampala -> Bukomero is ~80-100 km by road and a lowbed
+# quote for that run is UGX 1,500,000 -- 15,000 UGX/km * 100 km matches exactly.
+LOWBED_PER_KM_UGX = 15_000
+LOWBED_MACHINE_CLASSES = {"excavator", "bulldozer", "loader", "skid steer", "grader", "crane"}
 
 # Yard-to-site road kilometres used when the customer names a yard city and a site city.
 YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
@@ -31,10 +40,12 @@ YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
     ("mukono", "entebbe"): 48,
     ("mukono", "jinja"): 74,
     ("mukono", "gulu"): 320,
+    ("mukono", "bukomero"): 118,
     ("kampala", "kampala"): 12,
     ("kampala", "mukono"): 22,
     ("kampala", "entebbe"): 40,
     ("kampala", "jinja"): 80,
+    ("kampala", "bukomero"): 100,
     ("entebbe", "entebbe"): 10,
     ("entebbe", "kampala"): 40,
     ("entebbe", "mukono"): 48,
@@ -49,6 +60,80 @@ YARD_TO_SITE_KM: dict[tuple[str, str], int] = {
     ("kampala", "wakiso"): 20,
     ("mukono", "wakiso"): 28,
 }
+
+
+def requires_lowbed(machine_class: str | None) -> bool:
+    return bool(machine_class) and machine_class.strip().lower() in LOWBED_MACHINE_CLASSES
+
+
+def haulage_rate_per_km_ugx(machine_class: str | None) -> float:
+    return LOWBED_PER_KM_UGX if requires_lowbed(machine_class) else HAULAGE_PER_KM_UGX
+
+
+# Kampala's urban/peri-urban belt -- same cities already used as yard/site rows above --
+# gets a flat local delivery fee rather than the per-km/zone upcountry tiers.
+KAMPALA_METRO_SITES = ("kampala", "ntinda", "namanve", "wakiso", "mukono", "entebbe")
+SPARES_DELIVERY_KAMPALA_UGX = 10_000
+
+# Upcountry spare-parts delivery: a courier/boda run, not a distance calc (no domestic
+# Uganda courier publishes a public rate card -- DHL Domestic, Posta Uganda/EMS, and
+# others all quote by zone/on request). Tiered by real road distance from Kampala,
+# shaped like DHL Domestic Uganda's own AA/A/B/C zoning, bounded to the market range an
+# operator actually quotes: UGX 30,000 nearby, up to UGX 100,000 far upcountry.
+SPARES_DELIVERY_NEAR_UGX = 30_000  # ~<150 km: Jinja, Mityana, Mubende, Luweero, Masaka, Iganga, Kayunga, Bukomero/Kiboga, Lugazi, Njeru
+SPARES_DELIVERY_MID_UGX = 60_000  # ~150-280 km: Soroti, Hoima, Kasese, Mbale, Fort Portal, Masindi
+SPARES_DELIVERY_FAR_UGX = 100_000  # ~280+ km: Gulu, Mbarara, Arua, Kabale, Moroto, Kitgum, Adjumani, Kisoro
+
+_SPARES_NEAR_TOWNS = (
+    "jinja", "mityana", "mubende", "luweero", "luwero", "masaka", "iganga",
+    "kayunga", "bukomero", "kiboga", "lugazi", "njeru", "mpigi",
+)
+_SPARES_MID_TOWNS = ("soroti", "hoima", "kasese", "mbale", "fort portal", "fortportal", "masindi")
+_SPARES_FAR_TOWNS = (
+    "gulu", "mbarara", "arua", "kabale", "moroto", "kitgum", "adjumani", "kisoro", "lira",
+)
+
+
+def spares_delivery_fee(site: str | None) -> float:
+    """Kampala-metro: flat courier fee. Upcountry: zone-tiered courier fee (see
+    SPARES_DELIVERY_* above). Free-text site, matched the same way as
+    materials_delivery_fee -- there's no geocoding here, just keyword zones."""
+    folded = (site or "").strip().lower()
+    if not folded:
+        return 0.0
+    if any(town in folded for town in KAMPALA_METRO_SITES):
+        return float(SPARES_DELIVERY_KAMPALA_UGX)
+    if any(town in folded for town in _SPARES_FAR_TOWNS):
+        return float(SPARES_DELIVERY_FAR_UGX)
+    if any(town in folded for town in _SPARES_MID_TOWNS):
+        return float(SPARES_DELIVERY_MID_UGX)
+    if any(town in folded for town in _SPARES_NEAR_TOWNS):
+        return float(SPARES_DELIVERY_NEAR_UGX)
+    # Unrecognized upcountry text: quote the middle of the market range rather than
+    # silently returning 0, which would look like delivery was free.
+    return float(SPARES_DELIVERY_MID_UGX)
+
+
+# Bulk construction-materials delivery (a truck load, not a courier parcel) -- mirrors
+# the frontend's lib/format.ts materialsDeliveryFee() tiers exactly so a quote doesn't
+# depend on which side of the app computed it.
+MATERIALS_DELIVERY_NTINDA_UGX = 180_000
+MATERIALS_DELIVERY_KAMPALA_UGX = 150_000
+MATERIALS_DELIVERY_MUKONO_UGX = 120_000
+MATERIALS_DELIVERY_DEFAULT_UGX = 180_000
+
+
+def materials_delivery_fee(site: str | None) -> float:
+    folded = (site or "").strip().lower()
+    if not folded:
+        return 0.0
+    if "ntinda" in folded:
+        return float(MATERIALS_DELIVERY_NTINDA_UGX)
+    if "kampala" in folded or "namanve" in folded or "wakiso" in folded:
+        return float(MATERIALS_DELIVERY_KAMPALA_UGX)
+    if "mukono" in folded:
+        return float(MATERIALS_DELIVERY_MUKONO_UGX)
+    return float(MATERIALS_DELIVERY_DEFAULT_UGX)
 
 
 def parse_iso_date(value: str | None) -> date | None:
@@ -133,11 +218,13 @@ def haulage_km(yard: str | None, site: str | None, explicit: float | None = None
     return YARD_TO_SITE_KM.get((yard.strip().lower(), site.strip().lower()))
 
 
-def haulage_fee(kilometres: float | None) -> float | None:
-    """One-way haulage: shipping method price times distance."""
+def haulage_fee(kilometres: float | None, machine_class: str | None = None) -> float | None:
+    """One-way haulage: shipping method price times distance. ``machine_class`` selects
+    the lowbed rate for tracked/heavy plant (see LOWBED_MACHINE_CLASSES); omitted or an
+    unrecognized class falls back to the general per-km rate."""
     if kilometres is None or kilometres <= 0:
         return None
-    return float(round(HAULAGE_PER_KM_UGX * kilometres))
+    return float(round(haulage_rate_per_km_ugx(machine_class) * kilometres))
 
 
 def haulage_round_trip(one_way: float | None) -> float | None:

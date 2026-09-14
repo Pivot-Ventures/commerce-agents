@@ -4,7 +4,14 @@
 from datetime import date
 
 from equipaccess.api.mock_equipaccess import HireWindow, MockEquipAccess
-from equipaccess.api.rates import RATE_WEEKLY, haulage_fee, quote_hire
+from equipaccess.api.rates import (
+    RATE_WEEKLY,
+    haulage_fee,
+    haulage_km,
+    materials_delivery_fee,
+    quote_hire,
+    spares_delivery_fee,
+)
 from shopping_agent import SearchFilters, Unavailable
 
 
@@ -140,10 +147,12 @@ async def test_cart_line_is_the_period_quote(backend, session):
     assert line.option_values["rate_type"] == RATE_WEEKLY
     assert line.option_values["type"] == "Rent"
     extras = backend.cart_extras(session.session_id)
-    assert extras["haulage"]["fee"] == 240_000
-    assert extras["haulage"]["round_trip_fee"] == 480_000
+    # AE-EXC-101 is an excavator -- a lowbed-class machine, so this uses the 15,000
+    # UGX/km lowbed rate (18 km * 15,000 = 270,000), not the general per-km rate.
+    assert extras["haulage"]["fee"] == 270_000
+    assert extras["haulage"]["round_trip_fee"] == 540_000
     assert extras["haulage"]["label"] == "Needs haulage review"
-    assert extras["deposit"] == 240_000
+    assert extras["deposit"] == 270_000
 
 
 async def test_request_hire_does_not_charge_and_lands_in_haulage_review(backend, session):
@@ -160,7 +169,7 @@ async def test_request_hire_does_not_charge_and_lands_in_haulage_review(backend,
     await backend.add_to_cart(session, "AE-EXC-101", 1)
     hire = backend.request_hire(session)
     assert hire.status == "haulage_review"
-    assert hire.haulage_fee == 240_000
+    assert hire.haulage_fee == 270_000  # excavator -> lowbed rate, 18 km * 15,000
     assert hire.subtotal == 14_400_000
     queue = backend.haulage_queue()
     assert any(row["hire_id"] == hire.hire_id for row in queue)
@@ -195,12 +204,15 @@ async def test_sale_cart_is_purchase_not_hire(backend, session):
     assert cart.items[0].option_values["type"] == "Sale"
     assert "start_date" not in cart.items[0].option_values
     extras = backend.cart_extras(session.session_id)
-    assert extras["haulage"] is None
-    assert extras["deposit"] == 0
+    # A sale-of-equipment purchase has the same delivery problem as a rental (get the
+    # machine from the yard to the customer), so it gets a haulage quote too, at the
+    # general per-km rate since a generator isn't a lowbed-class machine (22 km * 13,333.33).
+    assert extras["haulage"]["fee"] == 293_333
+    assert extras["deposit"] == 293_333
     hire = backend.request_hire(session)
-    assert hire.status == "requested"
-    assert hire.haulage is None
-    assert "purchase" in hire.note.lower()
+    assert hire.status == "haulage_review"
+    assert hire.haulage is not None
+    assert "haulage review" in hire.note.lower()
 
 
 async def test_hire_checkout_handoff_keeps_hire_label(backend, session):
@@ -214,6 +226,86 @@ def test_weekly_quote_math():
     quote = quote_hire(product, 10, RATE_WEEKLY)
     assert quote["quoted_total"] == 14_400_000
     assert haulage_fee(18) == 240_000
+
+
+def test_lowbed_rate_applies_only_to_lowbed_machine_classes():
+    # Excavators, bulldozers, loaders, graders, and cranes need a lowbed trailer and
+    # get the real market rate (15,000 UGX/km); other rental classes (generators,
+    # scaffolding, mixers, ...) keep the general per-km rate.
+    assert haulage_fee(18, "excavator") == 270_000
+    assert haulage_fee(18, "bulldozer") == 270_000
+    assert haulage_fee(18, "generator") == 240_000
+    assert haulage_fee(18, None) == 240_000
+    assert haulage_fee(18, "unknown-class") == 240_000
+
+
+def test_lowbed_rate_matches_real_kampala_bukomero_market_quote():
+    # A real lowbed market quote: Kampala -> Bukomero (~80-100 km by road) costs
+    # UGX 1,500,000. The 100 km table entry at 15,000 UGX/km reproduces it exactly.
+    km = haulage_km("kampala", "bukomero")
+    assert km == 100
+    assert haulage_fee(km, "excavator") == 1_500_000
+
+
+def test_spares_delivery_fee_kampala_flat_and_upcountry_tiers():
+    assert spares_delivery_fee("Kampala") == 10_000
+    assert spares_delivery_fee("Ntinda") == 10_000
+    assert spares_delivery_fee("Mukono") == 10_000
+    assert spares_delivery_fee("Jinja") == 30_000  # near upcountry
+    assert spares_delivery_fee("Mbale") == 60_000  # mid upcountry
+    assert spares_delivery_fee("Gulu") == 100_000  # far upcountry
+    assert spares_delivery_fee("Somewhere unlisted") == 60_000  # safe middle default
+    assert spares_delivery_fee("") == 0
+    assert spares_delivery_fee(None) == 0
+
+
+def test_materials_delivery_fee_matches_frontend_tiers():
+    # Mirrors lib/format.ts materialsDeliveryFee() exactly.
+    assert materials_delivery_fee("Ntinda") == 180_000
+    assert materials_delivery_fee("Kampala") == 150_000
+    assert materials_delivery_fee("Mukono") == 120_000
+    assert materials_delivery_fee("Jinja") == 180_000
+    assert materials_delivery_fee("") == 0
+
+
+async def test_spare_cart_gets_delivery_fee_not_haulage_review(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 14),
+            end=date(2026, 9, 23),
+            site_location="Jinja",
+            include_haulage=True,
+        ),
+    )
+    await backend.add_to_cart(session, "AE-PRT-010", 1)
+    extras = backend.cart_extras(session.session_id)
+    assert extras["haulage"] is None
+    assert extras["deposit"] == 0
+    assert extras["delivery_fee"] == 30_000
+    hire = backend.request_hire(session)
+    assert hire.status == "requested"
+    assert hire.haulage is None
+    assert hire.delivery_fee == 30_000
+    assert hire.total == hire.subtotal + 30_000
+
+
+async def test_material_cart_gets_delivery_fee(backend, session):
+    backend.note_hire_window(
+        session.session_id,
+        HireWindow(
+            start=date(2026, 9, 14),
+            end=date(2026, 9, 23),
+            site_location="Ntinda",
+            include_haulage=True,
+        ),
+    )
+    await backend.add_to_cart(session, "AE-MAT-011", 5)
+    extras = backend.cart_extras(session.session_id)
+    assert extras["delivery_fee"] == 180_000
+    hire = backend.request_hire(session)
+    assert hire.delivery_fee == 180_000
+    assert hire.total == hire.subtotal + 180_000
 
 
 def test_catalog_has_a_full_shop_per_section():

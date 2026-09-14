@@ -62,11 +62,13 @@ from .rates import (
     haulage_km,
     haulage_round_trip,
     hire_days,
+    materials_delivery_fee,
     normalize_rate_type,
     parse_iso_date,
     quote_hire,
     ranges_overlap,
     recommended_rate_type,
+    spares_delivery_fee,
 )
 
 DATA_DIR = example_data_dir(__file__)
@@ -213,6 +215,7 @@ class HireRequest:
     subtotal: float
     haulage_fee: float
     deposit: float
+    delivery_fee: float
     total: float
     currency: str
     created_at: datetime
@@ -534,17 +537,21 @@ class MockEquipAccess(StorefrontBackend):
         cart = self._carts.cart(session_id)
         sale_only = bool(cart.items) and not self._cart_has_rental(session_id)
         haulage = None
-        if window is not None and window.include_haulage and not sale_only:
+        delivery_fee = 0.0
+        wants_delivery = window is not None and window.include_haulage
+        if wants_delivery and not sale_only:
             yard = None
+            machine_class = None
             for item in cart.items:
                 product = self.product(item.product_id)
                 if product and _is_rental(product):
                     yard = product.attributes.get("location")
+                    machine_class = product.attributes.get("machine_class")
                     break
             if yard is None:
                 yard = window.site_location
             kilometres = haulage_km(yard, window.site_location, window.distance_km)
-            fee = haulage_fee(kilometres)
+            fee = haulage_fee(kilometres, machine_class)
             if fee is not None:
                 haulage = {
                     "from": yard,
@@ -555,6 +562,37 @@ class MockEquipAccess(StorefrontBackend):
                     "status": "needs_review",
                     "label": "Needs haulage review",
                 }
+        elif wants_delivery and sale_only:
+            # Sale/Spare/Material checkout has the same physical delivery problem as a
+            # rental (get something from the yard to the customer's site), so it reuses
+            # the same site_location/include_haulage capture -- just routed to a
+            # different fee shape per listing kind. A used excavator still needs a
+            # lowbed and merchant haulage review; spares and materials are a routine
+            # courier/truck delivery that's simply quoted and charged, no review needed.
+            first = next(
+                (self.product(item.product_id) for item in cart.items),
+                None,
+            )
+            kind = _listing_type(first) if first else None
+            if kind == "Sale" and first is not None:
+                yard = first.attributes.get("location")
+                machine_class = first.attributes.get("machine_class")
+                kilometres = haulage_km(yard, window.site_location, window.distance_km)
+                fee = haulage_fee(kilometres, machine_class)
+                if fee is not None:
+                    haulage = {
+                        "from": yard,
+                        "to": window.site_location,
+                        "distance_km": kilometres,
+                        "fee": fee,
+                        "round_trip_fee": haulage_round_trip(fee),
+                        "status": "needs_review",
+                        "label": "Needs haulage review",
+                    }
+            elif kind == "Spare":
+                delivery_fee = spares_delivery_fee(window.site_location)
+            elif kind == "Material":
+                delivery_fee = materials_delivery_fee(window.site_location)
         deposit = float(haulage["fee"]) if haulage else 0.0
         return {
             "hire_window": {
@@ -568,6 +606,7 @@ class MockEquipAccess(StorefrontBackend):
             if window
             else None,
             "haulage": haulage,
+            "delivery_fee": delivery_fee,
             "deposit": deposit,
             "currency": "UGX",
         }
@@ -741,19 +780,66 @@ class MockEquipAccess(StorefrontBackend):
             )
         ]
         if not rentals:
-            options.append(
-                FulfillmentOption(
-                    method="shipping",
-                    eta="spare parts dispatch from Kampala in 1-3 days",
-                    fee=25000.0,
-                )
+            window = self._windows.get(session.session_id)
+            site = window.site_location if window else None
+            first = next(
+                (self.products[pid] for pid in product_ids if pid in self.products), None
             )
+            kind = _listing_type(first) if first else None
+            if kind == "Sale" and first is not None:
+                yard = first.attributes.get("location")
+                machine_class = first.attributes.get("machine_class")
+                kilometres = haulage_km(yard, site, window.distance_km if window else None)
+                fee = haulage_fee(kilometres, machine_class)
+                if fee is None:
+                    options.append(
+                        FulfillmentOption(
+                            method="delivery",
+                            eta=(
+                                "haulage to site is priced by distance once a site location "
+                                "is set; orders with haulage go to Haulage Review and are not "
+                                "charged here"
+                            ),
+                            fee=0.0,
+                        )
+                    )
+                else:
+                    options.append(
+                        FulfillmentOption(
+                            method="delivery",
+                            eta=(
+                                f"haulage {yard} to {site}, {kilometres:.0f} km; "
+                                "quote needs haulage review — nothing is charged in this conversation"
+                            ),
+                            fee=fee,
+                            location=site,
+                        )
+                    )
+            elif kind == "Material":
+                options.append(
+                    FulfillmentOption(
+                        method="shipping",
+                        eta="materials delivery by truck, 1-2 days",
+                        fee=materials_delivery_fee(site),
+                        location=site,
+                    )
+                )
+            else:
+                options.append(
+                    FulfillmentOption(
+                        method="shipping",
+                        eta="spare parts dispatch from Kampala, 1-3 days upcountry",
+                        fee=spares_delivery_fee(site or "Kampala"),
+                        location=site,
+                    )
+                )
             return options
         window = self._windows.get(session.session_id)
         site = window.site_location if window else None
         yard = rentals[0].attributes.get("location")
+        machine_class = rentals[0].attributes.get("machine_class")
         kilometres = haulage_km(yard, site, window.distance_km if window else None)
-        fee = haulage_fee(kilometres)
+        fee = haulage_fee(kilometres, machine_class)
         if fee is None:
             options.append(
                 FulfillmentOption(
@@ -791,9 +877,12 @@ class MockEquipAccess(StorefrontBackend):
         haulage = extras.get("haulage")
         haulage_amount = float(haulage["fee"]) if haulage else 0.0
         deposit = float(extras.get("deposit") or 0)
+        delivery_fee = float(extras.get("delivery_fee") or 0)
         sale_only = bool(cart.items) and not self._cart_has_rental(session.session_id)
         if haulage:
             note = "No charge. Haulage review is outstanding."
+        elif delivery_fee:
+            note = "No charge. Delivery fee quoted; purchase request staged."
         elif sale_only:
             note = "No charge. Purchase request staged."
         else:
@@ -818,7 +907,8 @@ class MockEquipAccess(StorefrontBackend):
             subtotal=cart.subtotal,
             haulage_fee=haulage_amount,
             deposit=deposit,
-            total=round(cart.subtotal + haulage_amount + deposit, 2),
+            delivery_fee=delivery_fee,
+            total=round(cart.subtotal + haulage_amount + deposit + delivery_fee, 2),
             currency="UGX",
             created_at=datetime.now(UTC),
             note=note,
@@ -947,6 +1037,7 @@ class MockEquipAccess(StorefrontBackend):
                 subtotal=float(row.get("subtotal") or 0),
                 haulage_fee=float(row.get("haulage_fee") or 0),
                 deposit=float(row.get("deposit") or 0),
+                delivery_fee=float(row.get("delivery_fee") or 0),
                 total=float(row.get("total") or 0),
                 currency=row.get("currency", "UGX"),
                 created_at=created,

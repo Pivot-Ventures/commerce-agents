@@ -138,6 +138,7 @@ async def request_hire(record: host.CurrentSession) -> dict:
             "subtotal": hire.subtotal,
             "haulage_fee": hire.haulage_fee,
             "deposit": hire.deposit,
+            "delivery_fee": hire.delivery_fee,
             "total": hire.total,
             "currency": hire.currency,
             "note": hire.note,

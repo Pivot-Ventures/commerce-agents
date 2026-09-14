@@ -58,6 +58,7 @@ export interface CartPayload {
   hire_window?: HireWindow | null;
   haulage?: HaulageQuote | null;
   deposit?: number;
+  delivery_fee?: number;
 }
 
 export interface ProductsPayload {

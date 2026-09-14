@@ -18,6 +18,7 @@ import {
   materialsDeliveryFee,
   sourceCta,
   sourceLabel,
+  sparesDeliveryFee,
 } from "@/lib/format";
 import type { CartPayload, Product } from "@/lib/types";
 import { MachineMark } from "./MachineCard";
@@ -84,11 +85,31 @@ export default function HireSummary({
     if (!product || !hire) return 0;
     return periodsFor(days, rate) * unitRate(product, rate);
   }, [product, hire, days, rate]);
-  const estimatedHaulage = product ? haulageFeeUgx(product.attributes?.location, site) : 0;
+  const machineClass = product?.attributes?.machine_class;
+  const estimatedHaulage = product
+    ? haulageFeeUgx(product.attributes?.location, site, machineClass)
+    : 0;
   const haulageFee = haulageOn ? (haulage?.fee ?? estimatedHaulage) : 0;
-  const deliveryFee = deliver ? materialsDeliveryFee(site) : 0;
+  // Sale-of-equipment delivery is the same lowbed/haulage problem as a rental (a used
+  // excavator still needs a lowbed truck), so it shares haulageFeeUgx and the backend's
+  // "needs haulage review" flow instead of a flat courier fee.
+  const estimatedDeliveryFee =
+    kind === "Sale"
+      ? (product ? haulageFeeUgx(product.attributes?.location, site, machineClass) : 0)
+      : kind === "Spare"
+        ? sparesDeliveryFee(site)
+        : materialsDeliveryFee(site);
+  const deliveryFee = deliver
+    ? kind === "Sale"
+      ? (haulage?.fee ?? estimatedDeliveryFee)
+      // `cart?.delivery_fee` defaults to 0 server-side until a window/site is staged,
+      // so `??` would treat that legitimate 0 as "already computed" and never fall
+      // back to the live local estimate; `||` correctly prefers a real nonzero quote
+      // from the backend but still estimates locally the rest of the time.
+      : (cart?.delivery_fee || estimatedDeliveryFee)
+    : 0;
   const goodsTotal = product && !hire ? qty * (isPriceOnRequest(product) ? 0 : product.price) : 0;
-  const total = hire ? hireSubtotal + haulageFee : goodsTotal + (kind === "Sale" ? 0 : deliveryFee);
+  const total = hire ? hireSubtotal + haulageFee : goodsTotal + deliveryFee;
 
   async function applyWindow(next: {
     start_date?: string;
@@ -111,6 +132,12 @@ export default function HireSummary({
         site_location: site,
         include_haulage: haulageOn,
       });
+    } else if (kind === "Sale" || kind === "Spare" || kind === "Material") {
+      // Reuses the hire window's site_location/include_haulage fields as a generic
+      // "where to deliver / whether to deliver" capture, so the backend can quote a
+      // real delivery fee for sale/spare/material checkout the same way it does for
+      // a rental's haulage — not just show an estimate in this sidebar.
+      await setHireWindow({ site_location: site, include_haulage: deliver });
     }
     const next = await addToCart(product.product_id, hire ? 1 : stock > 0 ? Math.min(qty, stock) : qty);
     if (next) onCart(next);
@@ -291,18 +318,6 @@ export default function HireSummary({
                 </button>
               </div>
             </div>
-            <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
-              Delivery site
-              <input
-                value={site}
-                onChange={(event) => setSite(event.target.value)}
-                className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
-              />
-            </label>
-            <label className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
-              <span className="font-semibold text-(--navy)">Deliver to site</span>
-              <input type="checkbox" checked={deliver} onChange={(event) => setDeliver(event.target.checked)} />
-            </label>
             <p className="text-[12px] text-(--ok)">Available for collection or delivery.</p>
           </>
         ) : null}
@@ -313,6 +328,34 @@ export default function HireSummary({
               ? "Buy, not hire. The dealer has not published a list price."
               : "Buy, not hire. Sale stock is the list price."}
           </p>
+        ) : null}
+
+        {product && !web && (kind === "Material" || kind === "Spare" || kind === "Sale") ? (
+          <>
+            <label className="text-[11px] font-semibold uppercase tracking-wide text-(--ink-soft)">
+              Delivery site
+              <input
+                value={site}
+                onChange={(event) => setSite(event.target.value)}
+                onBlur={() => void applyWindow({ site_location: site, include_haulage: deliver })}
+                className="mt-1 w-full rounded-lg border border-(--line) px-2 py-1.5 text-[13px] font-semibold text-(--navy)"
+              />
+            </label>
+            <label className="flex items-center justify-between rounded-xl border border-(--line) px-3 py-2 text-[13px]">
+              <span className="font-semibold text-(--navy)">
+                {kind === "Sale" ? "Haulage to site" : "Deliver to site"}
+              </span>
+              <input
+                type="checkbox"
+                checked={deliver}
+                onChange={(event) => {
+                  const next = event.target.checked;
+                  setDeliver(next);
+                  void applyWindow({ site_location: site, include_haulage: next });
+                }}
+              />
+            </label>
+          </>
         ) : null}
 
         {product && !web ? (
@@ -336,12 +379,10 @@ export default function HireSummary({
                   <dt>{kind === "Sale" ? "Sale price" : `${qty} × ${formatUgx(product.price)}`}</dt>
                   <dd>{isPriceOnRequest(product) ? "Price on request" : formatUgx(goodsTotal)}</dd>
                 </div>
-                {kind !== "Sale" ? (
-                  <div className="flex justify-between">
-                    <dt>Delivery to site {site || "—"}</dt>
-                    <dd>{deliver ? formatUgx(deliveryFee) : "0 UGX"}</dd>
-                  </div>
-                ) : null}
+                <div className="flex justify-between">
+                  <dt>{kind === "Sale" ? "Haulage" : "Delivery"} to site {site || "—"}</dt>
+                  <dd>{deliver ? formatUgx(deliveryFee) : "0 UGX"}</dd>
+                </div>
               </>
             )}
             <div className="flex justify-between border-t border-(--line) pt-1 text-[18px] font-bold text-(--navy)">

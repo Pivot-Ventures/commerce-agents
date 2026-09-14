@@ -40,7 +40,7 @@ Customer A — signed-in site manager (Amina, Mukono):
 
 1. Open the storefront (`:3004`). Shop lands on the four catalogs (Rental, Sale, Spares, Materials) in a dense product grid. Open Search (or the composer) and ask: "Need a 20-ton excavator in Mukono for 10 days, include transport to site."
 2. See the machine cards. Pick the 20-ton excavator on the Mukono yard. The live hire summary shows the dated quote and haulage.
-3. Switch Daily vs Weekly. Ten days on the weekly rate is 14,400,000 UGX (two weeks at the public 1,200,000 / day figure). Haulage Mukono → Mukono is 240,000 UGX one-way (method price × km). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
+3. Switch Daily vs Weekly. Ten days on the weekly rate is 14,400,000 UGX (two weeks at the public 1,200,000 / day figure). Haulage Mukono → Mukono is 270,000 UGX one-way (18 km at the 15,000 UGX/km lowbed rate — an excavator needs a lowbed trailer; lighter rental classes use the general per-km rate instead). The refundable deposit equals that one-way amount. Host checkout later charges to+from.
 4. Add to hire cart. Open Cart and Request this hire. Confirm the note: no charge. Payment options are Flutterwave (card or mobile money) and bank transfer — both handoffs. The hire lands in Haulage Review.
 
 Customer B — date conflict / on-hire machine:
@@ -66,10 +66,18 @@ Admin (BTIC · Super admin) — desk `:3204/login`, then the approvals host:
 
 - `api/rates.py`: daily / weekly / monthly period math. One-way haulage is method
   price × distance; deposit equals that one-way fee; to+from is a later checkout
-  charge, not an assistant write.
+  charge, not an assistant write. Two haulage rates: `LOWBED_PER_KM_UGX` (15,000/km, for
+  `LOWBED_MACHINE_CLASSES` — excavator, bulldozer, loader, skid steer, grader, crane;
+  calibrated against a real Kampala→Bukomero lowbed quote) and the general
+  `HAULAGE_PER_KM_UGX` (~13,333/km) for everything else. `spares_delivery_fee` and
+  `materials_delivery_fee` quote a courier/truck delivery fee for Spare and Material
+  checkout the same way — flat 10,000 UGX within Kampala for spares, zone-tiered
+  30,000–100,000 UGX upcountry.
 - `api/mock_equipaccess.py`: `MockEquipAccess`, the `StorefrontBackend`. Dated search
   results are hire quotes. A first `add_to_cart` on a rental holds those dates against
-  stock. `request_hire` stages a haulage-review row and charges nothing.
+  stock. `request_hire` stages a haulage-review row and charges nothing. Sale-of-
+  equipment checkout also lands in Haulage Review (same lowbed problem as a rental);
+  Spare/Material checkout instead gets a quoted, uncontested `delivery_fee`.
   `checkout_handoff` returns a Flutterwave hosted-pay URL. The model never posts payment.
 - `api/http_adapter.py`: env-gated Laravel client. Reads only. Cart writes raise; payment
   is not called.

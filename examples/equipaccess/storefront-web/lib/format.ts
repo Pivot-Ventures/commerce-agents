@@ -183,7 +183,30 @@ export function formatListPrice(
   return `${formatUgx(amount, compact)}${suffix}`;
 }
 
+// General haulage method price per km, for rental/sale machine classes that don't need
+// a lowbed trailer. Calibrated so 18 km (Mukono yard -> Mukono industrial) quotes
+// 240,000 UGX one-way, matching the backend's fixture haulage row (api/rates.py).
 const HAULAGE_PER_KM = 240_000 / 18;
+
+// Lowbed trailer method price per km, for machine classes too heavy/tracked to
+// self-drive. Calibrated against a real market quote: Kampala -> Bukomero is ~80-100 km
+// by road and a lowbed quote for that run is UGX 1,500,000 -- 15,000 UGX/km * 100 km
+// matches exactly. Mirrors LOWBED_PER_KM_UGX / LOWBED_MACHINE_CLASSES in api/rates.py.
+const LOWBED_PER_KM = 15_000;
+const LOWBED_MACHINE_CLASSES = new Set([
+  "excavator",
+  "bulldozer",
+  "loader",
+  "skid steer",
+  "grader",
+  "crane",
+]);
+
+export function requiresLowbed(machineClass?: string | null): boolean {
+  return Boolean(machineClass) && LOWBED_MACHINE_CLASSES.has(machineClass!.trim().toLowerCase());
+}
+
+// Mirrors YARD_TO_SITE_KM in api/rates.py -- keep both in sync.
 const YARD_TO_SITE_KM: Record<string, number> = {
   "mukono|mukono": 18,
   "mukono|kampala": 22,
@@ -191,11 +214,15 @@ const YARD_TO_SITE_KM: Record<string, number> = {
   "mukono|entebbe": 48,
   "mukono|namanve": 16,
   "mukono|wakiso": 28,
+  "mukono|jinja": 74,
+  "mukono|gulu": 320,
+  "mukono|bukomero": 118,
   "kampala|kampala": 12,
   "kampala|ntinda": 8,
   "kampala|mukono": 22,
   "kampala|entebbe": 40,
   "kampala|namanve": 18,
+  "kampala|bukomero": 100,
   "kampala|wakiso": 20,
   "entebbe|entebbe": 10,
   "entebbe|kampala": 40,
@@ -206,11 +233,12 @@ const YARD_TO_SITE_KM: Record<string, number> = {
   "jinja|mukono": 74,
 };
 
-export function haulageFeeUgx(yard?: string | null, site?: string | null): number {
+export function haulageFeeUgx(yard?: string | null, site?: string | null, machineClass?: string | null): number {
   if (!yard || !site) return 0;
   const km = YARD_TO_SITE_KM[`${yard.trim().toLowerCase()}|${site.trim().toLowerCase()}`];
   if (!km) return 0;
-  return Math.round(HAULAGE_PER_KM * km);
+  const perKm = requiresLowbed(machineClass) ? LOWBED_PER_KM : HAULAGE_PER_KM;
+  return Math.round(perKm * km);
 }
 
 export function materialsDeliveryFee(site?: string | null): number {
@@ -220,4 +248,31 @@ export function materialsDeliveryFee(site?: string | null): number {
   if (folded.includes("kampala") || folded.includes("namanve") || folded.includes("wakiso")) return 150_000;
   if (folded.includes("mukono")) return 120_000;
   return 180_000;
+}
+
+// Kampala's urban/peri-urban belt gets a flat local courier fee; upcountry is
+// zone-tiered by real road distance from Kampala, shaped like DHL Domestic Uganda's
+// own zoning, bounded to the market range an operator actually quotes: UGX 30,000
+// nearby up to UGX 100,000 far upcountry. Mirrors spares_delivery_fee() in
+// api/rates.py -- keep both in sync.
+const SPARES_KAMPALA_METRO = ["kampala", "ntinda", "namanve", "wakiso", "mukono", "entebbe"];
+const SPARES_NEAR_TOWNS = [
+  "jinja", "mityana", "mubende", "luweero", "luwero", "masaka", "iganga",
+  "kayunga", "bukomero", "kiboga", "lugazi", "njeru", "mpigi",
+];
+const SPARES_MID_TOWNS = ["soroti", "hoima", "kasese", "mbale", "fort portal", "fortportal", "masindi"];
+const SPARES_FAR_TOWNS = [
+  "gulu", "mbarara", "arua", "kabale", "moroto", "kitgum", "adjumani", "kisoro", "lira",
+];
+
+export function sparesDeliveryFee(site?: string | null): number {
+  const folded = (site ?? "").trim().toLowerCase();
+  if (!folded) return 0;
+  if (SPARES_KAMPALA_METRO.some((town) => folded.includes(town))) return 10_000;
+  if (SPARES_FAR_TOWNS.some((town) => folded.includes(town))) return 100_000;
+  if (SPARES_MID_TOWNS.some((town) => folded.includes(town))) return 60_000;
+  if (SPARES_NEAR_TOWNS.some((town) => folded.includes(town))) return 30_000;
+  // Unrecognized upcountry text: quote the middle of the market range rather than
+  // silently returning 0, which would look like delivery was free.
+  return 60_000;
 }
